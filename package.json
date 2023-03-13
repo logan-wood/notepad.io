@@ -1,0 +1,22 @@
+{
+  "name": "notepad.io",
+  "version": "1.0.0",
+  "description": "A notetaking application with entertainment features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logan-wood/notepad.io.git"
+  },
+  "keywords": [
+    "notetaking"
+  ],
+  "author": "Team Notesad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/logan-wood/notepad.io/issues"
+  },
+  "homepage": "https://github.com/logan-wood/notepad.io#readme"
+}
