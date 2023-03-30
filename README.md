@@ -3,10 +3,7 @@ notepad.io github repository
 
 ## how to run this application:
 
+# initial setup:
 - create a .env file and copy the contents of .env.example
-
-- run 'npm install' in both the client and server directories
-
-- to run the server and client concurrently, navigate to the server directory, and run 'npm run dev'. This should start the server and client using the 'concurrently' npm package
-
-- alternatively, check 'package.json' in the client and server directories for commands to run them independently
+- run 'npm install-all' in the root directory to install all dependencies
+- run 'npm run dev' in the root directory to run the client and server concurrently (all scripts can be found in the package.json file in their respective directories)
