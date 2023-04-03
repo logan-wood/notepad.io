@@ -8,3 +8,6 @@ notepad.io github repository
 - run 'npm i' in the root directory to install the 'concurrently' package
 - run 'npm run install-all' in the root directory to install all dependencies
 - run 'npm run dev' in the root directory to run the client and server concurrently (all scripts can be found in the package.json file in their respective directories)
+
+# database connectivity
+- add 'serviceAccountKey.json' to the server/config folder

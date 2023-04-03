@@ -1,5 +1,5 @@
-const firebase = require('firebase')
 const bcrypt = require('bcrypt')
+const db = require('../config/database')
 
 // functions
 module.exports = {
@@ -41,9 +41,10 @@ module.exports = {
     },
 
     getUser: function (req, res) {
-        res.send(JSON.parse('{"user":"demo"}'))
-    },
+        console.log('calling database')
+        const fasdg = db.ref('users')
+        console.log(result)
 
+        res.send('worked???')
+    }
 }
-
-
