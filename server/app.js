@@ -6,6 +6,11 @@ const path = require('path')
 const dotenv = require('dotenv')
 dotenv.config('./env')
 
+// body-parser (for forms)
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // initiate router
 const router = require('./routes/router')
 app.use(router)
