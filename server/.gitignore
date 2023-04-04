@@ -1,6 +1,7 @@
 # security
 .env
 config/serviceAccountKey.json
+config/creds.json
 
 # dependencies
 /node_modules
