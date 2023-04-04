@@ -10,6 +10,10 @@ module.exports = {
     });
   },
   getUserData: function (uid) {
-    return db.ref("/users/" + uid);
+    const ref = db.ref("/users/" + uid);
+    return ref.once("value", (snapshot) => {
+      const data = snapshot.val();
+      return data;
+    });
   },
 };
