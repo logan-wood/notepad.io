@@ -1,4 +1,5 @@
-import db from "../config/database";
+import db from "firebase.js";
+import { ref, set } from "firebase-admin/database";
 
 modules.exports = {
   writeUserData: function (uid, displayName, email, classes) {
