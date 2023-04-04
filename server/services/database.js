@@ -1,12 +1,15 @@
-import db from "firebase.js";
-import { ref, set } from "firebase-admin/database";
+const firebase = require("./firebase");
+const db = firebase.db();
 
-modules.exports = {
+module.exports = {
   writeUserData: function (uid, displayName, email, classes) {
     set(ref(db, "users/" + uid), {
       username: displayName,
       email: email,
       classes: classes,
     });
+  },
+  getUserData: function (uid) {
+    return db.ref("/users/" + uid);
   },
 };

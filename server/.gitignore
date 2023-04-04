@@ -1,6 +1,6 @@
 # security
 .env
-config/serviceAccountKey.json
+services/firebaseServiceAccountKey.json
 config/creds.json
 
 # dependencies
