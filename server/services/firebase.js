@@ -8,7 +8,6 @@ module.exports = {
       databaseURL: "https://notepad-io-database-default-rtdb.firebaseio.com",
     });
   },
-
   db: function () {
     return this.getApp().database();
   },
