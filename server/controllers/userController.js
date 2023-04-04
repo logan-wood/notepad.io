@@ -39,8 +39,18 @@ module.exports = {
 
   getUser: function (req, res) {
     console.log("calling database");
-    const result = database.getUserData(696969696969);
-    console.log(result);
-    res.send(result);
+    const { uid } = req.query;
+    if (uid) {
+      database
+        .getUserData(uid)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((error) => {
+          console.error("Error retrieving data from database:", error);
+        });
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
   },
 };
