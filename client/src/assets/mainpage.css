@@ -1,28 +1,43 @@
-* {
-    display: flex;
-    font-family: 'Fjalla One', sans-serif;
-    font-family: 'Nunito', sans-serif;
+body {
+    margin: 0;
+    font-family: 'Fjalla One', 'Nunito', sans-serif;
 }
 
-header {
+.mainpage {
+}
+
+.mainpage_header {
     background: #FFFBF6;
-    color:#BB4430;
+    display: grid;
+    align-items: center;
+    color: #BB4430;
+    padding:1rem;
+    width: 100vw;
+    font-size: 30px;
+    height:8vh;
+    display:flex;
 }
 
-menu {
+.classmenu {
+    height:85vh;
     background: #EFE6DD;
-}
-
-.note{
-    background:#FFFFFF;
-}
-
-.yellowbutton
-{
-    background:#F3DFA2;
+    float:left;
+    min-width: 25%;
+        overflow-y:auto;
+    border-top-right-radius: 5rem;
 
 }
-.gamebutton{
-    background:#BB4430;
+
+.note {
+    background: #FFFFFF;
+}
+
+.yellowbutton {
+    background: #F3DFA2;
+
+}
+
+.gamebutton {
+    background: #BB4430;
 
 }
