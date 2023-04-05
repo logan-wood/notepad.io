@@ -1,4 +1,5 @@
 import '../assets/mainpage.css';
+import notelo_red from '../assets/notelo_red.png';
 
 function Mainpage() {
   return (
@@ -8,9 +9,13 @@ function Mainpage() {
         @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');
       </style>
       <header className="mainpage_header">
-        NotePad.io
+      <img src={notelo_red} width="69" height="50"/>
+        Notepad.io
       </header>
     <div className="classmenu">
+      testing
+    </div>
+    <div className="note">
       testing
     </div>
 
