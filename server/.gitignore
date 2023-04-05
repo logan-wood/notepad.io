@@ -1,7 +1,6 @@
 # security
 .env
 services/firebaseServiceAccountKey.json
-config/creds.json
 
 # dependencies
 /node_modules
