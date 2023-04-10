@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./Header.css";
-import logo from "client/public/notey.png";
+import logo from "./notey.png";
+
 
 const Header = () => {
   return (
