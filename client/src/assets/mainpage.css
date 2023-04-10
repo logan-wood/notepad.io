@@ -3,67 +3,120 @@ body {
     font-family: 'Fjalla One', 'Nunito', sans-serif;
 }
 
-.mainpage {
-}
+.mainpage {}
 
 .mainpage_header {
-    position:fixed;
+    position: fixed;
     background: #FFFBF6;
     display: grid;
     align-items: center;
     color: #BB4430;
     width: 100vw;
-    padding:4px;
+    padding: 4px;
     font-size: 44px;
-    height:50px;
-    display:flex;
+    height: 50px;
+    display: flex;
 }
 
 
 .sidenav {
     position: fixed;
     transition: all 0.3s ease-in-out;
-    height:100vh;
+    height: calc(100vh - 90px);
+    
     background: #EFE6DD;
-    float:left;
+    float: left;
     width: 300px;
-    left:-250px;
-    overflow-y:auto;
+    left: -250px;
+    overflow-y: auto;
     border-top-right-radius: 20px;
+    padding: 20px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
 }
 
-.navButton
-{
-    position:absolute;
-    right:0px;
+.sidenav h1 {
+    font-family: 'Nunito', sans-serif;
+    color: #4f4f4f;
+    size: 30px
+}
+
+.navButton {
+    position: absolute;
+    right: 0px;
     display: block;
+    background:none;
+    border:none;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    opacity: 70%;
 }
 
-.sidenav.open{
-    left:0;
+.navButton img{
+    height:30px;
+
+    padding:20px;
+}
+
+.sidenav.open {
+    left: 0;
+}
+
+.sidenav.open  .navButton{
+    -webkit-transform: scaleX(+1);
+    transform: scaleX(+1);
 }
 
 .note {
-    background: #666FFF;
-   width: (100% - 300px);
-   height:100vh;
-  margin-left: 50px;
-  transition: all 0.3s ease-in-out;
+    background: #FFFFFF;
+    width: (100% - 300px);
+    height: 100vh;
+    margin-left: 80px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
 }
 
-.sidenav.open + .note {
-  /*width: 100%;*/
-  margin-left: 300px;
+.sidenav.open+.note {
+    /*width: 100%;*/
+    margin-left: 320px;
 }
 
 
 .yellowbutton {
     background: #F3DFA2;
+    border-radius: 30px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 25px;
+    width:250px;
+    padding-top:10px;
+    padding-bottom:10px;
 
+}
+
+.yellowbutton:hover {
+    background: #f8e7b4;
+    cursor: pointer;
+}
+.sideNavButtonDiv
+{
+    display: flex;
+    justify-content: center;
 }
 
 .gamebutton {
     background: #BB4430;
 
+}
+
+.classDiv {
+    background: #FFFBF6;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: #4f4f4f;
+    margin-top: 20px;
 }
