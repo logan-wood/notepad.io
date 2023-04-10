@@ -1,0 +1,49 @@
+.main-content {
+    background-color: #efe6dd;
+    text-align: center;
+    padding-top: 10rem;
+    padding-bottom: 3.5rem;
+    position: relative;
+  }
+  
+  .text-container {
+    padding-bottom: 5.5rem;
+  }
+  
+  .title {
+    font-family: "Fjalla One", sans-serif;
+    font-size: 100px;
+    color: #bb4430;
+    margin-bottom: 3rem;
+  }
+  
+  .get-notey-button {
+    font-family: "Nunito", sans-serif;
+    font-size: 24px;
+    color: #694b2c;
+    background-color: #f3dfa2;
+    border-color: #f3dfa2;
+    border-radius: 50px;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    box-shadow: none;
+  }
+  
+  .get-notey-button:hover,
+  .get-notey-button:focus {
+    background-color: #efe6dd;
+    border-color: #bb4430;
+    color: #bb4430;
+  }
+  
+  .get-notey-button:active {
+    background-color: #7ebdc2 !important;
+    border-color: #7ebdc2 !important;
+    color: #fffbf6!important;
+  }
+  
+  .divider-image {
+    width: 105%;
+    height: auto;
+  }
+  
