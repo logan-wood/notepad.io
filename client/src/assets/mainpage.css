@@ -7,6 +7,7 @@ body {
 }
 
 .mainpage_header {
+    position:fixed;
     background: #FFFBF6;
     display: grid;
     align-items: center;
@@ -18,19 +19,44 @@ body {
     display:flex;
 }
 
-.classmenu {
-    height:85vh;
+
+.sidenav {
+    position: fixed;
+    transition: all 0.3s ease-in-out;
+    height:100vh;
     background: #EFE6DD;
     float:left;
-    width: 250px;
-        overflow-y:auto;
+    width: 300px;
+    left:-250px;
+    overflow-y:auto;
     border-top-right-radius: 20px;
 
 }
 
-.note {
-    background: #FFFFFF;
+.navButton
+{
+    position:absolute;
+    right:0px;
+    display: block;
 }
+
+.sidenav.open{
+    left:0;
+}
+
+.note {
+    background: #666FFF;
+   width: (100% - 300px);
+   height:100vh;
+  margin-left: 50px;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidenav.open + .note {
+  /*width: 100%;*/
+  margin-left: 300px;
+}
+
 
 .yellowbutton {
     background: #F3DFA2;
