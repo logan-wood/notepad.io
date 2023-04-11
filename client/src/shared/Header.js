@@ -3,17 +3,22 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
 
-const Header = () => {
+const Header = ({ showButton }) => {
   return (
     <header className="header">
-      <div className="headerElement">
-        <img src={logo} alt="Logo" className="logo" />
-        <h1 className="app-title">Notepad.io</h1>
-      </div>
-      <div>            <Button variant="primary" className="signup-login-button">
-        log in / signup
-      </Button>
-      </div>
+      <Container>
+        <Row>
+          <Col sm={8} className="d-flex align-items-center">
+            <img src={logo} alt="Logo" className="logo" />
+            <h1 className="app-title">Notepad.io</h1>
+          </Col>
+          <Col sm={4} className="d-flex justify-content-end align-items-center">
+            <Button variant="primary" className="signup-login-button">
+              log in / signup
+            </Button>
+          </Col>
+        </Row>
+      </Container>
     </header>
   );
 };
