@@ -4,54 +4,52 @@
   padding-top: 14.5rem !important;
   padding-bottom: 3.5rem !important;
   position: relative;
-
 }
 
 .text-container {
   padding-bottom: 110px;
 }
-  
-  .title {
-    font-family: "Fjalla One", sans-serif;
-    font-size: 100px;
-    color: #bb4430;
-    margin-bottom: 5rem !important;
-  }
-  
-  .get-notey-button {
-    font-family: "Nunito", sans-serif;
-    font-size: 24px !important;
-    color: #694b2c !important;
-    background-color: #f3dfa2 !important;
-    border-color: #f3dfa2 !important;
-    border-radius: 50px !important;
-    padding-left: 8rem !important;
-    padding-right: 8rem !important;
-  }
-  
-  .get-notey-button:hover,
-  .get-notey-button:focus {
-    background-color: #efe6dd !important;
-    border-color: #bb4430 !important;
-    color: #bb4430 !important;
-  }
-  
-  .get-notey-button:active {
-    background-color: #7ebdc2 !important;
-    border-color: #7ebdc2 !important;
-    color: #fffbf6!important;
-  }
-  
-  .divider-image {
-    width: 1473px;
-    display: block;
-    height: 210px; 
-    position: fixed;
-    bottom: 0;
-  }
 
-  .logo-title {
-    display: flex;
-    align-items: center;
-  }
-  
+.title {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 100px;
+  color: #bb4430;
+  margin-bottom: 5rem !important;
+}
+
+.get-notey-button {
+  font-family: "Nunito", sans-serif;
+  font-size: 24px !important;
+  color: #694b2c !important;
+  background-color: #f3dfa2 !important;
+  border-color: #f3dfa2 !important;
+  border-radius: 50px !important;
+  padding-left: 8rem !important;
+  padding-right: 8rem !important;
+}
+
+.get-notey-button:hover,
+.get-notey-button:focus {
+  background-color: #efe6dd !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.get-notey-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #fffbf6 !important;
+}
+
+.divider-image {
+  width: 1473px;
+  display: block;
+  height: 210px;
+  position: fixed;
+  bottom: 0;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+}

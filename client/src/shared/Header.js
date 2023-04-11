@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
 
-const Header = ({showButton}) => {
+const Header = ({ showButton }) => {
   return (
     <header className="header">
       <Container fluid>
@@ -15,7 +15,7 @@ const Header = ({showButton}) => {
             </div>
           </Col>
           <Col xs={6} sm={6} md={6} lg={6} className="text-right">
-          {showButton && (
+            {showButton && (
               <Button variant="primary" className="signup-login-button">
                 log in / signup
               </Button>
