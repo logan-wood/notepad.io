@@ -3,8 +3,6 @@ body {
     font-family: 'Fjalla One', 'Nunito', sans-serif;
 }
 
-.mainpage {}
-
 .mainpage_header {
     position: fixed;
     background: #FFFBF6;
@@ -20,10 +18,9 @@ body {
 
 
 .sidenav {
-    position: fixed;
+    position: absolute;
     transition: all 0.3s ease-in-out;
-    height: calc(100vh - 90px);
-    
+    height: calc(100vh - 65px);
     background: #EFE6DD;
     float: left;
     width: 300px;
@@ -48,24 +45,23 @@ body {
     position: absolute;
     right: 0px;
     display: block;
-    background:none;
-    border:none;
+    background: none;
+    border: none;
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
     opacity: 70%;
 }
 
-.navButton img{
-    height:30px;
-
-    padding:20px;
+.navButton img {
+    height: 60px;
+    padding: 20px;
 }
 
 .sidenav.open {
     left: 0;
 }
 
-.sidenav.open  .navButton{
+.sidenav.open .navButton {
     -webkit-transform: scaleX(+1);
     transform: scaleX(+1);
 }
@@ -73,7 +69,7 @@ body {
 .note {
     background: #FFFFFF;
     width: (100% - 300px);
-    height: 100vh;
+    height: calc(100vh-65px);
     margin-left: 80px;
     padding: 20px;
     transition: all 0.3s ease-in-out;
@@ -91,9 +87,9 @@ body {
     border: none;
     font-family: 'Nunito', sans-serif;
     font-size: 25px;
-    width:250px;
-    padding-top:10px;
-    padding-bottom:10px;
+    width: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 
 }
 
@@ -101,17 +97,39 @@ body {
     background: #f8e7b4;
     cursor: pointer;
 }
-.sideNavButtonDiv
-{
+
+.sideNavButtonDiv {
     display: flex;
     justify-content: center;
 }
 
-.gamebutton {
-    background: #BB4430;
-
+.sidenav li {
+    list-style-type: none;
 }
 
+.classButton {
+    color: #949292;
+    background: NONE;
+    BORDER: None;
+}
+
+.classButton.active {
+    color: #2c2c2c;
+    background: NONE;
+    BORDER: None;
+}
+
+.noteButton {
+    color: #949292;
+    background: NONE;
+    BORDER: None;
+}
+
+.noteButton.active {
+    color: #2c2c2c;
+    background: NONE;
+    BORDER: None;
+}
 .classDiv {
     background: #FFFBF6;
     border-radius: 10px;
