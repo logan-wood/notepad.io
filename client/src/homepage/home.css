@@ -4,11 +4,11 @@
   padding-top: 14.5rem !important;
   padding-bottom: 3.5rem !important;
   position: relative;
-  min-height: 100vh;
+
 }
 
 .text-container {
-  padding-bottom: 0px;
+  padding-bottom: 110px;
 }
   
   .title {
@@ -45,7 +45,9 @@
   .divider-image {
     width: 1473px;
     display: block;
-    height: 200px; 
+    height: 210px; 
+    position: fixed;
+    bottom: 0;
   }
 
   .logo-title {
