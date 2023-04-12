@@ -102,19 +102,20 @@
   
 
 .email-signin-button {
+    margin-left: auto;
+    border-radius: 50px !important;
+    background-color: #f3dfa2 !important;
+    border-color: #f3dfa2 !important;
+    color: #000000 !important;
     font-family: "Nunito", sans-serif;
-    font-size: 16px;
-    padding: 0.5rem 1.5rem;
-    margin-top: 1rem;
-    background-color: #6c757d;
-    color: white;
-    border: 1px solid #6c757d;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
+    font-size: 18px !important;
   }
   
-  .email-signin-button:hover {
-    background-color: #5a6268;
-    border-color: #5a6268;
+  .email-signin-button:hover,
+  .email-signin-button:focus {
+    background-color: #fffbf6 !important;
+    border-color: #bb4430 !important;
+    color: #bb4430 !important;
   }
