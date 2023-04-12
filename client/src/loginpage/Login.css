@@ -44,15 +44,15 @@
 
 .google-signin-button:hover,
 .google-signin-button:focus {
-  background-color: #fffbf6 !important;
+  background-color: #ffffff !important;
   border-color: #bb4430 !important;
-  color: #bb4430 !important;
+  color: #656565 !important;
 }
 
 .google-signin-button:active {
-  background-color: #7ebdc2 !important;
-  border-color: #7ebdc2 !important;
-  color: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #4285F4 !important;
+  color: #656565 !important;
 }
 
 .login-form {
@@ -121,7 +121,7 @@
 
 .email-signin-button:hover,
 .email-signin-button:focus {
-  background-color: #fffbf6 !important;
+  background-color: #ffffff !important;
   border-color: #bb4430 !important;
   color: #bb4430 !important;
 }
