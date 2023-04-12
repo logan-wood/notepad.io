@@ -3,6 +3,7 @@ import Header from "../shared/Header";
 import React, { useState } from "react";
 import SideNav from "./SideNav";
 import { classes } from "./data";
+import Note from "./Note";
 
 function Mainpage() {
   const [isNavOpen, setIsNavOpen] = useState(true);
@@ -43,10 +44,7 @@ function Mainpage() {
         onSelectNote={handleSelectNote}
         className="classmenu"
       />
-      <div className="note">
-        {selectedNote &&<>
-         <h3>{selectedClass.name}</h3><h1>{selectedNote.title}</h1><br></br><p>{selectedNote.content}</p></>}
-      </div>
+      <Note SelectedClass={selectedClass} SelectedNote={selectedNote}/>
     </div>
   );
 }
