@@ -9,13 +9,14 @@
 }
 
 .login-box {
+  margin-top: -100px;
   background-color: white;
   border-radius: 100px;
-  padding: 4rem;
+  padding: 5rem;
   width: 90%;
-  max-width: 500px;
+  max-width: 550px;
   text-align: center;
-  height: 600px;
+  height: 450px;
 }
 
 .login-title {
@@ -57,65 +58,82 @@
 .login-form input {
   width: 100%;
   padding: 0.5rem;
-  font-size: 14px;
+  font-size: 25px;
   margin-bottom: 1rem;
   border: 1px solid #ced4da;
   border-radius: 4px;
 }
 
 .or-divider {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0;
-  }
-  
-  .or-divider::before,
-  .or-divider::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #6c757d;
-  }
-  
-  .or-divider::before {
-    margin-right: 0.5rem;
-  }
-  
-  .or-divider::after {
-    margin-left: 0.5rem;
-  }
-  
-  .or-text {
-    padding: 0 0.5rem;
-    color: #6c757d;
-  }
-  
-  .register-text {
-    color: #6c757d;
-    text-decoration: none;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-  
-  .register-text:hover {
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #6c757d;
+}
+
+.or-divider::before {
+  margin-right: 0.5rem;
+}
+
+.or-divider::after {
+  margin-left: 0.5rem;
+}
+
+.or-text {
+  padding: 0 0.5rem;
+  color: #6c757d;
+}
+
+.register-text {
+  color: #6c757d;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 3.15rem;
+  font-size: 16px;
+}
+
+.register-text:hover {
+  text-decoration: underline;
+}
 
 .email-signin-button {
-    margin-left: auto;
-    border-radius: 50px !important;
-    background-color: #f3dfa2 !important;
-    border-color: #f3dfa2 !important;
-    color: #000000 !important;
-    font-family: "Nunito", sans-serif;
-    padding-left: 6rem !important;
-    padding-right: 6rem !important;
-    font-size: 18px !important;
-  }
-  
-  .email-signin-button:hover,
-  .email-signin-button:focus {
-    background-color: #fffbf6 !important;
-    border-color: #bb4430 !important;
-    color: #bb4430 !important;
-  }
+  margin-top: 10px;
+  margin-left: auto;
+  border-radius: 50px !important;
+  background-color: #f3dfa2 !important;
+  border-color: #f3dfa2 !important;
+  color: #000000 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 7rem !important;
+  padding-right: 7rem !important;
+  font-size: 18px !important;
+}
+
+.email-signin-button:hover,
+.email-signin-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.email-signin-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #ffffff !important;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0; /* Add margin to create space between inputs */
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 5px solid #ccc;
+  font-size: 18px; /* Increase font size */
+}

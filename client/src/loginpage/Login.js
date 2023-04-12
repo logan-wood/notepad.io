@@ -41,7 +41,7 @@ const Login = () => {
       <Header showButton={false} />
       <div className="login-page">
         <div className="login-box">
-          <h2 className="login-title">log in</h2>
+          <h2 className="login-title">Log in</h2>
           <input
             className="input-field"
             type="email"
@@ -59,7 +59,7 @@ const Login = () => {
             style={{ border: 'none', borderBottom: '1px solid #ccc', borderRadius: '0', display: 'block', width: '100%' }}
           />
           <Button variant="primary" className="email-signin-button" onClick={signInWithEmail}>
-            log in with email
+            Sign in with Email
           </Button>
           <div className="or-divider">
             <span className="or-text">or</span>
