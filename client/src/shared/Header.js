@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
+import { Link } from "react-router-dom";
 
 const Header = ({ showButton }) => {
   return (
@@ -16,9 +17,11 @@ const Header = ({ showButton }) => {
           </Col>
           <Col xs={6} sm={6} md={6} lg={6} className="text-right">
             {showButton && (
-              <Button variant="primary" className="signup-login-button">
-                log in / signup
-              </Button>
+              <Link to="/login">
+                <Button variant="primary" className="signup-login-button">
+                  Log in / Sign up
+                </Button>
+              </Link>
             )}
           </Col>
         </Row>
