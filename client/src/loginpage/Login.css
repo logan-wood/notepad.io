@@ -1,52 +1,120 @@
 .login-page {
-    background-image: url('./background.png');
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
+  background-image: url("./background.png");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background-color: white;
+  border-radius: 100px;
+  padding: 4rem;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  height: 600px;
+}
+
+.login-title {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 36px;
+  color: #131313;
+  margin-bottom: 1.5rem;
+}
+
+.google-signin-button {
+  margin-left: auto;
+  border-radius: 50px !important;
+  background-color: #f3dfa2 !important;
+  border-color: #f3dfa2 !important;
+  color: #000000 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 6rem !important;
+  padding-right: 6rem !important;
+  font-size: 18px !important;
+}
+
+.google-signin-button:hover,
+.google-signin-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.google-signin-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #ffffff !important;
+}
+
+.login-form {
+  margin-bottom: 1rem;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 14px;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.or-divider {
     display: flex;
-    justify-content: center;
     align-items: center;
+    margin: 1rem 0;
   }
   
-  .login-box {
-    background-color: white;
-    border-radius: 100px;
-    padding: 2rem;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    height: 600px;
+  .or-divider::before,
+  .or-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #6c757d;
   }
   
-  .login-title {
-    font-family: "Fjalla One", sans-serif;
-    font-size: 36px;
-    color: #131313;
-    margin-bottom: 1.5rem;
+  .or-divider::before {
+    margin-right: 0.5rem;
   }
+  
+  .or-divider::after {
+    margin-left: 0.5rem;
+  }
+  
+  .or-text {
+    padding: 0 0.5rem;
+    color: #6c757d;
+  }
+  
+  .register-text {
+    color: #6c757d;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  .register-text:hover {
+    text-decoration: underline;
+  }
+  
 
-  .google-signin-button {
-    margin-left: auto;
-    border-radius: 50px !important;
-    background-color: #F3DFA2 !important;
-    border-color: #F3DFA2 !important;
-    color: #000000 !important;
+.email-signin-button {
     font-family: "Nunito", sans-serif;
-    padding-left: 4rem !important;
-    padding-right: 4rem !important;
-    font-size: 18px !important;
+    font-size: 16px;
+    padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid #6c757d;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
   }
   
-  .google-signin-button:hover, 
-  .google-signin-button:focus{
-    background-color: #fffbf6 !important;
-    border-color: #bb4430 !important;
-    color: #bb4430 !important;
+  .email-signin-button:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
   }
-
-  .google-signin-button:active {
-    background-color: #7ebdc2 !important;
-    border-color: #7ebdc2 !important;
-    color: #ffffff !important;
-  }
-  
