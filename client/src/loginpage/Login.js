@@ -6,13 +6,14 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth();
+  const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
   const signInWithGoogle = () => {
@@ -47,6 +48,7 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{ border: 'none', borderBottom: '1px solid #ccc', borderRadius: '0', display: 'block', width: '100%' }}
           />
           <input
             className="input-field"
@@ -54,6 +56,7 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{ border: 'none', borderBottom: '1px solid #ccc', borderRadius: '0', display: 'block', width: '100%' }}
           />
           <Button variant="primary" className="email-signin-button" onClick={signInWithEmail}>
             Sign in with Email
