@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../shared/Header.js";
 import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Button } from "react-bootstrap";
 import "./Login.css";
 
 const Login = () => {
@@ -23,7 +24,9 @@ const Login = () => {
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
-          <button onClick={signInWithGoogle}>Sign in with Google</button>
+          <Button variant="primary" className="google-signin-button" onClick={signInWithGoogle}>
+            Sign in with Google
+          </Button>
         </div>
       </div>
     </>

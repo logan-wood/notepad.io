@@ -10,18 +10,43 @@
   
   .login-box {
     background-color: white;
-    border-radius: 10px;
+    border-radius: 100px;
     padding: 2rem;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    height: 600px;
   }
   
   .login-title {
     font-family: "Fjalla One", sans-serif;
     font-size: 36px;
-    color: #bb4430;
+    color: #131313;
     margin-bottom: 1.5rem;
+  }
+
+  .google-signin-button {
+    margin-left: auto;
+    border-radius: 50px !important;
+    background-color: #F3DFA2 !important;
+    border-color: #F3DFA2 !important;
+    color: #000000 !important;
+    font-family: "Nunito", sans-serif;
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+    font-size: 18px !important;
+  }
+  
+  .google-signin-button:hover, 
+  .google-signin-button:focus{
+    background-color: #fffbf6 !important;
+    border-color: #bb4430 !important;
+    color: #bb4430 !important;
+  }
+
+  .google-signin-button:active {
+    background-color: #7ebdc2 !important;
+    border-color: #7ebdc2 !important;
+    color: #ffffff !important;
   }
   
