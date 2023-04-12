@@ -11,7 +11,9 @@ const Header = ({ showButton }) => {
         <Row className="align-items-center">
           <Col xs={6} sm={6} md={6} lg={6} className="d-flex">
             <div className="logo-title d-flex align-items-center">
-              <img src={logo} alt="Logo" className="logo" />
+              <Link to="/">
+                <img src={logo} alt="Logo" className="logo" />
+              </Link>
               <h1 className="app-title">Notepad.io</h1>
             </div>
           </Col>
