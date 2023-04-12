@@ -9,6 +9,7 @@ import {
 import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
+import googleLogo from "./google_logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,7 +49,13 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ border: 'none', borderBottom: '1px solid #ccc', borderRadius: '0', display: 'block', width: '100%' }}
+            style={{
+              border: "none",
+              borderBottom: "1px solid #ccc",
+              borderRadius: "0",
+              display: "block",
+              width: "100%",
+            }}
           />
           <input
             className="input-field"
@@ -56,15 +63,30 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ border: 'none', borderBottom: '1px solid #ccc', borderRadius: '0', display: 'block', width: '100%' }}
+            style={{
+              border: "none",
+              borderBottom: "1px solid #ccc",
+              borderRadius: "0",
+              display: "block",
+              width: "100%",
+            }}
           />
-          <Button variant="primary" className="email-signin-button" onClick={signInWithEmail}>
+          <Button
+            variant="primary"
+            className="email-signin-button"
+            onClick={signInWithEmail}
+          >
             Sign in with Email
           </Button>
           <div className="or-divider">
             <span className="or-text">or</span>
           </div>
-          <Button variant="primary"  className="google-signin-button" onClick={signInWithGoogle}>
+          <Button
+            variant="primary"
+            className="google-signin-button"
+            onClick={signInWithGoogle}
+          >
+            <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign in with Google
           </Button>
           <div className="register-text">Don't have an account?</div>

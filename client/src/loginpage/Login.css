@@ -11,7 +11,7 @@
 .login-box {
   margin-top: -100px;
   background-color: white;
-  border-radius: 100px;
+  border-radius: 50px;
   padding: 5rem;
   width: 90%;
   max-width: 550px;
@@ -23,19 +23,23 @@
   font-family: "Fjalla One", sans-serif;
   font-size: 36px;
   color: #131313;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  margin-top: -1.5rem;
 }
 
 .google-signin-button {
   margin-left: auto;
-  border-radius: 50px !important;
-  background-color: #f3dfa2 !important;
-  border-color: #f3dfa2 !important;
-  color: #000000 !important;
-  font-family: "Nunito", sans-serif;
-  padding-left: 6rem !important;
-  padding-right: 6rem !important;
-  font-size: 18px !important;
+  border-radius: 10px !important;
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #656565 !important;
+  font-family: "Roboto", sans-serif;
+  padding-left: 8px;
+  padding-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 19px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .google-signin-button:hover,
@@ -95,7 +99,7 @@
   text-decoration: none;
   cursor: pointer;
   margin-top: 3.15rem;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .register-text:hover {
@@ -112,7 +116,7 @@
   font-family: "Nunito", sans-serif;
   padding-left: 7rem !important;
   padding-right: 7rem !important;
-  font-size: 18px !important;
+  font-size: 21px !important;
 }
 
 .email-signin-button:hover,
@@ -137,3 +141,10 @@
   border-bottom: 5px solid #ccc;
   font-size: 18px; /* Increase font size */
 }
+
+.google-logo {
+    width: 18px;
+    height: 18px;
+    margin-right: 24px;
+    vertical-align: middle;
+  }
