@@ -1,8 +1,7 @@
 import React from "react";
 import arrow from "../assets/lefticon.png";
-import { data } from "./data";
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote,data }) => {
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
