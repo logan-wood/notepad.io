@@ -2,14 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
 const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
+    
+  
+  // State hooks for note title and content
   const [noteTitle, setNoteTitle] = useState(
     SelectedNote ? SelectedNote.title : ""
   );
   const [noteContent, setNoteContent] = useState(
     SelectedNote ? SelectedNote.content : ""
   );
+
+  // reference for Tiny MCE editor
   const editorRef = useRef(null);
 
+  //handlers for when the note titles or content change
   const handleTitleChange = (e) => {
     setNoteTitle(e.target.value);
   };
@@ -17,6 +23,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
     setNoteContent(e.target.value);
   };
 
+  //handler when focus on note is lost
   const handleTitleNoteBlur = () => {
     updateNote({
       ...SelectedNote,
@@ -24,22 +31,27 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
       content: noteContent,
     });
   };
+
+  //handler for editor change 
   const handleEditorChange = (content) => {
     setNoteContent(content);
   };
 
+  //Tiny MCE initializer handler
   const handleEditorInit = (editor) => {
     editorRef.current = editor;
     editor.setContent(SelectedNote ? SelectedNote.content : "");
   };
 
+  //effect hook that updates note titel and content when selected note prop is passed through
   useEffect(() => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     
   }, [SelectedNote]);
 
-  if (!SelectedClass || !SelectedNote) {
+  //render if there isnt a selected class and/note
+  if (!SelectedClass || !SelectedNote) { 
     return <div className="note">Click on something...</div>;
   }
 
