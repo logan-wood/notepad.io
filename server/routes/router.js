@@ -20,13 +20,9 @@ router.get("/getUser", function (req, res) {
   userController.getUser(req, res);
 });
 
-router.put("/updateUser", (req, res) => {
-  const classes = req.body.classes;
-  if (classes) {
-    userController.updateUser(req, res, classes);
-  } else {
-    res.status(404).send("Classes not found.");
-  }
+router.put("/updateUser/:id/classes", (req, res) => {
+  const id = req.params.id;
+  userController.updateClasses(req, res, id);
 });
 
 module.exports = router;
