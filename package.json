@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
-    "server": "npm run dev --prefix server" ,
+    "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "bootstrap": "^3.4.1",
+    "concurrently": "^8.0.1",
+    "react-bootstrap": "^2.7.2",
+    "react-scripts": "^5.0.1"
   }
 }
