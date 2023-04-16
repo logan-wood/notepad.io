@@ -1,23 +1,31 @@
 import React from "react";
 import arrow from "../assets/lefticon.png";
-import { data } from "./data";
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
+  // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
 
+  //Handles selecting a class
   const handleSelectClass = (id) => {
     const selectClass = data.classes.find((classObj) => classObj.id === id);
     setSelectClass(selectClass);
     setSelectNote(null);
     onSelectClass(selectClass);
-    
-    if(openClasses.includes(id)){
-      setOpenClasses(openClasses.filter((id)=> id !==id));
-    }else{
+
+    // stops displaying the notes in a class if a different class is selected.
+    // if a class is selected it calls the open note function
+    if (openClasses.includes(id)) {
+      setOpenClasses(openClasses.filter((id) => id !== id));
+    } else {
       setOpenClasses([id]);
     }
+  };
+
+  //checks if a class is open
+  const isClassOpen = (classid) => {
+    return openClasses.includes(classid);
   };
 
   const handleSelectNote = (id) => {
@@ -30,16 +38,20 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
     }
   };
 
-  
-  const isClassOpen = (classid)=>{
-    return openClasses.includes(classid)
-  }
+  //checks if a class button is active
   const isClassButtonActive = (classid) => {
     return selectClass && selectClass.id === classid;
   };
 
-  const isNoteButtonActive = (noteid,classid) => {
-    return  (selectNote && selectNote.id === noteid)&& (selectClass && selectClass.id === classid);
+  //checks if a note button is active
+  const isNoteButtonActive = (noteid, classid) => {
+    //Check if the selected note has the selected note id and the selected class id is also selected
+    return (
+      selectNote &&
+      selectNote.id === noteid &&
+      selectClass &&
+      selectClass.id === classid
+    );
   };
 
   return (
@@ -65,20 +77,22 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
                 </button>
               </h3>
               {isClassOpen(classItem.id) && (
-              <ul>
-                {classItem.notes.map((note) => (
-                  <li key={note.id}>
-                    <button
-                      onClick={() => handleSelectNote(note.id)}
-                      className={`noteButton ${
-                        isNoteButtonActive(note.id,classItem.id) ? "active" : ""
-                      }`}
-                    >
-                      {note.title}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                <ul>
+                  {classItem.notes.map((note) => (
+                    <li key={note.id}>
+                      <button
+                        onClick={() => handleSelectNote(note.id)}
+                        className={`noteButton ${
+                          isNoteButtonActive(note.id, classItem.id)
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        {note.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
           ))}
