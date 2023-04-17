@@ -1,0 +1,93 @@
+.header {
+  padding: 1.25rem;
+  background-color: #fffbf6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  left: -20;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 55px;
+  height: auto;
+  margin-right: 3.5px;
+}
+
+.app-title {
+  margin: 0;
+  margin-left: 1px;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 35px;
+  color: #bb4430;
+}
+
+.signup-login-button {
+  margin-left: auto;
+  border-radius: 50px !important;
+  background-color: #bb4430 !important;
+  border-color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 4rem !important;
+  padding-right: 4rem !important;
+  font-size: 18px !important;
+}
+
+.signup-login-button:hover,
+.signup-login-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.signup-login-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #ffffff !important;
+}
+.header{
+    padding: 0.5rem;
+    background-color: #fffbf6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    width: 55px;
+    height: auto;
+    margin-right: 0.5rem;
+  }
+  .headerElement{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .app-title {
+    margin: 0;
+    font-family: "Fjalla One", sans-serif;
+    font-size: 2.5rem;
+    color: #bb4430;
+  }
+  
+  .signup-login-button {
+    margin-left: auto;
+    border-radius: 50px;
+    background-color: #bb4430;
+    border-color: #bb4430;
+    font-family: "Nunito", sans-serif;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  
+  .signup-login-button:hover,
+  .signup-login-button:focus {
+    background-color: #fffbf6;
+    border-color: #bb4430;
+    color: #bb4430;
+  }
+  
+  .signup-login-button:active {
+    background-color: #7EBDC2 !important;
+    border-color: #7EBDC2 !important;
+  }
+  

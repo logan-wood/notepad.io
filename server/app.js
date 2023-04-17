@@ -1,13 +1,20 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
+const path = require("path");
 
-const dotenv = require('dotenv')
-dotenv.config('./env')
+// environment variables
+const dotenv = require("dotenv");
+dotenv.config("./env");
 
-app.get('/', (req, res) => {
-    res.json(JSON.parse('{"message": "This is a response from the server!"}'))
-})
+// body-parser (for forms)
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(8080, function() {
-    console.log('server listening on http://localhost:' + process.env.PORT)
-})
+// initiate router
+const router = require("./routes/router");
+app.use(router);
+
+app.listen(8080, function () {
+  console.log("server listening on http://localhost:" + process.env.PORT);
+});
