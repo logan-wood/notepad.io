@@ -1,5 +1,6 @@
 # security
 .env
+services/firebaseServiceAccountKey.json
 
 # dependencies
 /node_modules
