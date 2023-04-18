@@ -51,7 +51,11 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   }, [SelectedNote]);
 
   //render if there isnt a selected class and/note
-  if (!SelectedClass || !SelectedNote) { 
+  if (!SelectedClass ) { 
+    return <div className="note">Click on something...</div>;
+  }
+  else if (!SelectedNote)
+  {
     return <div className="note">Click on something...</div>;
   }
 

@@ -1,25 +1,56 @@
 import React from "react";
 import arrow from "../assets/lefticon.png";
-
+import { addNewClass, addNewNote } from "./data";
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
 
+  //TODO:
+  // CREATE NEW CLASS HANDLER
+  //Handle for creating a new class
+  const handleNewClass = () => {
+    const newClassID = data.classes.length + 1;
+    const newClass = {
+      id: newClassID,
+      name: `Class ${newClassID}`,
+      notes: [],
+      noteSize: 0,
+    };
+    addNewClass(newClass);
+    onSelectClass(newClass);
+  };
   //Handles selecting a class
   const handleSelectClass = (id) => {
     const selectClass = data.classes.find((classObj) => classObj.id === id);
     setSelectClass(selectClass);
     setSelectNote(null);
     onSelectClass(selectClass);
-
+    onSelectNote(null);
     // stops displaying the notes in a class if a different class is selected.
     // if a class is selected it calls the open note function
     if (openClasses.includes(id)) {
       setOpenClasses(openClasses.filter((id) => id !== id));
     } else {
       setOpenClasses([id]);
+    }
+  };
+
+  //CREATE NEW NOTE HANDLER
+
+  const handleNewNote = (id) => {
+    const classObj = data.classes.find((classObj) => classObj.id === id);
+    if (classObj) {
+      const newNote = {
+        id: classObj.noteSize + 1,
+        title: `new Note`,
+        content: ``,
+      };
+      addNewNote(classObj.id, newNote);
+      onSelectNote(newNote);
+    } else {
+      console.log("error with handle note");
     }
   };
 
@@ -66,7 +97,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
           {data.classes.map((classItem) => (
             <div key={classItem.id}>
               <h3>
-                {" "}
                 <button
                   onClick={() => handleSelectClass(classItem.id)}
                   className={`classButton ${
@@ -77,29 +107,40 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                 </button>
               </h3>
               {isClassOpen(classItem.id) && (
-                <ul>
-                  {classItem.notes.map((note) => (
-                    <li key={note.id}>
-                      <button
-                        onClick={() => handleSelectNote(note.id)}
-                        className={`noteButton ${
-                          isNoteButtonActive(note.id, classItem.id)
-                            ? "active"
-                            : ""
-                        }`}
-                      >
-                        {note.title}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <>
+                  <button
+                    className="newNoteButton"
+                    onClick={() => handleNewNote(classItem.id)}
+                  >
+                    + new Note
+                  </button>
+
+                  <ul>
+                    {classItem.notes.map((note) => (
+                      <li key={note.id}>
+                        <button
+                          onClick={() => handleSelectNote(note.id)}
+                          className={`noteButton ${
+                            isNoteButtonActive(note.id, classItem.id)
+                              ? "active"
+                              : ""
+                          }`}
+                        >
+                          {note.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
               )}
             </div>
           ))}
         </div>
       </div>
       <div className="sideNavButtonDiv">
-        <button className="yellowbutton">+ new class</button>
+        <button className="newClassButton" onClick={handleNewClass}>
+          + new class
+        </button>
       </div>
     </div>
   );
