@@ -66,3 +66,11 @@ export const updateNoteData = (classId, noteId, updatedNote) => {
 
   data.classes[classIndex].notes[noteIndex] = updatedNote;
 };
+
+//function that updates the data with changes made to the notes
+export const updateClassData = (classId,  updatedClass) => {
+  const classIndex = data.classes.findIndex((cls) => cls.id === classId);
+ 
+
+  data.classes[classIndex].name = updatedClass.name;
+};

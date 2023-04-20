@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
-    
-  
+const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
+  const [className, setClassName] = useState(
+    SelectedClass ? SelectedClass.name : ""
+  );
+
   // State hooks for note title and content
   const [noteTitle, setNoteTitle] = useState(
     SelectedNote ? SelectedNote.title : ""
@@ -19,6 +21,12 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   const handleTitleChange = (e) => {
     setNoteTitle(e.target.value);
   };
+
+  //handlers for when the note titles or content change
+  const handleClassNameChange = (e) => {
+    setClassName(e.target.value);
+  };
+
   const handleContentChange = (e) => {
     setNoteContent(e.target.value);
   };
@@ -31,15 +39,22 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
     });
   };
 
-   //handler when focus on note is lost
-   const handleTitleNoteBlur = () => {
+  //handler when focus on note is lost
+  const handleTitleNoteBlur = () => {
     updateNote({
       ...SelectedNote,
       title: noteTitle,
     });
   };
+  //handler when focus on note is lost
+  const handleClassNameBlur = () => {
+    updateClass({
+      ...SelectedClass,
+      name: className,
+    });
+  };
 
-  //handler for editor change 
+  //handler for editor change
   const handleEditorChange = (content) => {
     setNoteContent(content);
   };
@@ -59,21 +74,27 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   useEffect(() => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
-    
+    setClassName( SelectedClass ? SelectedClass.name : "");
+
   }, [SelectedNote]);
 
   //render if there isnt a selected class and/note
-  if (!SelectedClass ) { 
+  if (!SelectedClass) {
     return <div className="note">Click on something...</div>;
-  }
-  else if (!SelectedNote)
-  {
+  } else if (!SelectedNote) {
     return <div className="note">Click on something...</div>;
   }
 
   return (
     <div className="note">
-      {SelectedClass && <h3>{SelectedClass.name}</h3>}
+      {SelectedClass && <input
+        type="text"
+        value={className}
+        defaultValue={SelectedClass ? SelectedClass.Name : ""}
+        onChange={handleClassNameChange}
+        onBlur={handleClassNameBlur}
+        className="noteClassStyle"
+      />}
       <input
         type="text"
         value={noteTitle}

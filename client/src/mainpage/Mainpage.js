@@ -5,7 +5,7 @@ import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
 import { data as initialData } from "./data";
-import { updateNoteData } from "./data";
+import { updateNoteData,updateClassData } from "./data";
 
 function Mainpage() {
   //stating Variables
@@ -33,7 +33,7 @@ function Mainpage() {
 
   // Handle selection update of note content
   //
-  const handleUpdateNote = (updatedNote) => {
+  const handleUpdateNote = (updatedNote, updatedClass) => {
     // callback function that recieves the previous state
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
@@ -54,13 +54,34 @@ function Mainpage() {
         updatedNote.content;
 
       //handle update title
-      newData.classes[classIndex].notes[noteIndex].title =
-        updatedNote.title;
+      newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
+
       // Return the updated data object
       return newData;
     });
-    updateNoteData(SelectedClass.id,updatedNote.id,updatedNote)
+    updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
     SetSelectedNote(updatedNote);
+  };
+
+  const handleUpdateClass = (updatedClass) => {
+    // callback function that recieves the previous state
+    setData((prevData) => {
+      // Create a copy of the previous data and save to new data
+      const newData = { ...prevData };
+
+      // Find the index of the selected class in the classes array
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === updatedClass.id
+      );
+
+      //handle update title
+      newData.classes[classIndex].name = updatedClass.name;
+      // Return the updated data object
+      return newData;
+    });
+
+    updateClassData(updatedClass.id, updatedClass);
+    SetSelectedClass(updatedClass);
   };
 
   return (
@@ -95,6 +116,7 @@ function Mainpage() {
         SelectedClass={SelectedClass}
         SelectedNote={SelectedNote}
         updateNote={handleUpdateNote}
+        updateClass={handleUpdateClass}
       />
     </div>
   );

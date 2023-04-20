@@ -35,22 +35,30 @@ body {
 
 }
 
-.sidenav h1, noteTitleStyle {
+.sidenav h1,
+noteTitleStyle {
     font-family: 'Nunito', sans-serif;
     color: #4f4f4f;
     size: 30px
 }
 
-.noteTitleStyle
-{
+.noteClassStyle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+    border: none;
+}
+
+.noteTitleStyle {
     font-family: 'Nunito', sans-serif;
     font-size: 50px;
-    border:none;
+    border: none;
 }
-.noteTitleStyle:focus
-{
-    outline:none;
+
+.noteTitleStyle:focus,
+.noteClassStyle:focus {
+    outline: none;
 }
+
 .navButton {
     position: absolute;
     right: 0px;
@@ -125,6 +133,7 @@ body {
     background: #f8e7b4;
     cursor: pointer;
 }
+
 .sideNavButtonDiv {
     display: flex;
     justify-content: center;
@@ -157,6 +166,7 @@ body {
     background: NONE;
     BORDER: None;
 }
+
 .classDiv {
     background: #FFFBF6;
     border-radius: 10px;
