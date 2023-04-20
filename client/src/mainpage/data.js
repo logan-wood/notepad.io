@@ -32,7 +32,6 @@ export const data = {
         { id: 2, title: "Subnote 2", content: "test" },
       ],
       noteSize:2,
-
     },
   ],
 };

@@ -34,25 +34,27 @@ function Mainpage() {
   // Handle selection update of note content
   //
   const handleUpdateNote = (updatedNote) => {
+    // callback function that recieves the previous state
     setData((prevData) => {
-      const updatedNotes = [...prevData.classes[selectedClass.id - 1].notes];
-      const noteIndex = findNoteIndex(
-        data.classes[selectedClass.id - 1].notes,
-        (Note) => Note.id === updatedNote.id
+      // Create a deep copy of the previous data
+      const newData = { ...prevData };
+
+      // Find the index of the selected class in the classes array
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === selectedClass.id
       );
-      initialData.classes[selectedClass.id - 1].notes[noteIndex].content =
+
+      // Find the index of the note to be updated in the notes array of the selected class
+      const noteIndex = newData.classes[classIndex].notes.findIndex(
+        (note) => note.id === updatedNote.id
+      );
+
+      // Update the content of the note in the notes array of the selected class
+      newData.classes[classIndex].notes[noteIndex].content =
         updatedNote.content;
 
-      return {
-        ...prevData,
-        classes: {
-          ...prevData.classes,
-          [selectedClass.id - 1]: {
-            ...prevData.classes[selectedClass.id - 1],
-            notes: updatedNotes,
-          },
-        },
-      };
+      // Return the updated data object
+      return newData;
     });
 
     setSelectedNote(updatedNote);

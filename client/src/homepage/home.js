@@ -7,7 +7,7 @@ import Header from "../shared/Header";
 const MainContent = () => {
   return (
     <>
-      <Header showButton={false} />
+      <Header showButton={true} />
       <div className="main-content">
         <div className="text-container">
           <h1 className="title">Notepad.io</h1>

@@ -9,7 +9,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
     SelectedNote ? SelectedNote.title : ""
   );
   const [noteContent, setNoteContent] = useState(
-    SelectedNote ? SelectedNote.content : ""
+    SelectedNote ? SelectedNote.content: ""
   );
 
   // reference for Tiny MCE editor
@@ -25,6 +25,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
 
   //handler when focus on note is lost
   const handleTitleNoteBlur = () => {
+    
     updateNote({
       ...SelectedNote,
       title: noteTitle,
