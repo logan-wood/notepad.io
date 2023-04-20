@@ -5,14 +5,14 @@ import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
 import { data as initialData } from "./data";
-import { findNoteIndex } from "./data";
+import { updateNoteData } from "./data";
 
 function Mainpage() {
   //stating Variables
   const [isNavOpen, setIsNavOpen] = useState(true);
   const [data, setData] = useState(initialData);
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [SelectedClass, SetSelectedClass] = useState(null);
+  const [SelectedNote, SetSelectedNote] = useState(null);
 
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
@@ -22,13 +22,13 @@ function Mainpage() {
   // Handle selection of class from the sideNav
   const handleSelectClass = (selectedClass) => {
     console.log("CLASS", selectedClass);
-    setSelectedClass(selectedClass);
+    SetSelectedClass(selectedClass);
   };
 
   // Handle selection of note from the sideNav
   const handleSelectNote = (selectedNote) => {
     console.log("note", selectedNote);
-    setSelectedNote(selectedNote);
+    SetSelectedNote(selectedNote);
   };
 
   // Handle selection update of note content
@@ -36,12 +36,12 @@ function Mainpage() {
   const handleUpdateNote = (updatedNote) => {
     // callback function that recieves the previous state
     setData((prevData) => {
-      // Create a deep copy of the previous data
+      // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
       const classIndex = newData.classes.findIndex(
-        (cls) => cls.id === selectedClass.id
+        (cls) => cls.id === SelectedClass.id
       );
 
       // Find the index of the note to be updated in the notes array of the selected class
@@ -53,11 +53,14 @@ function Mainpage() {
       newData.classes[classIndex].notes[noteIndex].content =
         updatedNote.content;
 
+      //handle update title
+      newData.classes[classIndex].notes[noteIndex].title =
+        updatedNote.title;
       // Return the updated data object
       return newData;
     });
-
-    setSelectedNote(updatedNote);
+    updateNoteData(SelectedClass.id,updatedNote.id,updatedNote)
+    SetSelectedNote(updatedNote);
   };
 
   return (
@@ -89,8 +92,8 @@ function Mainpage() {
 
       {/*Note component*/}
       <Note
-        SelectedClass={selectedClass}
-        SelectedNote={selectedNote}
+        SelectedClass={SelectedClass}
+        SelectedNote={SelectedNote}
         updateNote={handleUpdateNote}
       />
     </div>

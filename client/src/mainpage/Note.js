@@ -9,7 +9,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
     SelectedNote ? SelectedNote.title : ""
   );
   const [noteContent, setNoteContent] = useState(
-    SelectedNote ? SelectedNote.content: ""
+    SelectedNote ? SelectedNote.content : ""
   );
 
   // reference for Tiny MCE editor
@@ -24,12 +24,18 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   };
 
   //handler when focus on note is lost
-  const handleTitleNoteBlur = () => {
-    
+  const handleNoteBlur = () => {
+    updateNote({
+      ...SelectedNote,
+      content: noteContent,
+    });
+  };
+
+   //handler when focus on note is lost
+   const handleTitleNoteBlur = () => {
     updateNote({
       ...SelectedNote,
       title: noteTitle,
-      content: noteContent,
     });
   };
 
@@ -42,6 +48,11 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   const handleEditorInit = (editor) => {
     editorRef.current = editor;
     editor.setContent(SelectedNote ? SelectedNote.content : "");
+    updateNote({
+      ...SelectedNote,
+      title: noteTitle,
+      content: noteContent,
+    });
   };
 
   //effect hook that updates note titel and content when selected note prop is passed through
@@ -63,13 +74,20 @@ const Note = ({ SelectedClass, SelectedNote, updateNote }) => {
   return (
     <div className="note">
       {SelectedClass && <h3>{SelectedClass.name}</h3>}
-      <h1>{SelectedNote.title}</h1>
+      <input
+        type="text"
+        value={noteTitle}
+        defaultValue={SelectedNote ? SelectedNote.title : ""}
+        onChange={handleTitleChange}
+        onBlur={handleTitleNoteBlur}
+        className="noteTitleStyle"
+      />
       <br></br>
       <Editor
         value={noteContent}
         onEditorChange={handleEditorChange}
         onInit={handleEditorInit}
-        onBlur={handleTitleNoteBlur}
+        onBlur={handleNoteBlur}
         init={{
           content_css: "writer",
           menubar: false,
