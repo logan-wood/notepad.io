@@ -87,13 +87,27 @@ noteTitleStyle {
 .note {
     background: #FFFFFF;
     width: (100% - 300px);
-    height: calc(100vh-65px);
+    height: calc(100vh - 25vh);
     margin-left: 80px;
     padding: 20px;
     transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-flow: column;
+
+}
+.tox
+{
+    border: none !important;
+    min-height: 100% !important;
+
+
 }
 
-.sidenav.open+.note {
+.tox-tinymce
+{
+    min-height: 100% !important;
+}
+.sidenav.open +.note {
     /*width: 100%;*/
     margin-left: 320px;
 }
@@ -175,3 +189,4 @@ noteTitleStyle {
     color: #4f4f4f;
     margin-top: 20px;
 }
+

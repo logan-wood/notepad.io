@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
+const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   const [className, setClassName] = useState(
     SelectedClass ? SelectedClass.name : ""
   );
@@ -74,8 +74,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
   useEffect(() => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
-    setClassName( SelectedClass ? SelectedClass.name : "");
-
+    setClassName(SelectedClass ? SelectedClass.name : "");
   }, [SelectedNote]);
 
   //render if there isnt a selected class and/note
@@ -87,14 +86,18 @@ const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
 
   return (
     <div className="note">
-      {SelectedClass && <input
-        type="text"
-        value={className}
-        defaultValue={SelectedClass ? SelectedClass.Name : ""}
-        onChange={handleClassNameChange}
-        onBlur={handleClassNameBlur}
-        className="noteClassStyle"
-      />}
+      {SelectedClass && (
+        <input
+          type="text"
+          value={className}
+          defaultValue={SelectedClass ? SelectedClass.Name : ""}
+          onChange={handleClassNameChange}
+          onBlur={handleClassNameBlur}
+          className="noteClassStyle"
+          maxLength={16}
+        />
+      )}
+      <br></br>
       <input
         type="text"
         value={noteTitle}
@@ -102,6 +105,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
         onChange={handleTitleChange}
         onBlur={handleTitleNoteBlur}
         className="noteTitleStyle"
+        maxLength={22}
       />
       <br></br>
       <Editor
@@ -111,11 +115,12 @@ const Note = ({ SelectedClass, SelectedNote, updateNote,updateClass }) => {
         onBlur={handleNoteBlur}
         init={{
           content_css: "writer",
-          menubar: false,
+          menubar: true,
+          resize:false,
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table paste code help wordcount",
+            "insertdatetime media table paste code help wordcount emoticons",
           ],
           toolbar:
             "undo redo | formatselect | " +
