@@ -1,5 +1,5 @@
 import React from "react";
-import "./Home.css";
+import "./home.css";
 import divider from "./divider_strip.png";
 import { Button } from "react-bootstrap";
 import Header from "../shared/Header";
