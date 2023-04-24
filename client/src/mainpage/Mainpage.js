@@ -3,7 +3,7 @@ import Header from "../shared/Header";
 import React, { useState } from "react";
 import SideNav from "./SideNav";
 import { classes } from "./data";
-import Note from "./Note";
+import Note from "./note";
 
 function Mainpage() {
   const [isNavOpen, setIsNavOpen] = useState(true);
