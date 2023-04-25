@@ -17,7 +17,7 @@ function Mainpage() {
 
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
-  }
+  };
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -108,6 +108,30 @@ function Mainpage() {
     SetSelectedClass(null);
   };
 
+  const handleDeleteNote = () => {
+    // callback function that recieves the previous state
+    setData((prevData) => {
+      // Create a copy of the previous data and save to new data
+      const newData = { ...prevData };
+
+      // Find the index of the selected class in the classes array
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === SelectedClass.id
+      );
+
+      // Find the index of the note to be deleted in the notes array of the selected class
+      const noteIndex = newData.classes[classIndex].notes.findIndex(
+        (note) => note.id === SelectedNote.id
+      );
+      //remove class from array
+      newData.classes[classIndex].notes.splice(noteIndex, 1);
+      // Return the updated data object
+      return newData;
+    });
+
+    SetSelectedNote(null);
+  };
+
   return (
     <div className="mainpage">
       {/* header without button */}
@@ -144,19 +168,22 @@ function Mainpage() {
       />
       {/*delete button component */}
       <div className="deleteButtonDiv">
-
-      <button onClick={handleDeleteButton} className="deleteExpandingButton">
-        {isExpanded ? true : false}
-      </button>
-      {isExpanded && (
-          <><button onClick={handleDeleteClass} className="deleteButton">
-            Delete Class
-          </button><button onClick={handleDeleteClass} className="deleteButton">
-              Delete Note
-            </button></>
-      )}
-              </div>
-
+        <button onClick={handleDeleteButton} className="deleteExpandingButton">
+          {isExpanded ? true : false}
+        </button>
+        {SelectedClass && isExpanded && (
+          <>
+            <button onClick={handleDeleteClass} className="deleteButton">
+              Delete Class
+            </button>
+            {SelectedNote && (
+              <button onClick={handleDeleteNote} className="deleteButton">
+                Delete Note
+              </button>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
