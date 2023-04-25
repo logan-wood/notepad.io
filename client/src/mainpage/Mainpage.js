@@ -6,6 +6,7 @@ import { classes } from "./data";
 import Note from "./Note";
 import { data as initialData } from "./data";
 import { updateNoteData, updateClassData } from "./data";
+import trashcan from "./trashcan.png";
 
 function Mainpage() {
   //stating Variables
@@ -17,6 +18,10 @@ function Mainpage() {
 
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleDeleteBlur = () =>{
+    setIsExpanded(false);
+
   };
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
@@ -167,13 +172,14 @@ function Mainpage() {
         updateClass={handleUpdateClass}
       />
       {/*delete button component */}
-      <div className="deleteButtonDiv">
-        <button onClick={handleDeleteButton} className="deleteExpandingButton">
-          {isExpanded ? true : false}
+      {SelectedClass && (<div className="deleteButtonDiv">
+        <button onClick={handleDeleteButton} className="deleteExpandingButton" >
+        <img src={trashcan} alt="trashcan" className="trashcan"/>
+        {isExpanded}
         </button>
-        {SelectedClass && isExpanded && (
+        { isExpanded && (
           <>
-            <button onClick={handleDeleteClass} className="deleteButton">
+            <button onClick={handleDeleteClass} className="deleteButton" >
               Delete Class
             </button>
             {SelectedNote && (
@@ -183,7 +189,7 @@ function Mainpage() {
             )}
           </>
         )}
-      </div>
+      </div>)}
     </div>
   );
 }
