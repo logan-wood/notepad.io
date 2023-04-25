@@ -112,6 +112,26 @@ noteTitleStyle {
     margin-left: 320px;
 }
 
+.deleteButtonDiv
+{      
+    margin:50px;
+    position:absolute; 
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    bottom:0;
+}
+
+.deleteButton{
+  margin:10px
+}
+
+.deleteExpandingButton{
+    position:absolute;
+    right: 0;
+    bottom:0;
+
+}
 
 .newClassButton {
     background: #F3DFA2;

@@ -5,7 +5,7 @@ import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
 import { data as initialData } from "./data";
-import { updateNoteData,updateClassData } from "./data";
+import { updateNoteData, updateClassData } from "./data";
 
 function Mainpage() {
   //stating Variables
@@ -13,7 +13,11 @@ function Mainpage() {
   const [data, setData] = useState(initialData);
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
+  const handleDeleteButton = () => {
+    setIsExpanded(!isExpanded);
+  }
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -84,6 +88,26 @@ function Mainpage() {
     SetSelectedClass(updatedClass);
   };
 
+  const handleDeleteClass = () => {
+    // callback function that recieves the previous state
+    setData((prevData) => {
+      // Create a copy of the previous data and save to new data
+      const newData = { ...prevData };
+
+      // Find the index of the selected class in the classes array
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === SelectedClass.id
+      );
+
+      //remove class from array
+      newData.classes.splice(classIndex, 1);
+      // Return the updated data object
+      return newData;
+    });
+
+    SetSelectedClass(null);
+  };
+
   return (
     <div className="mainpage">
       {/* header without button */}
@@ -118,6 +142,21 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
       />
+      {/*delete button component */}
+      <div className="deleteButtonDiv">
+
+      <button onClick={handleDeleteButton} className="deleteExpandingButton">
+        {isExpanded ? true : false}
+      </button>
+      {isExpanded && (
+          <><button onClick={handleDeleteClass} className="deleteButton">
+            Delete Class
+          </button><button onClick={handleDeleteClass} className="deleteButton">
+              Delete Note
+            </button></>
+      )}
+              </div>
+
     </div>
   );
 }

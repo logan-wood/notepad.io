@@ -98,6 +98,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
         />
       )}
       <br></br>
+
       <input
         type="text"
         value={noteTitle}
