@@ -104,9 +104,11 @@ function Mainpage() {
         (cls) => cls.id === SelectedClass.id
       );
 
+      if (classIndex !== -1) {
       //remove class from array
       newData.classes.splice(classIndex, 1);
       // Return the updated data object
+      }
       return newData;
     });
 
@@ -128,9 +130,11 @@ function Mainpage() {
       const noteIndex = newData.classes[classIndex].notes.findIndex(
         (note) => note.id === SelectedNote.id
       );
+      if (noteIndex !== -1) {
       //remove class from array
       newData.classes[classIndex].notes.splice(noteIndex, 1);
       // Return the updated data object
+      }
       return newData;
     });
 

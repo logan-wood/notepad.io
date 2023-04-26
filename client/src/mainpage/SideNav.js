@@ -1,20 +1,22 @@
 import React from "react";
 import arrow from "../assets/lefticon.png";
 import { addNewClass, addNewNote } from "./data";
+import { v4 as uuidv4 } from 'uuid';
+
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
 
+  //unique ids for the
   //TODO:
   // CREATE NEW CLASS HANDLER
   //Handle for creating a new class
   const handleNewClass = () => {
-    const newClassID = data.classes.length + 1;
     const newClass = {
-      id: newClassID,
-      name: `Class ${newClassID}`,
+      id: uuidv4(),
+      name: `New Class`,
       notes: [],
       noteSize: 0,
     };
@@ -43,7 +45,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
     const classObj = data.classes.find((classObj) => classObj.id === id);
     if (classObj) {
       const newNote = {
-        id: classObj.noteSize + 1,
+        id: uuidv4(),
         title: `new Note`,
         content: ``,
       };
