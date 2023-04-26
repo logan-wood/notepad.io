@@ -1,4 +1,4 @@
-import "../mainpage/mainpage.css";
+import "./Mainpage.css";
 import Header from "../shared/Header";
 import React, { useState } from "react";
 import SideNav from "./SideNav";
