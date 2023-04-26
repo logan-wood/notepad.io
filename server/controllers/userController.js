@@ -53,4 +53,12 @@ module.exports = {
       res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
+
+  loginUser: function (req, res) {
+    // get user by email
+    const email = req.body.email
+
+    req.session.user = email;
+    res.status(200).send("Session stored")   
+  }
 };

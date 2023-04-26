@@ -5,7 +5,7 @@ const router = express.Router()
 const userController = require('../controllers/userController')
 
 router.get('/', function(req, res) {
-    res.json(JSON.parse('{"message": "This is a response from the server!"}'))
+    res.send('This is a response from the server!')
 })
 
 router.post('/addNewUser', (req, res) => {
@@ -14,6 +14,10 @@ router.post('/addNewUser', (req, res) => {
 
 router.get('/getUser', function(req, res) {
     userController.getUser(req, res)
+})
+
+router.post('/loginUser', function(req, res) {
+    userController.loginUser(req, res)
 })
 
 module.exports = router
