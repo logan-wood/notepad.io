@@ -8,6 +8,11 @@ router.get('/', function(req, res) {
     res.send('This is a response from the server!')
 })
 
+// use this route to get session info
+router.get('/getSession', function(req, res) {
+    userController.getUserFromCookie(req, res);
+})
+
 router.post('/addNewUser', (req, res) => {
     userController.addNewUser(req.body.displayName, req.body.email, req.body.password)
 })

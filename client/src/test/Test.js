@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 const MainContent = () => {
-  const [email, setEmail] = useState('');
+  const [uid, setUid] = useState('');
+  const [message, setMessage] = useState('');
 
   const submitForm = (event) => {
     event.preventDefault();
@@ -11,10 +12,10 @@ const MainContent = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: email
+        uid: uid
       }),
-      credentials: 'true'
-    }).then(console.log('done'))
+      credentials: 'include'
+    }).then(setMessage('Session created! visit http://localhost:8080/getSession to view your session'))
   };
 
   return (
@@ -22,9 +23,11 @@ const MainContent = () => {
       <div className="main-content">
         <h1>Form</h1>
         <form onSubmit={submitForm}>
-          <input type='text' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }}></input>
+          <p>enter UID for it to work properly</p>
+          <input type='text' name="uid" value={uid} onChange={(e) => { setUid(e.target.value) }}></input>
           <input type="submit"></input>
         </form>
+        <p>{message}</p>
       </div>
     </>
   );

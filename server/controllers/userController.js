@@ -55,10 +55,26 @@ module.exports = {
   },
 
   loginUser: function (req, res) {
-    // get user by email
-    const email = req.body.email
+    // get user by uid
+    const uid = req.body.uid
 
-    req.session.user = email;
+    // update session object (in memory)
+    req.session.user = uid;
+
+    // create new database session
+    database.createSession(req.sessionID, req.session.user)
+
+    // send confirmation to client
     res.status(200).send("Session stored")   
+  },
+
+  getUserFromCookie: async function(req, res) {
+    try {
+      const user = await database.getUserBySession(req.sessionID);
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal server error');
+    }
   }
 };
