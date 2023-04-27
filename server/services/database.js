@@ -2,12 +2,11 @@ const firebase = require("./firebase");
 const db = firebase.db();
 
 module.exports = {
-  createUserData: function (uid, displayName, email, classes) {
-    set(ref(db, "users/" + uid), {
-      username: displayName,
-      email: email,
-      classes: classes,
+  addNewUser: function (uid) {
+    db.ref("users/" + uid).set({
+      creationDate: new Date().toISOString(),
     });
+    return "Success";
   },
   getUserData: function (uid) {
     const ref = db.ref("/users/" + uid);
@@ -23,6 +22,11 @@ module.exports = {
       updates[key] = classes[key];
     });
     ref.update(updates);
+    return ref;
+  },
+  updateClassNote: function (uid, classToUpdate) {
+    const ref = db.ref("/users/" + uid).child("classes");
+    ref.update(classToUpdate);
     return ref;
   },
 };
