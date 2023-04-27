@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation} from 'react-router
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from "./homepage/Home";
 import Login from "./loginpage/Login";
+import Mainpage from "./mainpage/Mainpage";
 import "./AppTransitions.css";
 
 function AnimatedRoutes() {
@@ -15,6 +16,7 @@ function AnimatedRoutes() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Mainpage />} />
           </Routes>
         </div>
       </CSSTransition>
