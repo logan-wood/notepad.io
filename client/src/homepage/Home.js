@@ -12,7 +12,7 @@ const MainContent = () => {
       <div className="main-content">
         <div className="text-container">
           <h1 className="title">Notepad.io</h1>
-          <Link to="/login">
+          <Link to="/dashboard">
             <Button variant="primary" className="get-notey-button">
               Get notey!
             </Button>
