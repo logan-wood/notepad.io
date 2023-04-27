@@ -5,13 +5,25 @@
   "main": "index.js",
   "scripts": {
     "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
-    "server": "npm run dev --prefix server" ,
+    "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "@react-oauth/google": "^0.9.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@tinymce/tinymce-react": "^4.3.0",
+    "bootstrap": "^3.4.1",
+    "concurrently": "^8.0.1",
+    "firebase": "^9.20.0",
+    "react-bootstrap": "^2.7.2",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
+    "tinymce": "^6.4.1",
+    "uuid": "^9.0.0"
   }
 }

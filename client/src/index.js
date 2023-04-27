@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+//including tinmce
+const script = document.createElement("script");
+script.src = "https://cdn.tiny.cloud/1/3v41w8ys8i1wx4tbdhbiu2fn6t4to49aczlkjqr1xtu1b9ce/tinymce/6/tinymce.min.js";
+document.head.appendChild(script);
+
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ 
