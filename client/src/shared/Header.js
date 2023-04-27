@@ -2,20 +2,29 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
+import { Link } from "react-router-dom";
 
 const Header = ({ showButton }) => {
   return (
     <header className="header">
-      <Container>
-        <Row>
-          <Col sm={8} className="d-flex align-items-center">
-            <img src={logo} alt="Logo" className="logo" />
-            <h1 className="app-title">Notepad.io</h1>
+      <Container fluid>
+        <Row className="align-items-center">
+          <Col xs={6} sm={6} md={6} lg={6} className="d-flex">
+            <div className="logo-title d-flex align-items-center">
+              <Link to="/">
+                <img src={logo} alt="Logo" className="logo" />
+              </Link>
+              <h1 className="app-title">Notepad.io</h1>
+            </div>
           </Col>
-          <Col sm={4} className="d-flex justify-content-end align-items-center">
-            <Button variant="primary" className="signup-login-button">
-              log in / signup
-            </Button>
+          <Col xs={6} sm={6} md={6} lg={6} className="text-right">
+            {showButton && (
+              <Link to="/login">
+                <Button variant="primary" className="signup-login-button">
+                  Log in / Sign up
+                </Button>
+              </Link>
+            )}
           </Col>
         </Row>
       </Container>
