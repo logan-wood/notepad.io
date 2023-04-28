@@ -15,18 +15,25 @@ module.exports = {
       return data;
     });
   },
-  updateClasses: function (uid, classes) {
-    const ref = db.ref("/users/" + uid).child("classes");
-    const updates = {};
-    Object.keys(classes).forEach((key) => {
-      updates[key] = classes[key];
-    });
-    ref.update(updates);
-    return ref;
-  },
+  // updateClasses: function (uid, classes) {
+  //   const ref = db.ref("/users/" + uid).child("classes");
+  //   const updates = {};
+  //   Object.keys(classes).forEach((key) => {
+  //     updates[key] = classes.title;
+  //   });
+  //   ref.update(updates);
+  //   return ref;
+  // },
   updateClassNote: function (uid, classToUpdate) {
     const ref = db.ref("/users/" + uid).child("classes");
-    ref.update(classToUpdate);
+    console.log();
+    const updates = {
+      [classToUpdate.title]: {
+        id: classToUpdate.id,
+        content: classToUpdate.content,
+      },
+    };
+    ref.update(updates);
     return ref;
   },
 };
