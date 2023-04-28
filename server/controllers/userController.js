@@ -4,7 +4,6 @@ const database = require("../services/database");
 // functions
 module.exports = {
   addNewUser: function (req, res) {
-    console.log("calling database");
     const { uid } = req.query;
     if (uid) {
       database.addNewUser(uid);
@@ -15,7 +14,6 @@ module.exports = {
   },
 
   getUser: function (req, res) {
-    console.log("calling database");
     const { uid } = req.query;
     if (uid) {
       database
@@ -32,7 +30,6 @@ module.exports = {
   },
 
   updateClasses: function (req, res, uid) {
-    console.log("calling database");
     const classes = req.body.classes;
     console.log(classes);
     if (uid && classes) {
