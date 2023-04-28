@@ -28,34 +28,6 @@ module.exports = {
       res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
-
-  updateClasses: function (req, res, uid) {
-    const classes = req.body.classes;
-    console.log(classes);
-    if (uid && classes) {
-      try {
-        database.updateClasses(uid, classes);
-        res.status(200).send("Request successfully sent!");
-      } catch (error) {
-        console.log(error);
-        res
-          .status(500)
-          .send("Error saving class to database: " + error.message);
-      }
-    } else {
-      if (!classes && !uid) {
-        res
-          .status(400)
-          .send("Bad Request: uid parameter is missing; Classes not found.");
-      }
-      if (!classes) {
-        res.status(404).send("Error: classes not found for user: " + uid);
-      }
-      if (!uid) {
-        res.status(400).send("Bad Request: uid parameter is missing.");
-      }
-    }
-  },
   updateClassNote: function (req, res, uid) {
     console.log("calling database");
     const classToUpdate = req.body;
@@ -81,6 +53,20 @@ module.exports = {
       if (!uid) {
         res.status(400).send("Bad Request: uid parameter is missing.");
       }
+    }
+  },
+  getAllClassNotes: function (req, res, uid) {
+    if (uid) {
+      database
+        .getAllClassNotes(uid)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((error) => {
+          console.error("Error retrieving data from database:", error);
+        });
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
 };
