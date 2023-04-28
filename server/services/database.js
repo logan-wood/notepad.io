@@ -15,15 +15,6 @@ module.exports = {
       return data;
     });
   },
-  // updateClasses: function (uid, classes) {
-  //   const ref = db.ref("/users/" + uid).child("classes");
-  //   const updates = {};
-  //   Object.keys(classes).forEach((key) => {
-  //     updates[key] = classes.title;
-  //   });
-  //   ref.update(updates);
-  //   return ref;
-  // },
   updateClassNote: function (uid, classToUpdate) {
     const ref = db.ref("/users/" + uid).child("classes");
     console.log();
@@ -35,5 +26,12 @@ module.exports = {
     };
     ref.update(updates);
     return ref;
+  },
+  getAllClassNotes: function (uid) {
+    const ref = db.ref("/users/" + uid + "/classes");
+    return ref.once("value", (snapshot) => {
+      const data = snapshot.val();
+      return data;
+    });
   },
 };
