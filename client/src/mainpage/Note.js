@@ -117,7 +117,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
         init={{
           content_css: "writer",
           menubar: true,
-          resize:false,
+          resize: false,
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
