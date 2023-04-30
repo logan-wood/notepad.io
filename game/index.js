@@ -41,25 +41,33 @@ const foregroundImage = new Image();
 foregroundImage.src = './gameAssets/foreground.png';
 
 // Load in player image
-const playerWalkImage = new Image();
-playerWalkImage.src = './gameAssets/samuraiWalk.png';
+const playerDownImage = new Image();
+playerDownImage.src = './gameAssets/playerDown.png';
 
-const playerIdleImage = new Image();
-playerIdleImage.src = './gameAssets/samuraiIdle.png';
+const playerUpImage = new Image();
+playerUpImage.src = './gameAssets/playerUp.png';
 
+const playerLeftImage = new Image();
+playerLeftImage.src = './gameAssets/playerLeft.png';
 
-const player = new PlayerSprite({
+const playerRightImage = new Image();
+playerRightImage.src = './gameAssets/playerRight.png';
+
+const player = new Sprite({
     position: {
         x: 400,
         y: 400
     },
-    image: playerIdleImage,
+    image: playerDownImage,
     frames: {
         max: 4
     },
-    scale: 0.9,
-    sprites: 1,
-    division: 1
+    sprites: {
+        up: playerUpImage,
+        left: playerLeftImage,
+        down: playerDownImage,
+        right: playerRightImage
+    }
 })
 
 const background = new Sprite({
@@ -122,17 +130,12 @@ function animate() {
 
     let moving = true
     player.moving = false
-    player.division = 1
-    player.scale = 2
-    player.image = playerIdleImage
 
 
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
         player.moving = true
-        player.scale = 1
-        player.image = playerWalkImage
-        player.division = 4
+        player.image = player.sprites.up
 
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -158,9 +161,7 @@ function animate() {
             })
     } else if (keys.a.pressed && lastKey === 'a') {
         player.moving = true
-        player.scale = 1
-        player.image = playerWalkImage
-        player.division = 4
+        player.image = player.sprites.left
 
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -186,9 +187,7 @@ function animate() {
             })
     } else if (keys.s.pressed && lastKey === 's') {
         player.moving = true
-        player.scale = 1
-        player.image = playerWalkImage
-        player.division = 4
+        player.image = player.sprites.down
 
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -214,9 +213,7 @@ function animate() {
             })
     } else if (keys.d.pressed && lastKey === 'd') {
         player.moving = true
-        player.scale = 1
-        player.image = playerWalkImage
-        player.division = 4
+        player.image = player.sprites.right
 
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
