@@ -7,6 +7,7 @@
     "expandedProjectPaths": [
     ],
     "exportAsImage.useCurrentScale": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "/Users/matcris/Downloads/mygameassets/Elements.tsx": {
             "scaleInDock": 1,
@@ -36,11 +37,11 @@
             "expandedGroupLayers": [
                 15
             ],
-            "scale": 2.4252,
-            "selectedLayer": 7,
+            "scale": 2.3544,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 327.8080158337457,
-                "y": 169.47055912914402
+                "x": 328.95854570166495,
+                "y": 124.87257900101936
             }
         },
         "gameAssets/OutdoorFloor.tsx": {
@@ -64,21 +65,16 @@
     "map.tileWidth": 16,
     "map.width": 64,
     "openFiles": [
-        "gameAssets/Library.tmx",
-        "gameAssets/Element.tsx",
-        "gameAssets/House.tsx",
-        "gameAssets/InteriorFloor.tsx",
-        "gameAssets/OutdoorFloor.tsx",
-        "gameAssets/FloorDetail.tsx"
+        "gameAssets/Library.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "gameAssets/Library.tmx",
         "gameAssets/FloorDetail.tsx",
         "gameAssets/OutdoorFloor.tsx",
         "gameAssets/InteriorFloor.tsx",
         "gameAssets/House.tsx",
         "gameAssets/Element.tsx",
-        "gameAssets/Library.tmx",
         "gameAssets/FrogMan.tsx",
         "gameAssets/TilesetElement.tsx",
         "/Users/matcris/Downloads/mygameassets/Elements.tsx"

@@ -12,12 +12,14 @@ for(let i = 0; i < collisions.length; i += 64) {
     collisionMap.push(collisions.slice(i, i + 64))
 }
 
+// set boundary coordinates
 const boundaries = []
 const offset = {
     x: -1550,
     y: -1000
 }
 
+// set collisions onto map
 collisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
         if(symbol === 551)
@@ -32,27 +34,31 @@ collisionMap.forEach((row, i) => {
     })
 })
 
-
 // Load in outside map image
 const image = new Image();
 image.src = './gameAssets/OutsideMap.png';
 
+// Load in foreground map image
 const foregroundImage = new Image();
 foregroundImage.src = './gameAssets/foreground.png';
 
-// Load in player image
+// Load in player DOWN image
 const playerDownImage = new Image();
 playerDownImage.src = './gameAssets/playerDown.png';
 
+// Load in player UP sprite
 const playerUpImage = new Image();
 playerUpImage.src = './gameAssets/playerUp.png';
 
+// Load in player LEFT sprite
 const playerLeftImage = new Image();
 playerLeftImage.src = './gameAssets/playerLeft.png';
 
+// Load in player RIGHT sprite
 const playerRightImage = new Image();
 playerRightImage.src = './gameAssets/playerRight.png';
 
+// Create player sprite
 const player = new Sprite({
     position: {
         x: 400,
@@ -70,6 +76,7 @@ const player = new Sprite({
     }
 })
 
+// set background image coordinates
 const background = new Sprite({
     position: {
         x: -1550,
@@ -78,6 +85,7 @@ const background = new Sprite({
     image: image
 })
 
+// set foreground image coordinates
 const foreground = new Sprite({
     position: {
         x: -1550,
@@ -86,6 +94,7 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
+// which key is pressed
 const keys ={
     w: {
         pressed: false
@@ -101,8 +110,10 @@ const keys ={
     }
 }
 
+// movable objects
 const movables = [background, ...boundaries, foreground]
 
+// collision bounds set
 function rectangularCollision({rectangle1, rectangle2}) {
     return (
         rectangle1.position.x + rectangle1.width >= rectangle2.position.x
@@ -112,6 +123,7 @@ function rectangularCollision({rectangle1, rectangle2}) {
     )
 }
 
+// animation loop that controls movement of the sprite and map
 function animate() {
     // infinite loop
     window.requestAnimationFrame(animate)
@@ -241,7 +253,7 @@ function animate() {
 }
 animate()
 
-// gets what key was pressed
+// key down event listener
 let lastKey = ''
 window.addEventListener('keydown', (e) => {
     switch(e.key) {
@@ -264,6 +276,7 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+// Key up event listener
 window.addEventListener('keyup', (e) => {
     switch(e.key) {
         case 'w':
