@@ -1,40 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../shared/Header.js";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { app } from "../firebase.js";
+// import {
+//   getAuth,
+//   signInWithPopup,
+//   GoogleAuthProvider,
+//   signInWithEmailAndPassword,
+// } from "firebase/auth";
+// import { app } from "../firebase.js";
+// import googleLogo from "./google_logo.png";
 import { Button } from "react-bootstrap";
 import "./Login.css";
-import googleLogo from "./google_logo.png";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // shared across different react files/components
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const signInWithEmail = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        console.log(result);
+    fetch('http://localhost:8080/loginUser', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email
       })
-      .catch((error) => {
-        console.error(error);
-      });
+    })
+    .then(response => response.json())
+    .then(data => dispatch({ type: 'SET_USER', payload: data }))
+    .catch(error => console.error(error))
   };
 
   return (
@@ -78,7 +76,7 @@ const Login = () => {
           >
             Sign in with Email
           </Button>
-          <div className="or-divider">
+          {/* <div className="or-divider">
             <span className="or-text">or</span>
           </div>
           <Button
@@ -88,8 +86,9 @@ const Login = () => {
           >
             <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign in with Google
-          </Button>
+          </Button> */}
           <div className="register-text">Don't have an account?</div>
+          <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
         </div>
       </div>
     </>

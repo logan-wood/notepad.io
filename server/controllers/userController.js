@@ -54,18 +54,25 @@ module.exports = {
     }
   },
 
-  loginUser: function (req, res) {
+  loginUser: async function (req, res) {
     // get user by uid
-    const uid = req.body.uid
+    const email = req.body.email
 
     // update session object (in memory)
-    req.session.user = uid;
+    req.session.user = email;
 
     // create new database session
-    database.createSession(req.sessionID, req.session.user)
+    await database.writeSessionData(req.sessionID, req.session.user)
 
-    // send confirmation to client
-    res.status(200).send("Session stored")   
+    // send user object to client
+    await database.getUserBySession(req.sessionID)
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(error => {
+      res.status(400)
+      console.error(error)
+    })  
   },
 
   getUserFromCookie: async function(req, res) {
@@ -74,7 +81,7 @@ module.exports = {
       res.send(user);
     } catch (error) {
       console.error(error);
-      res.status(500).send('Internal server error');
+      res.status(500).send('Internal server error. (user may not be logged in)');
     }
   }
 };

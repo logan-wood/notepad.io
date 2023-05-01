@@ -1,3 +1,5 @@
+// use this file to see how to do post requests using fetch
+
 import React, { useState } from 'react';
 
 const MainContent = () => {
@@ -12,7 +14,7 @@ const MainContent = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        uid: uid
+        email: uid
       }),
       credentials: 'include'
     }).then(setMessage('Session created! visit http://localhost:8080/getSession to view your session'))

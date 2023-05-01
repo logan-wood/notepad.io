@@ -17,30 +17,44 @@ module.exports = {
       return data;
     });
   },
-  createSession: function (sessionID, email) {
+  getUserFromEmail: async function (email) {
+    const ref = db.ref("/users/");
+    const snapshot = await ref.once("value");
+
+    let userData = null;
+    snapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.val();
+      if (user.email === email) {
+        userData = user;
+      }
+  });
+
+  return userData;
+  },
+  writeSessionData: async function (sessionID, email) {
+    // get uid from email
+    const user = await this.getUserFromEmail(email)
+    const uid = user.uid
+
     // alter this to store the email, will need to write a function to get userID by email
     const ref = db.ref("/sessions/" + sessionID);
     ref.set({
       sessionID: sessionID,
-      email: email
+      uid: uid
     }, (error) => {
       if (error) {
         console.error(error)
       }  else {
-        console.log('update complete')
+        // console.log('Session data has been uploaded to database')
       }
     })
   },
   getUserBySession: async function (sessionID) {
     const ref = db.ref("/sessions/" + sessionID)
-    return ref.once("value")
-    .then(snapshot => {
-      // get user by UID (this will need to be more fleshed out before being incorporated)
-      // const uid = JSON.parse(snapshot.val().sess).user
-      // const userData = this.getUserData(uid).then((result) => {console.log(result)});
-      
-      const data = snapshot.val();
-      return JSON.parse(data.sess);
-    })
+    const snapshot = await ref.once("value")
+    const uid = snapshot.val().uid
+    const userData = await this.getUserData(uid);
+    
+    return userData;
   }
 };

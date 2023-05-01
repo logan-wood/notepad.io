@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import arrow from "../assets/lefticon.png";
 import { data } from "./data";
+import { useSelector } from "react-redux";
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
+
+  // user object
+  const user = useSelector((state) => state.user);
+
 
   const handleSelectClass = (id) => {
     const selectClass = data.classes.find((classObj) => classObj.id === id);
@@ -48,6 +53,8 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
         <img src={arrow}></img>
       </button>
       <div>
+        {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
+        <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
