@@ -144,7 +144,7 @@ function Mainpage() {
   return (
     <div className="mainpage">
       {/* header without button */}
-      <Header showButton={false} />
+      <Header showButtons={false} />
 
       {/* viewport so that its responsive*/}
       <meta

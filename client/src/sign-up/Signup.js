@@ -46,7 +46,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Header showButton={false} />
+      <Header showButtons={false} />
       <div className="signup-page">
         <div className="signup-box">
           <h2 className="signup-title">Sign Up</h2>

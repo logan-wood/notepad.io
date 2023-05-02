@@ -4,7 +4,7 @@ import "./Header.css";
 import logo from "./notey.png";
 import { Link } from "react-router-dom";
 
-const Header = ({ showButton }) => {
+const Header = ({ showButtons }) => {
   return (
     <header className="header">
       <div className="logo-title d-flex align-items-center">
@@ -13,12 +13,19 @@ const Header = ({ showButton }) => {
         </Link>
         <h1 className="app-title">Notepad.io</h1>
       </div>
-      {showButton && (
-        <Link to="/login">
-          <Button variant="primary" className="signup-login-button">
-            Log in / Sign up
-          </Button>
-        </Link>
+      {showButtons && (
+        <div className="buttons-container">
+          <Link to="/login">
+            <Button variant="primary" className="login-header-button">
+              Log in
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button variant="primary" className="signup-header-button">
+              Sign up
+            </Button>
+          </Link>
+        </div>
       )}
     </header>
   );

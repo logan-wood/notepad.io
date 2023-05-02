@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const MainContent = () => {
   return (
     <>
-      <Header showButton={true} />
+      <Header showButtons={true} />
       <div className="main-content">
         <div className="text-container">
           <h1 className="title">Notepad.io</h1>

@@ -40,7 +40,7 @@ const Login = () => {
 
   return (
     <>
-      <Header showButton={false} />
+      <Header showButtons={false} />
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
