@@ -82,19 +82,21 @@ const Login = () => {
           <div className="or-divider">
             <span className="or-text">or</span>
           </div>
-          <Button
-            variant="primary"
-            className="google-signin-button"
-            onClick={signInWithGoogle}
-          >
-            <img src={googleLogo} alt="Google logo" className="google-logo" />
-            Sign in with Google
-          </Button>
-          <Link to="/signup">
-            <Button variant="link" className="register-text">
-              Don't have an account?
+          <div className="button-group">
+            <Button
+              variant="primary"
+              className="google-signin-button"
+              onClick={signInWithGoogle}
+            >
+              <img src={googleLogo} alt="Google logo" className="google-logo" />
+              Sign in with Google
             </Button>
-          </Link>
+            <Link to="/signup">
+              <Button variant="link" className="register-button">
+                Don't have an account?
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </>

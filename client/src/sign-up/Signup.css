@@ -1,4 +1,4 @@
-.login-page {
+.signup-page {
     background-image: url("../loginpage/background.png");
     background-size: cover;
     background-position: center;
@@ -8,7 +8,7 @@
     align-items: center;
   }
   
-  .login-box {
+  .signup-box {
     margin-top: -100px;
     background-color: white;
     border-radius: 50px;
@@ -16,10 +16,10 @@
     width: 90%;
     max-width: 550px;
     text-align: center;
-    height: 450px;
+    height: 500px;
   }
   
-  .login-title {
+  .signup-title {
     font-family: "Fjalla One", sans-serif;
     font-size: 36px;
     color: #131313;
@@ -27,7 +27,7 @@
     margin-top: -1.5rem;
   }
   
-  .google-signin-button {
+  .google-signup-button {
     margin-left: auto;
     border-radius: 10px !important;
     background-color: #ffffff !important;
@@ -42,24 +42,24 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  .google-signin-button:hover,
-  .google-signin-button:focus {
+  .google-signup-button:hover,
+  .google-signup-button:focus {
     background-color: #ffffff !important;
     border-color: #bb4430 !important;
     color: #808080 !important;
   }
   
-  .google-signin-button:active {
+  .google-signup-button:active {
     background-color: #ffffff !important;
     border-color: #4285F4 !important;
     color: #808080 !important;
   }
   
-  .login-form {
+  .signup-form {
     margin-bottom: 1rem;
   }
   
-  .login-form input {
+  .signup-form input {
     width: 100%;
     padding: 0.5rem;
     font-size: 25px;
@@ -94,20 +94,21 @@
     color: #6c757d;
   }
   
-  .register-text {
-    color: #6c757d;
-    text-decoration: none;
-    cursor: pointer;
-    margin-top: 3.15rem;
-    font-size: 18px;
+  .login-button {
+    color: #6c757d !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin-top: 2.15rem !important;
+    font-size: 18px !important;
   }
   
-  .register-text:hover {
-    text-decoration: underline;
+  .login-button:hover {
+    text-decoration: underline !important;
+    color: #6c757d !important;
   }
   
-  .email-signin-button {
-    margin-top: 10px;
+  .email-signup-button {
+    margin-top: 2.15rem;
     margin-left: auto;
     border-radius: 50px !important;
     background-color: #f3dfa2 !important;
@@ -119,14 +120,14 @@
     font-size: 21px !important;
     }
     
-    .email-signin-button:hover,
-    .email-signin-button:focus {
+    .email-signup-button:hover,
+    .email-signup-button:focus {
     background-color: #ffffff !important;
     border-color: #bb4430 !important;
     color: #bb4430 !important;
     }
     
-    .email-signin-button:active {
+    .email-signup-button:active {
     background-color: #7ebdc2 !important;
     border-color: #7ebdc2 !important;
     color: #ffffff !important;

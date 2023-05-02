@@ -11,6 +11,7 @@ import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Signup.css";
 import googleLogo from "../loginpage/google_logo.png";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -46,15 +47,22 @@ const SignUp = () => {
   return (
     <>
       <Header showButton={false} />
-      <div className="login-page">
-        <div className="login-box">
-          <h2 className="login-title">Sign Up</h2>
+      <div className="signup-page">
+        <div className="signup-box">
+          <h2 className="signup-title">Sign Up</h2>
           <input
             className="input-field"
             type="text"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            style={{
+              border: "none",
+              borderBottom: "1px solid #ccc",
+              borderRadius: "0",
+              display: "block",
+              width: "100%",
+            }}
           />
           <input
             className="input-field"
@@ -62,6 +70,13 @@ const SignUp = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{
+              border: "none",
+              borderBottom: "1px solid #ccc",
+              borderRadius: "0",
+              display: "block",
+              width: "100%",
+            }}
           />
           <input
             className="input-field"
@@ -69,10 +84,17 @@ const SignUp = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{
+              border: "none",
+              borderBottom: "1px solid #ccc",
+              borderRadius: "0",
+              display: "block",
+              width: "100%",
+            }}
           />
           <Button
             variant="primary"
-            className="email-signin-button"
+            className="email-signup-button"
             onClick={signUpWithEmail}
           >
             Sign up with Email
@@ -82,13 +104,17 @@ const SignUp = () => {
           </div>
           <Button
             variant="primary"
-            className="google-signin-button"
+            className="google-signup-button"
             onClick={signUpWithGoogle}
           >
             <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign up with Google
           </Button>
-          <div className="register-text">Already have an account?</div>
+          <Link to="/login">
+            <Button variant="link" className="login-button">
+              Already have an account?
+            </Button>
+          </Link>
         </div>
       </div>
     </>
