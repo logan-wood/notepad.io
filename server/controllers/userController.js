@@ -55,24 +55,30 @@ module.exports = {
   },
 
   loginUser: async function (req, res) {
-    // get user by uid
-    const email = req.body.email
-
-    // update session object (in memory)
-    req.session.user = email;
-
-    // create new database session
-    await database.writeSessionData(req.sessionID, req.session.user)
-
-    // send user object to client
-    await database.getUserBySession(req.sessionID)
-    .then(user => {
-      res.status(200).json(user)
-    })
-    .catch(error => {
-      res.status(400)
-      console.error(error)
-    })  
+    try {
+      // get user by email
+      var uid, user;
+      const email = req.body.email
+      try {
+        user = await database.getUserFromEmail(email)
+        uid = user.uid
+      } catch (e) {
+        res.status(400).send('No user found')
+        console.error(e)
+      }
+      
+      await database.writeSessionData(req.sessionID, user)
+      .then(() => {
+        console.log(user)
+        res.status(200).json(user)
+      })
+      .catch(error => {
+        res.status(400).send(error)
+      })
+    } catch(e) {
+      console.error(e)
+    }
+     
   },
 
   getUserFromCookie: async function(req, res) {

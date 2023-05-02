@@ -41,6 +41,6 @@ app.use(session({
 const router = require("./routes/router");
 app.use(router);
 
-app.listen(8080, function () {
+app.listen(process.env.PORT, function () {
   console.log("server listening on http://localhost:" + process.env.PORT);
 });

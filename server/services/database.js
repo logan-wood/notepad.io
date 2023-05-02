@@ -31,23 +31,24 @@ module.exports = {
 
   return userData;
   },
-  writeSessionData: async function (sessionID, email) {
-    // get uid from email
-    const user = await this.getUserFromEmail(email)
-    const uid = user.uid
+  writeSessionData: async function (sessionID, user) {
+    try {
+      // get uid from email
+      const uid = user.uid
 
-    // alter this to store the email, will need to write a function to get userID by email
-    const ref = db.ref("/sessions/" + sessionID);
-    ref.set({
-      sessionID: sessionID,
-      uid: uid
-    }, (error) => {
-      if (error) {
-        console.error(error)
-      }  else {
-        // console.log('Session data has been uploaded to database')
-      }
-    })
+      const ref = db.ref("/sessions/" + sessionID);
+      ref.set({
+        sessionID: sessionID,
+        uid: uid
+      }, (error) => {
+        if (error) {
+          console.error(error)
+        }
+      })
+    } catch (e) {
+      // no record found
+      console.log('Error writing session data: uid does not exist')
+    }
   },
   getUserBySession: async function (sessionID) {
     const ref = db.ref("/sessions/" + sessionID)

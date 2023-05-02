@@ -15,13 +15,14 @@ import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   // shared across different react files/components
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const signInWithEmail = () => {
-    fetch('http://localhost:8080/loginUser', {
+    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -30,9 +31,21 @@ const Login = () => {
         email: email
       })
     })
-    .then(response => response.json())
-    .then(data => dispatch({ type: 'SET_USER', payload: data }))
-    .catch(error => console.error(error))
+    .then((response) => {
+      // user found
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        // no user found, display message
+        setMessage("No user found")
+      }
+    })
+    .then(data => {
+      dispatch({ type: 'SET_USER', payload: data })
+    })
+    .catch(error => {
+      console.error(error)
+    })
   };
 
   return (
@@ -89,6 +102,7 @@ const Login = () => {
           </Button> */}
           <div className="register-text">Don't have an account?</div>
           <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
+          <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
         </div>
       </div>
     </>

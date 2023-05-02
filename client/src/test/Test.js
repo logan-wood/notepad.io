@@ -8,7 +8,7 @@ const MainContent = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    fetch('http://localhost:8080/loginUser', {
+    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
