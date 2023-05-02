@@ -19,6 +19,10 @@ const offset = {
     y: -1000
 }
 
+const minX = -offset.x;
+const minY = -offset.y;
+
+
 // set collisions onto map
 collisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
