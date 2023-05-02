@@ -13,11 +13,10 @@ module.exports = {
     }
   },
 
-  getUser: function (req, res) {
-    const { uid } = req.query;
+  getInfo: function (req, res, uid) {
     if (uid) {
       database
-        .getUserData(uid)
+        .getInfo(uid)
         .then((data) => {
           res.send(data);
         })
@@ -28,12 +27,12 @@ module.exports = {
       res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
-  updateClassNote: function (req, res, uid) {
+  updateClass: function (req, res, uid) {
     console.log("calling database");
     const classToUpdate = req.body;
     if (uid && classToUpdate) {
       try {
-        database.updateClassNote(uid, classToUpdate);
+        database.updateClass(uid, classToUpdate);
         res.status(200).send("Request successfully sent!");
       } catch (error) {
         console.log(error);
@@ -53,20 +52,6 @@ module.exports = {
       if (!uid) {
         res.status(400).send("Bad Request: uid parameter is missing.");
       }
-    }
-  },
-  getAllClassNotes: function (req, res, uid) {
-    if (uid) {
-      database
-        .getAllClassNotes(uid)
-        .then((data) => {
-          res.send(data);
-        })
-        .catch((error) => {
-          console.error("Error retrieving data from database:", error);
-        });
-    } else {
-      res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
 };

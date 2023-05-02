@@ -14,18 +14,14 @@ router.post("/user/add", (req, res) => {
 });
 // retrieves all user data based on uid
 // query params: uid
-router.get("/user/get", function (req, res) {
-  userController.getUser(req, res);
+router.get("/user/:id/getInfo", function (req, res) {
+  const id = req.params.id;
+  userController.getInfo(req, res, id);
 });
 // updates and overwrites single class, or adds them if they don't already exist.
-router.put("/user/:id/updateClassNote", (req, res) => {
+router.put("/user/:id/updateClass", (req, res) => {
   const id = req.params.id;
-  userController.updateClassNote(req, res, id);
-});
-// returns all classes as JSONs.
-router.get("/user/:id/getAllClassNotes", (req, res) => {
-  const id = req.params.id;
-  userController.getAllClassNotes(req, res, id);
+  userController.updateClass(req, res, id);
 });
 
 module.exports = router;
