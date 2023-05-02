@@ -10,6 +10,7 @@ import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import googleLogo from "./google_logo.png";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -89,7 +90,11 @@ const Login = () => {
             <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign in with Google
           </Button>
-          <div className="register-text">Don't have an account?</div>
+          <Link to="/signup">
+            <Button variant="link" className="register-text">
+              Don't have an account?
+            </Button>
+          </Link>
         </div>
       </div>
     </>

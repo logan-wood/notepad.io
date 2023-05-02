@@ -9,8 +9,8 @@ import {
 } from "firebase/auth";
 import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
-import "./SignUp.css";
-import googleLogo from "./google_logo.png";
+import "./Signup.css";
+import googleLogo from "../loginpage/google_logo.png";
 
 const SignUp = () => {
   const [name, setName] = useState("");
