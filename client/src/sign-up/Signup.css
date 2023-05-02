@@ -16,7 +16,7 @@
     width: 90%;
     max-width: 550px;
     text-align: center;
-    height: 500px;
+    height: 510px;
   }
   
   .signup-title {
@@ -98,7 +98,7 @@
     color: #6c757d !important;
     text-decoration: none !important;
     cursor: pointer !important;
-    margin-top: 2.15rem !important;
+    margin-top: 1.15rem !important;
     font-size: 18px !important;
   }
   
@@ -150,7 +150,12 @@
     vertical-align: middle;
     }
 
-    
+  .signup-error {
+    min-height: 4px;
+    margin-top: 2px;
+    margin-bottom: 1px;
+    color: #bb4430;
+  }
     
     
     

@@ -19,6 +19,12 @@
   margin-right: 2rem;
   font-family: "Fjalla One", sans-serif;
   font-size: 35px !important;
+  text-decoration: none !important;
+  color: #bb4430;
+}
+
+.app-title.link-class:hover {
+  text-decoration: none !important;
   color: #bb4430;
 }
 
@@ -30,9 +36,9 @@
 
 .login-header-button {
   border-top-left-radius: 25px !important;
-  border-bottom-left-radius: 25px !important;
-  border-top-right-radius: 15px !important;
-  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 25px !important;
+  border-bottom-right-radius: 25px !important;
   background-color: #bb4430 !important;
   border-color: #bb4430 !important;
   font-family: "Nunito", sans-serif;
@@ -43,9 +49,9 @@
 
 .signup-header-button {
   border-top-right-radius: 25px !important;
-  border-bottom-right-radius: 25px !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 25px !important;
+  border-bottom-left-radius: 25px !important;
   background-color: #7EBDC2 !important;
   border-color: #7EBDC2 !important;
   font-family: "Nunito", sans-serif;
@@ -67,5 +73,39 @@
 .signup-header-button:active {
   background-color: #7ebdc2 !important;
   border-color: #7ebdc2 !important;
-  color: #ffffff !important;
+  color: #bb4430 !important;
 }
+
+.sign-out-button {
+  border-top-left-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background-color: #FFFBF6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.sign-out-button:hover,
+.sign-out-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430!important;
+}
+
+.sign-out-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+

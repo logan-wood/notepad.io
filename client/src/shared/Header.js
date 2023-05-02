@@ -3,15 +3,18 @@ import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
 import { Link } from "react-router-dom";
+import signOutIcon from "./signout_icon.png";
 
-const Header = ({ showButtons }) => {
+const Header = ({ showButtons, pageName, showSignOutButton }) => {
   return (
     <header className="header">
       <div className="logo-title d-flex align-items-center">
-        <Link to="/">
+        <Link to={pageName}>
           <img src={logo} alt="Logo" className="logo" />
         </Link>
-        <h1 className="app-title">Notepad.io</h1>
+        <Link to={pageName} className="app-title link-class">
+          <h1 className="app-title">Notepad.io</h1>
+        </Link>
       </div>
       {showButtons && (
         <div className="buttons-container">
@@ -23,6 +26,16 @@ const Header = ({ showButtons }) => {
           <Link to="/signup">
             <Button variant="primary" className="signup-header-button">
               Sign up
+            </Button>
+          </Link>
+        </div>
+      )}
+      {showSignOutButton && (
+        <div className="sign-out-button">
+          <Link to="/">
+            <Button variant="primary" className="sign-out-button">
+              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+              Sign Out
             </Button>
           </Link>
         </div>

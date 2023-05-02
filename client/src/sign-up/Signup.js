@@ -12,6 +12,8 @@ import { Button } from "react-bootstrap";
 import "./Signup.css";
 import googleLogo from "../loginpage/google_logo.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -19,21 +21,35 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const signUpWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result);
+        const isNewUser = result.additionalUserInfo.isNewUser;
+        if (isNewUser) {
+          console.log(result);
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
-        console.log(error);
+        if (error.message.includes("email-already-in-use") || error.message.includes("undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')")){
+          setError(`Account already exists.`);
+        } else {
+          setError(`Failed to sign up with Google ${error.message}`);
+        }
       });
   };
 
   const signUpWithEmail = () => {
+    console.log("Signing up with email:", email);
+    console.log("Signing up with password:", password);
+    
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result);
+        navigate("/dashboard");
         return updateProfile(auth.currentUser, { displayName: name });
       })
       .then(() => {
@@ -46,10 +62,10 @@ const SignUp = () => {
 
   return (
     <>
-      <Header showButtons={false} />
+      <Header showButtons={false} pageName = "/"/>
       <div className="signup-page">
         <div className="signup-box">
-          <h2 className="signup-title">Sign Up</h2>
+          <h2 className="signup-title">Create a New Account</h2>
           <input
             className="input-field"
             type="text"
@@ -110,6 +126,7 @@ const SignUp = () => {
             <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign up with Google
           </Button>
+          <p className="error-message signup-error">{error}</p>
           <Link to="/login">
             <Button variant="link" className="login-button">
               Already have an account?

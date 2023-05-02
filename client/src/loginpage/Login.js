@@ -11,27 +11,49 @@ import { Button } from "react-bootstrap";
 import "./Login.css";
 import googleLogo from "./google_logo.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { setDoc, doc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    .then(async (result) => {
+
+      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+        const userRef = doc(app, "users", result.user.uid);
+        await setDoc(userRef, {
+          signedUpWithGoogle: true,
+        });
+      }
+
+      console.log(result);
+      navigate("/dashboard");
+    })
+    .catch((error) => {
+      console.log(error);
+      if(error.message.includes(
+        "undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')")){
+        setError(`Error signing in with Google: ${error.message}`);
+      } else if (error.message.includes("Firebase: Error (auth/popup-closed-by-user).")) {
+        // do nothing
+      } else {
+        setError(`Error signing in with Google: ${error.message}`);
+      }
+    });
   };
 
   const signInWithEmail = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result);
+        navigate("/dashboard");
       })
       .catch((error) => {
         console.error(error);
@@ -40,7 +62,7 @@ const Login = () => {
 
   return (
     <>
-      <Header showButtons={false} />
+      <Header showButtons={false} pageName = "/" />
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
@@ -91,6 +113,7 @@ const Login = () => {
               <img src={googleLogo} alt="Google logo" className="google-logo" />
               Sign in with Google
             </Button>
+            <p className="error-message signin-error">{error}</p>
             <Link to="/signup">
               <Button variant="link" className="register-button">
                 Don't have an account?
