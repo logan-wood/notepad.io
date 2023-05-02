@@ -2,36 +2,28 @@ const firebase = require("./firebase");
 const db = firebase.db();
 
 module.exports = {
-  addNewUser: function (uid) {
-    db.ref("users/" + uid).set({
+  addNewUser: async function (uid) {
+    await db.ref("users/" + uid).set({
       creationDate: new Date().toISOString(),
     });
     return "Success";
   },
-  getUserData: function (uid) {
+  getUserData: async function (uid) {
     const ref = db.ref("/users/" + uid);
-    return ref.once("value", (snapshot) => {
+    return await ref.once("value", (snapshot) => {
       const data = snapshot.val();
       return data;
     });
   },
-  updateClassNote: function (uid, classToUpdate) {
-    const ref = db.ref("/users/" + uid).child("classes");
-    console.log();
-    const updates = {
-      [classToUpdate.title]: {
-        id: classToUpdate.id,
-        content: classToUpdate.content,
-      },
-    };
-    ref.update(updates);
+  updateClassNote: async function (uid, classToUpdate) {
+    const ref = db.ref("/users/" + uid).child(classToUpdate.id);
+    await ref.update(classToUpdate);
     return ref;
   },
-  getAllClassNotes: function (uid) {
-    const ref = db.ref("/users/" + uid + "/classes");
-    return ref.once("value", (snapshot) => {
-      const data = snapshot.val();
-      return data;
-    });
+  getAllClassNotes: async function (uid) {
+    const ref = db.ref("/users/" + uid);
+    const snapshot = await ref.once("value");
+    const data = snapshot.val();
+    return data;
   },
 };
