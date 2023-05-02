@@ -19,7 +19,7 @@ class Sprite {
     constructor({ position, velocity, image, frames = { max: 1 }, sprites}) {
         this.position = position
         this.image = image
-        this.frames = {...frames, row: 0, val: 0, elapsed: 0}
+        this.frames = {...frames, val: 0, elapsed: 0}
 
         this.image.onload = () => {
             this.width = this.image.width / 4
@@ -50,10 +50,45 @@ class Sprite {
 
         if(this.frames.elapsed % 10 === 0) {
             if(this.frames.val < this.frames.max - 1) this.frames.val++
-            else {
-                this.frames.val = 0
-                this.frames.row++
-            }
+            else this.frames.val = 0
         }
     }
 }
+
+// Player sprite
+// class PlayerSprite extends Sprite {
+//     constructor(options) {
+//         super(options);
+//     }
+//
+//     draw() {
+//         c.drawImage(
+//             this.image,
+//             this.frames.val * this.width, // crop position
+//             0, // crop position
+//             this.image.width / this.frames.max, // crop width
+//             this.image.height, // crop height
+//             this.position.x, // actual coordinates
+//             this.position.y,
+//             this.image.width, // actual width and height, scaled
+//             this.image.height
+//         );
+//         // if(!this.moving) {
+//         //     console.log(this.moving)
+//         //     this.division = 1
+//         //     return
+//         // }
+//
+//         if(this.frames.max > 1) {
+//             this.frames.elapsed++
+//         }
+//
+//         if(this.frames.elapsed % 10 === 0) {
+//             if(this.frames.val < this.frames.max - 1) this.frames.val++
+//             else {
+//                 this.frames.val = 0
+//                 this.frames.row++
+//             }
+//         }
+//     }
+// }

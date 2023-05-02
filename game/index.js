@@ -19,8 +19,8 @@ const offset = {
     y: -1000
 }
 
-const minX = -offset.x;
-const minY = -offset.y;
+const minX = offset.x;
+const minY = offset.y;
 
 
 // set collisions onto map
@@ -171,6 +171,8 @@ function animate() {
                 break
             }
         }
+        // this moves the objects behind it but need to move player instead
+        // so to stop the camera when it reaches the edge
         if(moving)
             movables.forEach((movable) => {
                 movable.position.y += 3

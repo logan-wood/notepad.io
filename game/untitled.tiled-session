@@ -26,7 +26,7 @@
             "scaleInEditor": 1
         },
         "gameAssets/House.tsx": {
-            "scaleInDock": 1.1352,
+            "scaleInDock": 1.0482,
             "scaleInEditor": 1
         },
         "gameAssets/InteriorFloor.tsx": {
@@ -37,11 +37,11 @@
             "expandedGroupLayers": [
                 15
             ],
-            "scale": 2.3544,
+            "scale": 4,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 328.95854570166495,
-                "y": 124.87257900101936
+                "x": 372.625,
+                "y": 122.25
             }
         },
         "gameAssets/OutdoorFloor.tsx": {
