@@ -6,24 +6,27 @@ module.exports = {
     await db.ref("users/" + uid).set({
       creationDate: new Date().toISOString(),
     });
-    return "Success";
+    return "User successfully";
   },
-  getUserData: async function (uid) {
+  getInfo: async function (uid) {
     const ref = db.ref("/users/" + uid);
     return await ref.once("value", (snapshot) => {
       const data = snapshot.val();
       return data;
     });
   },
-  updateClassNote: async function (uid, classToUpdate) {
+  //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
+  updateClass: async function (uid, classToUpdate) {
     const ref = db.ref("/users/" + uid).child(classToUpdate.id);
-    await ref.update(classToUpdate);
-    return ref;
-  },
-  getAllClassNotes: async function (uid) {
-    const ref = db.ref("/users/" + uid);
-    const snapshot = await ref.once("value");
-    const data = snapshot.val();
-    return data;
+    const snapshot = await db.ref("/users/" + uid).once("value");
+    if (!snapshot.exists()) {
+      console.log("user doesn't exist - creating new user!");
+      this.addNewUser(uid);
+      await ref.update(classToUpdate);
+      return ref;
+    } else {
+      await ref.update(classToUpdate);
+      return ref;
+    }
   },
 };
