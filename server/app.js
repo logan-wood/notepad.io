@@ -20,6 +20,10 @@ app.use(cors({
   credentials: true // allow cookies
 }));
 
+//cookies
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
 // session tracking
 const session = require('express-session')
 // firebase session storage
@@ -29,10 +33,15 @@ const storeOptions = firebase.getStore()
 // express-session middleware using firebase for storage
 app.use(session({
   store: new FirebaseStore(storeOptions),
+  name: 'mySessionID',
   secret: process.env.SESSION_SECRET,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    maxAge: 3600000000
+    maxAge: 3600000000000,
+    httpOnly: true,
+    secure: false,
+    path: '/',
+    sameSite: 'none'
   },
   resave: false
 }))

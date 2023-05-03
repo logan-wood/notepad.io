@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import arrow from "../assets/lefticon.png";
 import { data } from "./data";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
   const [selectClass, setSelectClass] = React.useState(null);
@@ -9,6 +9,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
   const [openClasses, setOpenClasses] = React.useState([]);
 
   // user object
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
 
@@ -47,6 +48,20 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
     return  (selectNote && selectNote.id === noteid)&& (selectClass && selectClass.id === classid);
   };
 
+  const logoutUser = () => {
+    fetch(process.env.REACT_APP_API_DOMAIN + '/logoutUser', {
+      method: 'get',
+      headers: {
+        'Cookie': document.cookie
+      }
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({ type: 'CLEAR_USER' })
+      }
+    })
+  }
+
   return (
     <div className={`sidenav ${isOpen ? "open" : ""}`}>
       <button onClick={toggleNav} className="navButton">
@@ -55,6 +70,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote }) => {
       <div>
         {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
         <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
+        <div><button onClick={() => logoutUser()}>Logout User</button></div>
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">

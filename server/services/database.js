@@ -1,3 +1,4 @@
+const session = require("express-session");
 const firebase = require("./firebase");
 const db = firebase.db();
 
@@ -31,28 +32,19 @@ module.exports = {
 
   return userData;
   },
-  writeSessionData: async function (sessionID, user) {
-    try {
-      // get uid from email
-      const uid = user.uid
+  deleteSessionData: async function (sessionID) {
+    const ref = db.ref("/sessions/" + sessionID)
 
-      const ref = db.ref("/sessions/" + sessionID);
-      ref.set({
-        sessionID: sessionID,
-        uid: uid
-      }, (error) => {
-        if (error) {
-          console.error(error)
-        }
-      })
-    } catch (e) {
-      // no record found
-      console.log('Error writing session data: uid does not exist')
-    }
+    ref.remove()
+    .catch((error) => {
+      console.error(error)
+    })
   },
   getUserBySession: async function (sessionID) {
+    console.log('querying the following sessionID: ' + sessionID)
     const ref = db.ref("/sessions/" + sessionID)
     const snapshot = await ref.once("value")
+    console.log(snapshot.val())
     const uid = snapshot.val().uid
     const userData = await this.getUserData(uid);
     

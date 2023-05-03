@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const database = require("../services/database");
+const session = require("express-session");
 
 // functions
 module.exports = {
@@ -55,39 +56,48 @@ module.exports = {
   },
 
   loginUser: async function (req, res) {
+    var user;
+    const email = req.body.email
+
+    // get uid from email
     try {
-      // get user by email
-      var uid, user;
-      const email = req.body.email
-      try {
-        user = await database.getUserFromEmail(email)
-        uid = user.uid
-      } catch (e) {
-        res.status(400).send('No user found')
-        console.error(e)
-      }
-      
-      await database.writeSessionData(req.sessionID, user)
-      .then(() => {
-        console.log(user)
-        res.status(200).json(user)
-      })
-      .catch(error => {
-        res.status(400).send(error)
-      })
-    } catch(e) {
+      user = await database.getUserFromEmail(email)
+    } catch (e) {
+      res.status(400).send('No user found')
       console.error(e)
+      return
     }
-     
+
+    // add user data to req.session object
+    req.session.regenerate
+    req.session.user = user
+    console.log(req.session)
+    console.log(req.sessionID)
+
+    // set cookie
+    res.cookie('mySessionID', req.sessionID, { httpOnly: true })
+
+    // send response
+    res.status(200).send(user)
+
   },
 
-  getUserFromCookie: async function(req, res) {
-    try {
-      const user = await database.getUserBySession(req.sessionID);
-      res.send(user);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal server error. (user may not be logged in)');
+  getUserSession: async function(req, res) {
+    if (req.session.user) {
+      res.status(200).json(req.session)
+    } else {
+      res.status(400).send('no session found')
     }
-  }
+  },
+
+  logoutUser: async function(req, res) {
+      console.log(req.cookies)
+      // delete session from database
+      if (req.session.user) {
+        req.session.destroy()
+        res.status(200).send('Successfully logged user out')
+      } else {
+        res.status(400).send('Unable to log user out')
+      }
+  },
 };

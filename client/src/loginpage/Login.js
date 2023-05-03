@@ -34,6 +34,8 @@ const Login = () => {
     .then((response) => {
       // user found
       if (response.status === 200) {
+        document.cookie = `sessionID=${response.headers.get('X-Session-ID')};`
+
         return response.json()
       } else {
         // no user found, display message
@@ -47,6 +49,21 @@ const Login = () => {
       console.error(error)
     })
   };
+
+  const logoutUser = () => {
+    fetch(process.env.REACT_APP_API_DOMAIN + '/logoutUser', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({ type: 'CLEAR_USER' })
+      }
+    })
+  }
 
   return (
     <>
@@ -103,6 +120,7 @@ const Login = () => {
           <div className="register-text">Don't have an account?</div>
           <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
           <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
+          <div><button onClick={() => logoutUser()}>Logout User</button></div>
         </div>
       </div>
     </>
