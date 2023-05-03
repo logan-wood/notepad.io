@@ -9,6 +9,7 @@ import { updateNoteData, updateClassData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
+import DeleteButton from "./DeleteButton";
 function Mainpage() {
   //stating Variables
   const [isGameOpen, setIsGameOpen] = useState(true);
@@ -220,30 +221,16 @@ function Mainpage() {
       />
       <ProgressGameBar progress="80" onButtonClick={handleGameButtonClick} />
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
+
       {/*delete button component */}
-      {SelectedClass && (
-        <div className="deleteButtonDiv">
-          <button
-            onClick={handleDeleteButton}
-            className="deleteExpandingButton"
-          >
-            <img src={trashcan} alt="trashcan" className="trashcan" />
-            {isExpanded}
-          </button>
-          {isExpanded && (
-            <>
-              <button onClick={handleDeleteClass} className="deleteButton">
-                Delete Class
-              </button>
-              {SelectedNote && (
-                <button onClick={handleDeleteNote} className="deleteButton">
-                  Delete Note
-                </button>
-              )}
-            </>
-          )}
-        </div>
-      )}
+      <DeleteButton
+        handleDeleteButton={handleDeleteButton}
+        handleDeleteClass={handleDeleteClass}
+        handleDeleteNote={handleDeleteNote}
+        isExpanded={isExpanded}
+        SelectedNote={SelectedNote}
+        SelectedClass={SelectedClass}
+      />
     </div>
   );
 }
