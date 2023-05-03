@@ -29,6 +29,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
 
   const handleContentChange = (e) => {
     setNoteContent(e.target.value);
+   
   };
 
   //handler when focus on note is lost
@@ -57,6 +58,10 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   //handler for editor change
   const handleEditorChange = (content) => {
     setNoteContent(content);
+    updateNote({
+      ...SelectedNote,
+      content: content,
+    });
   };
 
   //Tiny MCE initializer handler

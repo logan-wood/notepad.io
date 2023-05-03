@@ -15,6 +15,7 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const url = "http://localhost:8080/user/12345/updateClassNote";
 
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
@@ -61,9 +62,9 @@ function Mainpage() {
       // Update the content of the note in the notes array of the selected class
       newData.classes[classIndex].notes[noteIndex].content =
         updatedNote.content;
-
       //handle update title
       newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
+      handleDatabaseUpdate(newData);
 
       // Return the updated data object
       return newData;
@@ -86,12 +87,37 @@ function Mainpage() {
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
       // Return the updated data object
+      handleDatabaseUpdate(newData);
+
       return newData;
     });
 
     updateClassData(updatedClass.id, updatedClass);
     SetSelectedClass(updatedClass);
   };
+
+  // handle for updating the
+  const handleDatabaseUpdate = (data) => {
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' // Make sure to set the content type of the request body
+      },
+      body: JSON.stringify(data) // Pass the data you want to send in the request body as a JSON string
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); // Parse the response body as JSON
+    })
+    .then(data => {
+      console.log(data); // Do something with the response data
+    })
+    .catch(error => {
+      console.error('There was an error sending the request:', error);
+    });
+  }
 
   const handleDeleteClass = () => {
     // callback function that recieves the previous state
@@ -109,6 +135,8 @@ function Mainpage() {
       newData.classes.splice(classIndex, 1);
       // Return the updated data object
       }
+      handleDatabaseUpdate(newData);
+
       return newData;
     });
 
@@ -135,6 +163,8 @@ function Mainpage() {
       newData.classes[classIndex].notes.splice(noteIndex, 1);
       // Return the updated data object
       }
+      handleDatabaseUpdate(newData);
+
       return newData;
     });
 
