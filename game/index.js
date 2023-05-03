@@ -166,10 +166,14 @@ function rectangularCollision({rectangle1, rectangle2}) {
     )
 }
 
+const battle = {
+    initiated: false
+}
+
 // animation loop that controls movement of the sprite and map
 function animate() {
     // infinite loop
-    window.requestAnimationFrame(animate)
+    const animationId = window.requestAnimationFrame(animate)
 
     // draw map and character here cause of infinite loop
     background.draw()
@@ -191,12 +195,56 @@ function animate() {
     let moving = true
     player.moving = false
 
+    if(battle.initiated) return
+
+    // activate battle
+    if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
+        // check for battle zone collision
+        for (let i = 0; i < battleZones.length; i++) {
+            const battleZone = battleZones[i]
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battleZone
+                })
+            ) {
+                console.log("activate battle")
+
+                // deactivate current animation loop
+                window.cancelAnimationFrame(animationId)
+
+                battle.initiated = true
+                gsap.to('#overlappingDiv', {
+                    opacity: 1,
+                    repeat: 3,
+                    yoyo: true,
+                    duration: 0.4,
+                    onComplete() {
+                        gsap.to('#overlappingDiv', {
+                            opacity: 1,
+                            duration: 0.4,
+                            onComplete() {
+                                // activate new animation loop
+                                animateBattle()
+                                gsap.to('#overlappingDiv', {
+                                    opacity: 0,
+                                    duration: 0.4
+                                })
+                            }
+                        })
+                    }
+                })
+                break
+            }
+        }
+    }
+
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
         player.moving = true
         player.image = player.sprites.up
 
-        // check if player has collided with border
+        // check for boundary collisions
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (
@@ -215,6 +263,7 @@ function animate() {
                 break
             }
         }
+
         // checks whether camera has reached border of map
         if (movables[0].position.y <= 0)  {
 
@@ -232,6 +281,7 @@ function animate() {
         player.moving = true
         player.image = player.sprites.left
 
+        // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if(
@@ -250,6 +300,7 @@ function animate() {
                 break
             }
         }
+
         if (movables[0].position.x <= 0)  {
             if(moving)
                 movables.forEach((movable) => {
@@ -263,6 +314,7 @@ function animate() {
         player.moving = true
         player.image = player.sprites.down
 
+        // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if(
@@ -281,6 +333,7 @@ function animate() {
                 break
             }
         }
+
         if (movables[0].position.y >= -1700)  {
             if(moving)
                 movables.forEach((movable) => {
@@ -293,6 +346,7 @@ function animate() {
         player.moving = true
         player.image = player.sprites.right
 
+        // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if(
@@ -311,6 +365,7 @@ function animate() {
                 break
             }
         }
+
         if (movables[0].position.x > (minX + minX) + 50 )  {
             if(moving)
                 movables.forEach((movable) => {
@@ -321,7 +376,27 @@ function animate() {
         }
     }
 }
-animate()
+// animate()
+
+const battleBackgroundImage = new Image()
+battleBackgroundImage.src = './gameAssets/battleBackground.png';
+const battleBackground = new Sprite({
+    position: {
+        x:0,
+        y:0
+    },
+    image: battleBackgroundImage,
+    npcScale: 1,
+    framesHeight: 1
+})
+
+function animateBattle() {
+    window.requestAnimationFrame(animateBattle)
+    console.log("entered battle mode")
+    battleBackground.draw()
+}
+
+animateBattle()
 
 // key down event listener
 let lastKey = ''
