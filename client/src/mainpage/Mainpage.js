@@ -22,6 +22,7 @@ function Mainpage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const url = "http://localhost:8080/user/12345/updateClassNote";
 
+  
   //handler for delete buttons
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
@@ -185,6 +186,11 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
+  //update Note Progress
+   const updateNoteProgress = (value) =>{
+    setProgress(value);
+   }
+  
   return (
     <div className="mainpage">
       {/* header without button */}
@@ -218,8 +224,9 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
+        updateProgress={updateNoteProgress}
       />
-      <ProgressGameBar progress="80" onButtonClick={handleGameButtonClick} />
+      <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
 
       {/*delete button component */}
@@ -231,6 +238,7 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
+
     </div>
   );
 }

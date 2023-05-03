@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
+const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updateProgress}) => {
   const [className, setClassName] = useState(
     SelectedClass ? SelectedClass.name : ""
   );
@@ -13,9 +13,10 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   const [noteContent, setNoteContent] = useState(
     SelectedNote ? SelectedNote.content : ""
   );
-
+  const [keyUpCounter, setKeyUpCounter] = useState(0);
   // reference for Tiny MCE editor
   const editorRef = useRef(null);
+
 
   //handlers for when the note titles or content change
   const handleTitleChange = (e) => {
@@ -80,14 +81,30 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     setClassName(SelectedClass ? SelectedClass.name : "");
+   
   }, [SelectedNote]);
 
+   
   //render if there isnt a selected class and/note
   if (!SelectedClass) {
     return <div className="note">Click on something...</div>;
   } else if (!SelectedNote) {
     return <div className="note">Click on something...</div>;
   }
+
+  const handleKeyUp = (event) => {
+    
+    setKeyUpCounter((prevCount) => prevCount + 1);
+    const progress = calculateProgress(keyUpCounter + 1);
+    if(progress<=100){
+    updateProgress(progress);
+    }
+
+  };
+
+  const calculateProgress = (keyUpCount) => {
+    return (keyUpCount / 20) * 100; // 
+  };
 
   return (
     <div className="note">
@@ -116,6 +133,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
       <br></br>
       <Editor
         value={noteContent}
+        onKeyUp={handleKeyUp}
         onEditorChange={handleEditorChange}
         onInit={handleEditorInit}
         onBlur={handleNoteBlur}
