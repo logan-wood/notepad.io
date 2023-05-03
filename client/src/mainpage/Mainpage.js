@@ -7,6 +7,7 @@ import Note from "./Note";
 import { data as initialData } from "./data";
 import { updateNoteData, updateClassData } from "./data";
 import trashcan from "./trashcan.png";
+import ProgressGameBar from "./ProgressGameBar";
 
 function Mainpage() {
   //stating Variables
@@ -205,6 +206,8 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
       />
+                        <ProgressGameBar progress="80" />
+
       {/*delete button component */}
       {SelectedClass && (<div className="deleteButtonDiv">
         <button onClick={handleDeleteButton} className="deleteExpandingButton" >
@@ -221,7 +224,9 @@ function Mainpage() {
                 Delete Note
               </button>
             )}
+
           </>
+          
         )}
       </div>)}
     </div>
