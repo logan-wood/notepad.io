@@ -22,7 +22,6 @@ const offset = {
 const minX = offset.x;
 const minY = offset.y;
 
-
 // set collisions onto map
 collisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
@@ -153,9 +152,10 @@ function animate() {
         player.moving = true
         player.image = player.sprites.up
 
-        for(let i = 0; i < boundaries.length; i++) {
+        // check if player has collided with border
+        for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
-            if(
+            if (
                 rectangularCollision({
                     rectangle1: player,
                     rectangle2: {
@@ -166,17 +166,23 @@ function animate() {
                         }
                     }
                 })
-            ){
+            ) {
                 moving = false
                 break
             }
         }
-        // this moves the objects behind it but need to move player instead
-        // so to stop the camera when it reaches the edge
-        if(moving)
-            movables.forEach((movable) => {
-                movable.position.y += 3
-            })
+        // checks whether camera has reached border of map
+        if (movables[0].position.y >= minY && movables[0].position.y <= 0)  {
+            // stops character from moving upwards if character has collided with a border
+            if (moving)
+                movables.forEach((movable) => {
+                    movable.position.y += 3
+                })
+        } else {
+
+            // move character instead of map
+            if(moving) player.position.y -= 3
+        }
     } else if (keys.a.pressed && lastKey === 'a') {
         player.moving = true
         player.image = player.sprites.left
@@ -199,10 +205,15 @@ function animate() {
                 break
             }
         }
-        if(moving)
-            movables.forEach((movable) => {
-                movable.position.x += 3
-            })
+        if (movables[0].position.x >= minX && movables[0].position.x < 0)  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.x += 3
+                })
+        } else {
+            if(moving) player.position.x -= 3
+        }
+
     } else if (keys.s.pressed && lastKey === 's') {
         player.moving = true
         player.image = player.sprites.down
@@ -225,10 +236,14 @@ function animate() {
                 break
             }
         }
-        if(moving)
-            movables.forEach((movable) => {
-                movable.position.y -= 3
-            })
+        if (movables[0].position.y <= minY && movables[0].position.y > -1700)  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.y -= 3
+                })
+        } else {
+            if(moving) player.position.y += 3
+        }
     } else if (keys.d.pressed && lastKey === 'd') {
         player.moving = true
         player.image = player.sprites.right
@@ -251,10 +266,14 @@ function animate() {
                 break
             }
         }
-        if(moving)
-            movables.forEach((movable) => {
-                movable.position.x -= 3
-            })
+        if (movables[0].position.x <= minX && movables[0].position.x > (minX + minX) + 50 )  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.x -= 3
+                })
+        } else {
+            if(moving) player.position.x += 3
+        }
     }
 }
 animate()
