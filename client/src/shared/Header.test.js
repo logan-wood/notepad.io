@@ -9,13 +9,13 @@ describe("Header component", () => {
     expect(screen.getByText("Notepad.io")).toBeInTheDocument();
   });
 
-  it("renders the signup/login button if showButton is true", () => {
-    render(<Header showButton={true} />);
+  it("renders the signup/login buttons if showButtons is true", () => {
+    render(<Header showButtons={true} />);
     expect(screen.getByText("log in / signup")).toBeInTheDocument();
   });
 
-  it("does not render the signup/login button if showButton is false", () => {
-    render(<Header showButton={false} />);
+  it("does not render the signup/login buttons if showButtons is false", () => {
+    render(<Header showButtons={false} />);
     expect(screen.queryByText("log in / signup")).not.toBeInTheDocument();
   });
 });

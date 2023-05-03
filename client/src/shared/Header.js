@@ -1,33 +1,45 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
 import { Link } from "react-router-dom";
+import signOutIcon from "./signout_icon.png";
 
-const Header = ({ showButton }) => {
+const Header = ({ showButtons, pageName, showSignOutButton }) => {
   return (
     <header className="header">
-      <Container fluid>
-        <Row className="align-items-center">
-          <Col xs={6} sm={6} md={6} lg={6} className="d-flex">
-            <div className="logo-title d-flex align-items-center">
-              <Link to="/">
-                <img src={logo} alt="Logo" className="logo" />
-              </Link>
-              <h1 className="app-title">Notepad.io</h1>
-            </div>
-          </Col>
-          <Col xs={6} sm={6} md={6} lg={6} className="text-right">
-            {showButton && (
-              <Link to="/login">
-                <Button variant="primary" className="signup-login-button">
-                  Log in / Sign up
-                </Button>
-              </Link>
-            )}
-          </Col>
-        </Row>
-      </Container>
+      <div className="logo-title d-flex align-items-center">
+        <Link to={pageName}>
+          <img src={logo} alt="Logo" className="logo" />
+        </Link>
+        <Link to={pageName} className="app-title link-class">
+          <h1 className="app-title">Notepad.io</h1>
+        </Link>
+      </div>
+      {showButtons && (
+        <div className="buttons-container">
+          <Link to="/login">
+            <Button variant="primary" className="login-header-button">
+              Log in
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button variant="primary" className="signup-header-button">
+              Sign up
+            </Button>
+          </Link>
+        </div>
+      )}
+      {showSignOutButton && (
+        <div className="sign-out-button">
+          <Link to="/">
+            <Button variant="primary" className="sign-out-button">
+              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+              Sign Out
+            </Button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 };
