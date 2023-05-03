@@ -12,6 +12,11 @@ for(let i = 0; i < collisions.length; i += 64) {
     collisionMap.push(collisions.slice(i, i + 64))
 }
 
+const battleFoxMap = []
+for(let i = 0; i < battleFoxData.length; i += 64) {
+    battleFoxMap.push(battleFoxData.slice(i, i + 64))
+}
+
 // set boundary coordinates
 const boundaries = []
 const offset = {
@@ -34,6 +39,21 @@ collisionMap.forEach((row, i) => {
             }
         })
         )
+    })
+})
+
+const battleZones = []
+battleFoxMap.forEach((row, i) => {
+    row.forEach((symbol, j)  => {
+        if(symbol === 551)
+            battleZones.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                })
+            )
     })
 })
 
@@ -61,6 +81,9 @@ playerLeftImage.src = './gameAssets/playerLeft.png';
 const playerRightImage = new Image();
 playerRightImage.src = './gameAssets/playerRight.png';
 
+const npcImage = new Image();
+npcImage.src = './gameAssets/dogNinja.png';
+
 // Create player sprite
 const player = new Sprite({
     position: {
@@ -71,12 +94,14 @@ const player = new Sprite({
     frames: {
         max: 4
     },
+    framesHeight: 1,
     sprites: {
         up: playerUpImage,
         left: playerLeftImage,
         down: playerDownImage,
         right: playerRightImage
-    }
+    },
+    npcScale: 1
 })
 
 // set background image coordinates
@@ -85,7 +110,22 @@ const background = new Sprite({
         x: -1550,
         y: -1000,
     },
-    image: image
+    image: image,
+    framesHeight: 1,
+    npcScale: 1
+})
+
+const npc = new Sprite( {
+    position: {
+        x: 670,
+        y: 310
+    },
+    image: npcImage,
+    frames: {
+        max: 4
+    },
+    framesHeight: 7,
+    npcScale: 3
 })
 
 // set foreground image coordinates
@@ -114,7 +154,7 @@ const keys ={
 }
 
 // movable objects
-const movables = [background, ...boundaries, foreground]
+const movables = [background, ...boundaries, foreground, npc, ...battleZones]
 
 // collision bounds set
 function rectangularCollision({rectangle1, rectangle2}) {
@@ -134,8 +174,13 @@ function animate() {
     // draw map and character here cause of infinite loop
     background.draw()
     boundaries.forEach(boundary => {
-        boundary.draw()
-    })
+            boundary.draw()
+        })
+     battleZones.forEach(battleZone => {
+         battleZone.draw()
+         })
+
+    npc.draw()
 
     //draw player
     player.draw()
@@ -145,7 +190,6 @@ function animate() {
 
     let moving = true
     player.moving = false
-
 
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
@@ -172,11 +216,9 @@ function animate() {
             }
         }
         // checks whether camera has reached border of map
-        console.log("background y: " + movables[0].position.y)
-        console.log("miny: " + minY)
-        console.log("player position: " + player.position.y)
         if (movables[0].position.y <= 0)  {
-            // stops character from moving upwards if character has collided with a border
+
+            // moves the background, barriers and foreground if player is moving
             if (moving)
                 movables.forEach((movable) => {
                     movable.position.y += 3
