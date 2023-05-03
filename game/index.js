@@ -172,7 +172,10 @@ function animate() {
             }
         }
         // checks whether camera has reached border of map
-        if (movables[0].position.y >= minY && movables[0].position.y <= 0)  {
+        console.log("background y: " + movables[0].position.y)
+        console.log("miny: " + minY)
+        console.log("player position: " + player.position.y)
+        if (movables[0].position.y <= 0)  {
             // stops character from moving upwards if character has collided with a border
             if (moving)
                 movables.forEach((movable) => {
@@ -205,7 +208,7 @@ function animate() {
                 break
             }
         }
-        if (movables[0].position.x >= minX && movables[0].position.x < 0)  {
+        if (movables[0].position.x <= 0)  {
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.x += 3
@@ -236,7 +239,7 @@ function animate() {
                 break
             }
         }
-        if (movables[0].position.y <= minY && movables[0].position.y > -1700)  {
+        if (movables[0].position.y >= -1700)  {
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.y -= 3
@@ -266,7 +269,7 @@ function animate() {
                 break
             }
         }
-        if (movables[0].position.x <= minX && movables[0].position.x > (minX + minX) + 50 )  {
+        if (movables[0].position.x > (minX + minX) + 50 )  {
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.x -= 3
