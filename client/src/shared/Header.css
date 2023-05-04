@@ -1,93 +1,111 @@
 .header {
-  padding: 1.25rem;
+  padding: 2rem;
   background-color: #fffbf6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  left: -20;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
   width: 55px;
   height: auto;
-  margin-right: 3.5px;
+  margin-right: 1rem;
 }
 
 .app-title {
   margin: 0;
   margin-left: 1px;
+  margin-right: 2rem;
   font-family: "Fjalla One", sans-serif;
-  font-size: 35px;
+  font-size: 35px !important;
+  text-decoration: none !important;
   color: #bb4430;
 }
 
-.signup-login-button {
-  margin-left: auto;
-  border-radius: 50px !important;
+.app-title.link-class:hover {
+  text-decoration: none !important;
+  color: #bb4430;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.login-header-button {
+  border-top-left-radius: 25px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 25px !important;
+  border-bottom-right-radius: 25px !important;
   background-color: #bb4430 !important;
   border-color: #bb4430 !important;
   font-family: "Nunito", sans-serif;
-  padding-left: 4rem !important;
-  padding-right: 4rem !important;
-  font-size: 18px !important;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 21px !important;
 }
 
-.signup-login-button:hover,
-.signup-login-button:focus {
+.signup-header-button {
+  border-top-right-radius: 25px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 25px !important;
+  border-bottom-left-radius: 25px !important;
+  background-color: #7EBDC2 !important;
+  border-color: #7EBDC2 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 21px !important;
+}
+
+.login-header-button:hover,
+.login-header-button:focus,
+.signup-header-button:hover,
+.signup-header-button:focus {
   background-color: #fffbf6 !important;
   border-color: #bb4430 !important;
   color: #bb4430 !important;
 }
 
-.signup-login-button:active {
+.login-header-button:active,
+.signup-header-button:active {
   background-color: #7ebdc2 !important;
   border-color: #7ebdc2 !important;
-  color: #ffffff !important;
+  color: #bb4430 !important;
 }
-.header{
-    padding: 0.5rem;
-    background-color: #fffbf6;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .logo {
-    width: 55px;
-    height: auto;
-    margin-right: 0.5rem;
-  }
-  .headerElement{
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .app-title {
-    margin: 0;
-    font-family: "Fjalla One", sans-serif;
-    font-size: 2.5rem;
-    color: #bb4430;
-  }
-  
-  .signup-login-button {
-    margin-left: auto;
-    border-radius: 50px;
-    background-color: #bb4430;
-    border-color: #bb4430;
-    font-family: "Nunito", sans-serif;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-  
-  .signup-login-button:hover,
-  .signup-login-button:focus {
-    background-color: #fffbf6;
-    border-color: #bb4430;
-    color: #bb4430;
-  }
-  
-  .signup-login-button:active {
-    background-color: #7EBDC2 !important;
-    border-color: #7EBDC2 !important;
-  }
-  
+
+.sign-out-button {
+  border-top-left-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background-color: #FFFBF6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.sign-out-button:hover,
+.sign-out-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430!important;
+}
+
+.sign-out-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+

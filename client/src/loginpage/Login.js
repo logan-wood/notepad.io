@@ -11,6 +11,10 @@ import Header from "../shared/Header.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
+import googleLogo from "./google_logo.png";
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { setDoc, doc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,11 +38,8 @@ const Login = () => {
     .then((response) => {
       // user found
       if (response.status === 200) {
-        document.cookie = `sessionID=${response.headers.get('X-Session-ID')};`
-
         return response.json()
       } else {
-        // no user found, display message
         setMessage("No user found")
       }
     })
@@ -57,7 +58,7 @@ const Login = () => {
 
   return (
     <>
-      <Header showButton={false} />
+      <Header showButtons={false} pageName = "/" />
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
@@ -111,6 +112,22 @@ const Login = () => {
           <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
           <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
           <div><button onClick={() => logoutUser()}>Logout User</button></div>
+          <div className="button-group">
+            <Button
+              variant="primary"
+              className="google-signin-button"
+              onClick={signInWithGoogle}
+            >
+              <img src={googleLogo} alt="Google logo" className="google-logo" />
+              Sign in with Google
+            </Button>
+            <p className="error-message signin-error">{error}</p>
+            <Link to="/signup">
+              <Button variant="link" className="register-button">
+                Don't have an account?
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </>

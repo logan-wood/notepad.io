@@ -35,10 +35,28 @@ body {
 
 }
 
-.sidenav h1 {
+.sidenav h1,
+noteTitleStyle {
     font-family: 'Nunito', sans-serif;
     color: #4f4f4f;
     size: 30px
+}
+
+.noteClassStyle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 30px;
+    border: none;
+}
+
+.noteTitleStyle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 50px;
+    border: none;
+}
+
+.noteTitleStyle:focus,
+.noteClassStyle:focus {
+    outline: none;
 }
 
 .navButton {
@@ -69,10 +87,24 @@ body {
 .note {
     background: #FFFFFF;
     width: (100% - 300px);
-    height: calc(100vh-65px);
+    height: calc(100vh - 25vh);
     margin-left: 80px;
     padding: 20px;
     transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-flow: column;
+
+}
+
+.tox {
+    border: none !important;
+    min-height: 100% !important;
+
+
+}
+
+.tox-tinymce {
+    min-height: 100% !important;
 }
 
 .sidenav.open+.note {
@@ -81,7 +113,28 @@ body {
 }
 
 
-.yellowbutton {
+.deleteButton {
+    position: relative;
+    bottom: 50px;
+    right: 50px;
+    margin: 10px;
+    background-color: #bb4430;
+    border-radius: 20px;
+    border:none;
+    padding:10px;
+    color: #FFFBF6;
+
+}
+
+
+
+
+
+.trashcan {
+    height: 40px;
+}
+
+.newClassButton {
     background: #F3DFA2;
     border-radius: 30px;
     border: none;
@@ -93,7 +146,25 @@ body {
 
 }
 
-.yellowbutton:hover {
+.newClassButton:hover {
+    background: #f8e7b4;
+    cursor: pointer;
+}
+
+.newNoteButton {
+    background: #F3DFA2;
+    border-radius: 30px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    width: 230px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 5px;
+
+}
+
+.newNoteButton:hover {
     background: #f8e7b4;
     cursor: pointer;
 }
@@ -130,6 +201,7 @@ body {
     background: NONE;
     BORDER: None;
 }
+
 .classDiv {
     background: #FFFBF6;
     border-radius: 10px;

@@ -26,6 +26,7 @@ module.exports = {
       password: user.password,
       classes: '',
     });
+    return "User successfully";
   },
 
   getUserData: function (uid) {
@@ -70,5 +71,20 @@ module.exports = {
     const userData = await this.getUserData(uid);
     
     return userData;
-  }
+  },
+  
+  //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
+  updateClass: async function (uid, classToUpdate) {
+    const ref = db.ref("/users/" + uid).child(classToUpdate.id);
+    const snapshot = await db.ref("/users/" + uid).once("value");
+    if (!snapshot.exists()) {
+      console.log("user doesn't exist - creating new user!");
+      this.addNewUser(uid);
+      await ref.update(classToUpdate);
+      return ref;
+    } else {
+      await ref.update(classToUpdate);
+      return ref;
+    }
+  },
 };

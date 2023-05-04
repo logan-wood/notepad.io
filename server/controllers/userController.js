@@ -9,7 +9,7 @@ module.exports = {
     const { uid } = req.query;
     if (uid) {
       database
-        .getUserData(uid)
+        .getInfo(uid)
         .then((data) => {
           res.send(data);
         })
