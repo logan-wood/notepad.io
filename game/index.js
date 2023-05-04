@@ -92,7 +92,7 @@ const player = new Sprite({
     },
     image: playerDownImage,
     frames: {
-        max: 4
+        max: 4,
     },
     framesHeight: 1,
     sprites: {
@@ -193,7 +193,7 @@ function animate() {
     foreground.draw()
 
     let moving = true
-    player.moving = false
+    player.animate = false
 
     if(battle.initiated) return
 
@@ -241,7 +241,7 @@ function animate() {
 
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.up
 
         // check for boundary collisions
@@ -278,7 +278,7 @@ function animate() {
             if(moving) player.position.y -= 3
         }
     } else if (keys.a.pressed && lastKey === 'a') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.left
 
         // check for boundary collisions
@@ -311,7 +311,7 @@ function animate() {
         }
 
     } else if (keys.s.pressed && lastKey === 's') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.down
 
         // check for boundary collisions
@@ -343,7 +343,7 @@ function animate() {
             if(moving) player.position.y += 3
         }
     } else if (keys.d.pressed && lastKey === 'd') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.right
 
         // check for boundary collisions
@@ -378,25 +378,9 @@ function animate() {
 }
 // animate()
 
-const battleBackgroundImage = new Image()
-battleBackgroundImage.src = './gameAssets/battleBackground.png';
-const battleBackground = new Sprite({
-    position: {
-        x:0,
-        y:0
-    },
-    image: battleBackgroundImage,
-    npcScale: 1,
-    framesHeight: 1
+addEventListener('click', () => {
+    // console.log('clicked')
 })
-
-function animateBattle() {
-    window.requestAnimationFrame(animateBattle)
-    console.log("entered battle mode")
-    battleBackground.draw()
-}
-
-animateBattle()
 
 // key down event listener
 let lastKey = ''
