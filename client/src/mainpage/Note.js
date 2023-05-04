@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
+const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updateProgress, isReset}) => {
   const [className, setClassName] = useState(
     SelectedClass ? SelectedClass.name : ""
   );
+  const [progress, setProgress] = useState(0);
+  const [newKeyUpCount, setNewKeyUpCount] = useState(0);
+
 
   // State hooks for note title and content
   const [noteTitle, setNoteTitle] = useState(
@@ -13,9 +16,10 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   const [noteContent, setNoteContent] = useState(
     SelectedNote ? SelectedNote.content : ""
   );
-
+  const [keyUpCounter, setKeyUpCounter] = useState(0);
   // reference for Tiny MCE editor
   const editorRef = useRef(null);
+
 
   //handlers for when the note titles or content change
   const handleTitleChange = (e) => {
@@ -29,6 +33,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
 
   const handleContentChange = (e) => {
     setNoteContent(e.target.value);
+   
   };
 
   //handler when focus on note is lost
@@ -57,6 +62,10 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   //handler for editor change
   const handleEditorChange = (content) => {
     setNoteContent(content);
+    updateNote({
+      ...SelectedNote,
+      content: content,
+    });
   };
 
   //Tiny MCE initializer handler
@@ -75,7 +84,15 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     setClassName(SelectedClass ? SelectedClass.name : "");
+   
   }, [SelectedNote]);
+
+  useEffect(() => {
+    
+
+      setProgress(0);
+      setNewKeyUpCount(0);
+  }, [isReset]);
 
   //render if there isnt a selected class and/note
   if (!SelectedClass) {
@@ -83,6 +100,25 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
   } else if (!SelectedNote) {
     return <div className="note">Click on something...</div>;
   }
+
+  const handleKeyUp  = (event) => {
+    setProgress((prevProgress) => {
+      const newProgress = calculateProgress();
+      updateProgress(newProgress);
+      return newProgress;
+    });
+    setNewKeyUpCount((prevCount) => prevCount + 1);
+
+  };
+  
+  const calculateProgress = () => {
+    if (progress < 100) {
+      return (newKeyUpCount / 50) * 100;
+    } else {
+      return 100;
+    }
+  
+  };
 
   return (
     <div className="note">
@@ -111,6 +147,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass }) => {
       <br></br>
       <Editor
         value={noteContent}
+        onKeyUp={handleKeyUp}
         onEditorChange={handleEditorChange}
         onInit={handleEditorInit}
         onBlur={handleNoteBlur}
