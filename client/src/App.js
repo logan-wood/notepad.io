@@ -5,6 +5,8 @@ import Home from "./homepage/Home";
 import Login from "./loginpage/Login";
 import Signup from "./sign-up/Signup";
 import Mainpage from "./mainpage/Mainpage";
+import Settings from "./settings/Settings";
+import Profile from "./profile/Profile";
 import "./AppTransitions.css";
 
 function AnimatedRoutes() {
@@ -19,6 +21,8 @@ function AnimatedRoutes() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Mainpage />} />
+            <Route path="/settings" elements={<Settings />} />
+            <Route path="/profile" elements={<Profile />} />
           </Routes>
         </div>
       </CSSTransition>
