@@ -22,12 +22,9 @@ router.get('/getUser', function(req, res) {
     userController.getUser(req, res)
 })
 
+// authenticates whether the email matches the password. Does not set a session or cookie in its current implementation
 router.post('/loginUser', function(req, res) {
     userController.loginUser(req, res)
-})
-
-router.get('/logoutUser', function(req, res) {
-    userController.logoutUser(req, res)
 })
 
 module.exports = router

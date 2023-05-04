@@ -43,6 +43,7 @@ const Login = () => {
       }
     })
     .then(data => {
+      console.log(data)
       dispatch({ type: 'SET_USER', payload: data })
     })
     .catch(error => {
@@ -51,18 +52,7 @@ const Login = () => {
   };
 
   const logoutUser = () => {
-    fetch(process.env.REACT_APP_API_DOMAIN + '/logoutUser', {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({ type: 'CLEAR_USER' })
-      }
-    })
+    dispatch({ type: 'CLEAR_USER' })
   }
 
   return (
