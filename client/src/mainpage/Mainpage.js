@@ -1,6 +1,6 @@
 import "./Mainpage.css";
 import Header from "../shared/Header";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
@@ -37,16 +37,24 @@ function Mainpage() {
     handleReset();
   };
   const handleReset = () => {
-    setProgress(0);
-    setReset(true);
-  };
+    console.log("handleReset called");
+  setProgress(0);
+  console.log("progress set to 0");
+  setReset(true);
+  updateNoteProgress(0);
 
+  };
+  useEffect(() => {
+    console.log(progress);
+  }, [progress]);
+  
   const handleGameButtonClick = () => {
     setIsGameOpen(true);
   };
 
   //update Note Progress
   const updateNoteProgress = (value) => {
+    console.log(value);
     setProgress(value);
   };
 
@@ -235,6 +243,7 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
         updateProgress={updateNoteProgress}
+        progress={progress}
         isReset={reset}
       />
       <ProgressGameBar
