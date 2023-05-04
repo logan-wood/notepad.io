@@ -10,11 +10,12 @@ import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
+
 function Mainpage() {
   //stating Variables
   const [isGameOpen, setIsGameOpen] = useState(true);
   const [progress, setProgress] = useState(0);
-
+  const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
   const [data, setData] = useState(initialData);
   const [SelectedClass, SetSelectedClass] = useState(null);
@@ -34,7 +35,12 @@ function Mainpage() {
   //handler for game compoenent
   const handleGameClose = () => {
     setIsGameOpen(false);
-    setProgress(0)
+    handleReset();
+
+  };
+  const handleReset = () => {
+    setProgress(0);
+    setReset(true);
   };
 
   const handleGameButtonClick = () => {
@@ -228,6 +234,7 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
         updateProgress={updateNoteProgress}
+        isReset={reset}
       />
       <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
