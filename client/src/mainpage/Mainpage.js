@@ -14,7 +14,7 @@ import { Button } from "react-bootstrap";
 
 function Mainpage() {
   //stating Variables
-  const [isGameOpen, setIsGameOpen] = useState(true);
+  const [isGameOpen, setIsGameOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);

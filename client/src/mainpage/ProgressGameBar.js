@@ -14,7 +14,7 @@ const ProgressGameBar = ({ progress, onButtonClick }) => {
   return (
     <div className="barContainerStyle">
       <div className="fillingContainerStyle" style={{ width: `${progress}%` }}>
-        <span> {`${progress}%`}</span>
+        <span> {`${progress.toFixed(0)}%`}</span>
 
         {isComplete && (
           <button className="completeButton" onClick={onButtonClick}>

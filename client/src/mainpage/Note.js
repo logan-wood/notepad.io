@@ -112,7 +112,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, 
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup",keyUpCounter);
-      return (keyUpCounter / 50) * 100;
+      return (keyUpCounter / 2500) * 100;
     } else {
       setKeyUpCounter(0);
 
