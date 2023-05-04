@@ -1,4 +1,3 @@
-
 const battleBackgroundImage = new Image()
 battleBackgroundImage.src = './gameAssets/battleBackground.png';
 const battleBackground = new Sprite({
@@ -36,11 +35,8 @@ function initBattle() {
         console.log(attack.name)
         document.querySelector('#attacksBox').append(button)
     })
-
-
     // our event listeners for our attack buttons
     document.querySelectorAll('button').forEach((button) => {
-
         button.addEventListener('click', (e) => {
             const selectedAttack = attacks[e.currentTarget.innerHTML]
             earthBook.attack({
@@ -116,17 +112,17 @@ function initBattle() {
 
 function animateBattle() {
     battleAnimationId = requestAnimationFrame(animateBattle)
-    window.requestAnimationFrame(animateBattle)
-    console.log("entered battle mode")
     battleBackground.draw()
+
+    console.log("entered battle mode")
 
     renderedSprites.forEach((sprite) => {
         sprite.draw()
     })
 }
-initBattle()
-// animate()
-animateBattle()
+animate()
+// initBattle()
+// animateBattle()
 
 document.querySelector('#dialogueBox').addEventListener('click', (e) => {
     if(queue.length > 0) {

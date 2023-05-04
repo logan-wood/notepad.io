@@ -179,10 +179,10 @@ function animate() {
     background.draw()
     boundaries.forEach(boundary => {
             boundary.draw()
-        })
-     battleZones.forEach(battleZone => {
+    })
+    battleZones.forEach(battleZone => {
          battleZone.draw()
-         })
+    })
 
     npc.draw()
 
@@ -198,7 +198,8 @@ function animate() {
     if(battle.initiated) return
 
     // activate battle
-    if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
+    if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed )) {
+        console.log(Math.random())
         // check for battle zone collision
         for (let i = 0; i < battleZones.length; i++) {
             const battleZone = battleZones[i]
@@ -206,7 +207,7 @@ function animate() {
                 rectangularCollision({
                     rectangle1: player,
                     rectangle2: battleZone
-                })
+                }) && Math.random() < 0.01
             ) {
                 console.log("activate battle")
 
