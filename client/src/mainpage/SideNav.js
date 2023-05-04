@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useRef}from "react";
 import arrow from "../assets/lefticon.png";
 import { addNewClass, addNewNote } from "./data";
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +8,12 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
+  const draggingItem = useRef();
 
+  const draggingStart = (e, position) =>{
+    draggingItem.current = position;
+    console.log(e.target.innerHTML);
+  }
   //unique ids for the
   //TODO:
   // CREATE NEW CLASS HANDLER
@@ -104,7 +109,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                   className={`classButton ${
                     isClassButtonActive(classItem.id) ? "active" : ""
                   }`}
-                >
+                draggable>
                   {classItem.name}
                 </button>
               </h3>
@@ -127,7 +132,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                               ? "active"
                               : ""
                           }`}
-                        >
+                          draggable>
                           {note.title}
                         </button>
                       </li>

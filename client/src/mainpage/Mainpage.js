@@ -7,22 +7,49 @@ import Note from "./Note";
 import { data as initialData } from "./data";
 import { updateNoteData, updateClassData } from "./data";
 import trashcan from "./trashcan.png";
+import ProgressGameBar from "./ProgressGameBar";
+import GameModal from "./GameModal";
+import DeleteButton from "./DeleteButton";
 
 function Mainpage() {
   //stating Variables
+  const [isGameOpen, setIsGameOpen] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
   const [data, setData] = useState(initialData);
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const url = "http://localhost:8080/user/12345/updateClass";
 
+  //handler for delete buttons
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
   };
-  const handleDeleteBlur = () =>{
+  const handleDeleteBlur = () => {
     setIsExpanded(false);
-
   };
+
+  //handler for game compoenent
+  const handleGameClose = () => {
+    setIsGameOpen(false);
+    handleReset();
+  };
+  const handleReset = () => {
+    setProgress(0);
+    setReset(true);
+  };
+
+  const handleGameButtonClick = () => {
+    setIsGameOpen(true);
+  };
+
+  //update Note Progress
+  const updateNoteProgress = (value) => {
+    setProgress(value);
+  };
+
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -61,9 +88,9 @@ function Mainpage() {
       // Update the content of the note in the notes array of the selected class
       newData.classes[classIndex].notes[noteIndex].content =
         updatedNote.content;
-
       //handle update title
       newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
+      handleDatabaseUpdate(SelectedClass);
 
       // Return the updated data object
       return newData;
@@ -86,11 +113,40 @@ function Mainpage() {
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
       // Return the updated data object
+      handleDatabaseUpdate(SelectedClass);
+
       return newData;
     });
 
     updateClassData(updatedClass.id, updatedClass);
     SetSelectedClass(updatedClass);
+  };
+
+  // handle for updating the
+  const handleDatabaseUpdate = (data) => {
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+      body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
+    })
+      .then((response) => {
+        console.log(JSON.stringify(data));
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log(data); // Do something with the response data
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
   };
 
   const handleDeleteClass = () => {
@@ -105,10 +161,12 @@ function Mainpage() {
       );
 
       if (classIndex !== -1) {
-      //remove class from array
-      newData.classes.splice(classIndex, 1);
-      // Return the updated data object
+        //remove class from array
+        newData.classes.splice(classIndex, 1);
+        // Return the updated data object
       }
+      handleDatabaseUpdate(SelectedClass);
+
       return newData;
     });
 
@@ -131,10 +189,12 @@ function Mainpage() {
         (note) => note.id === SelectedNote.id
       );
       if (noteIndex !== -1) {
-      //remove class from array
-      newData.classes[classIndex].notes.splice(noteIndex, 1);
-      // Return the updated data object
+        //remove class from array
+        newData.classes[classIndex].notes.splice(noteIndex, 1);
+        // Return the updated data object
       }
+      handleDatabaseUpdate(SelectedClass);
+
       return newData;
     });
 
@@ -174,26 +234,24 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
+        updateProgress={updateNoteProgress}
+        isReset={reset}
       />
+      <ProgressGameBar
+        progress={progress}
+        onButtonClick={handleGameButtonClick}
+      />
+      <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
+
       {/*delete button component */}
-      {SelectedClass && (<div className="deleteButtonDiv">
-        <button onClick={handleDeleteButton} className="deleteExpandingButton" >
-        <img src={trashcan} alt="trashcan" className="trashcan"/>
-        {isExpanded}
-        </button>
-        { isExpanded && (
-          <>
-            <button onClick={handleDeleteClass} className="deleteButton" >
-              Delete Class
-            </button>
-            {SelectedNote && (
-              <button onClick={handleDeleteNote} className="deleteButton">
-                Delete Note
-              </button>
-            )}
-          </>
-        )}
-      </div>)}
+      <DeleteButton
+        handleDeleteButton={handleDeleteButton}
+        handleDeleteClass={handleDeleteClass}
+        handleDeleteNote={handleDeleteNote}
+        isExpanded={isExpanded}
+        SelectedNote={SelectedNote}
+        SelectedClass={SelectedClass}
+      />
     </div>
   );
 }
