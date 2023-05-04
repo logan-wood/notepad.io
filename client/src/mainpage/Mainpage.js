@@ -10,6 +10,7 @@ import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
+import { Button } from "react-bootstrap";
 
 function Mainpage() {
   //stating Variables
@@ -246,10 +247,12 @@ function Mainpage() {
         progress={progress}
         isReset={reset}
       />
+
       <ProgressGameBar
         progress={progress}
         onButtonClick={handleGameButtonClick}
       />
+
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
 
       {/*delete button component */}
@@ -261,6 +264,8 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
+
+      <Button onClick={handleDatabaseUpdate(SelectedClass)} className="save-button">Save Note</Button>
     </div>
   );
 }
