@@ -144,7 +144,7 @@ function Mainpage() {
   return (
     <div className="mainpage">
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showSignOutButton={true}/>
+      <Header showButtons={false} showSettingsButtons={true}/>
 
       {/* viewport so that its responsive*/}
       <meta

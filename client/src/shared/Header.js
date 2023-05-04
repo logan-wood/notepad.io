@@ -7,7 +7,7 @@ import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 
-const Header = ({ showButtons, pageName, showSignOutButton }) => {
+const Header = ({ showButtons, pageName, showSettingsButtons }) => {
   return (
     <header className="header">
       <div className="logo-title d-flex align-items-center">
@@ -32,23 +32,16 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
           </Link>
         </div>
       )}
-      {showSignOutButton && (
-        <div className="sign-out-button">
-          <Link to="/profile">
-            <Button variant="primary" className="profile-button">
-              <img src={profileIcon} alt="Profile" className="profile-icon" />
-            </Button>
+      {showSettingsButtons && (
+        <div className="user-buttons-container">
+          <Link to="/profile" className="profile-button">
+            <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-          <Link to="/settings">
-            <Button variant="primary" className="settings-button">
-              <img src={settingsIcon} alt="Settings" className="settings-icon" />
-            </Button>
+          <Link to="/settings" className="settings-button">
+            <img src={settingsIcon} alt="Settings" className="settings-icon" />
           </Link>
-          <Link to="/">
-            <Button variant="primary" className="sign-out-button">
-              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
-              Sign Out
-            </Button>
+          <Link to="/" className="sign-out-button">
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
           </Link>
         </div>
       )}
