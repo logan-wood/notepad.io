@@ -34,11 +34,18 @@ function Mainpage() {
   //handler for game compoenent
   const handleGameClose = () => {
     setIsGameOpen(false);
+    setProgress(0)
   };
 
   const handleGameButtonClick = () => {
     setIsGameOpen(true);
   };
+
+  //update Note Progress
+  const updateNoteProgress = (value) =>{
+    setProgress(value);
+   }
+  
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -186,10 +193,6 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
-  //update Note Progress
-   const updateNoteProgress = (value) =>{
-    setProgress(value);
-   }
   
   return (
     <div className="mainpage">

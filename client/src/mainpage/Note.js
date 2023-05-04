@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updateProgress}) => {
+const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updateProgress,isReset}) => {
   const [className, setClassName] = useState(
     SelectedClass ? SelectedClass.name : ""
   );
+  const [progress, setProgress] = useState(0);
 
   // State hooks for note title and content
   const [noteTitle, setNoteTitle] = useState(
@@ -84,7 +85,12 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updatePro
    
   }, [SelectedNote]);
 
-   
+  useEffect(() => {
+    if (isReset) {
+      setProgress(0);
+    }
+  }, [isReset]);
+
   //render if there isnt a selected class and/note
   if (!SelectedClass) {
     return <div className="note">Click on something...</div>;
@@ -92,18 +98,22 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass , updatePro
     return <div className="note">Click on something...</div>;
   }
 
-  const handleKeyUp = (event) => {
-    
-    setKeyUpCounter((prevCount) => prevCount + 1);
-    const progress = calculateProgress(keyUpCounter + 1);
-    if(progress<=100){
-    updateProgress(progress);
-    }
-
+  const handleKeyUp  = (event) => {
+    setProgress((prevProgress) => {
+      const newProgress = calculateProgress();
+      updateProgress(newProgress);
+      return newProgress;
+    });
   };
-
-  const calculateProgress = (keyUpCount) => {
-    return (keyUpCount / 20) * 100; // 
+  
+  const calculateProgress = () => {
+    if (progress < 100) {
+      const newKeyUpCount = progress + 1;
+      return (newKeyUpCount / 120) * 100;
+    } else {
+      return 100;
+    }
+  
   };
 
   return (
