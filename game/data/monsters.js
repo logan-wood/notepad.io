@@ -1,15 +1,12 @@
-const earthBookImage = new Image()
-earthBookImage.src = './gameAssets/earthbook.png';
-
-const fireBookImage = new Image()
-fireBookImage.src = './gameAssets/firebook.png';
 const monsters = {
     FireBook: {
         position: {
             x: 750,
             y: 50
         },
-        image: fireBookImage,
+        image: {
+            src: './gameAssets/firebook.png'
+        },
         npcScale: 0.3,
         framesHeight: 1,
         isEnemy: true,
@@ -21,7 +18,9 @@ const monsters = {
             x: 200,
             y: 200
         },
-        image: earthBookImage,
+        image: {
+            src: './gameAssets/earthbook.png'
+        },
         npcScale: 0.5,
         framesHeight: 1,
         name: 'Terra',

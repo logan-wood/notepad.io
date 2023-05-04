@@ -1,16 +1,18 @@
 // Sprite class for map and player
 class Sprite {
-    constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, framesHeight, sprites, animate = false, npcScale, isEnemy = false, rotation = 0, name}) {
+    constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, framesHeight, sprites, animate = false, npcScale, isEnemy = false, rotation = 0}) {
         this.position = position
         this.image = image
+        this.image = new Image()
         this.frames = {...frames, val: 0, elapsed: 0}
-        this.framesHeight = framesHeight
-        this.npcScale = npcScale
-
         this.image.onload = () => {
             this.width = this.image.width / 4
             this.height = this.image.height
         }
+        this.image.src = image.src
+
+        this.framesHeight = framesHeight
+        this.npcScale = npcScale
         this.animate = animate
         this.sprites = sprites
         this.opacity = 1
@@ -124,22 +126,6 @@ class Monster extends Sprite {
         if(this.isEnemy) rotation = -2
 
         recipient.health -= attack.damage
-
-        // if(this.health === 0) {
-        //     gsap.to(this, {
-        //         opacity: 0
-        //     })
-        //     gsap.to('#overlappingDiv', {
-        //         opacity: 1,
-        //         onComplete: () => {
-        //             cancelAnimationFrame(battleAnimationId)
-        //             animate()
-        //             gsap.to('#overlappingDiv', {
-        //                 opacity: 0
-        //             })
-        //         }
-        //     })
-        // }
 
         switch (attack.name) {
             case 'Fireball':
