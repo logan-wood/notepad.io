@@ -1,19 +1,3 @@
-// Boundary class
-class Boundary {
-    static width = 64
-    static height = 64
-    constructor({position}) {
-        this.position = position
-        this.width = 64
-        this.height = 64
-    }
-
-    draw() {
-        c.fillStyle = 'rgba(255, 0, 0, 0.1)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    }
-}
-
 // Sprite class for map and player
 class Sprite {
     constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, framesHeight, sprites, animate = false, npcScale, isEnemy = false, rotation = 0, name}) {
@@ -30,10 +14,7 @@ class Sprite {
         this.animate = animate
         this.sprites = sprites
         this.opacity = 1
-        this.health = 100
-        this.isEnemy = isEnemy
         this.rotation = rotation
-        this.name = name
     }
 
     draw() {
@@ -88,6 +69,50 @@ class Sprite {
             else this.frames.val = 0
         }
         }
+}
+
+class Monster extends Sprite {
+    constructor({
+        position,
+        velocity,
+        image,
+        frames = { max: 1, hold: 10 },
+        framesHeight, sprites,
+        animate = false,
+        npcScale,
+        isEnemy = false,
+        rotation = 0,
+        name,
+        attacks
+    }) {
+        super({
+            position,
+            velocity,
+            image,
+            frames,
+            framesHeight, sprites,
+            animate,
+            npcScale,
+            isEnemy,
+            rotation,
+            name
+        })
+        this.health = 100
+        this.isEnemy = isEnemy
+        this.name = name
+        this.attacks = attacks
+    }
+
+    faint() {
+        document.querySelector('#dialogueBox').innerHTML = this.name + ' fainted!'
+        gsap.to(this.position, {
+            y: this.position.y + 20
+        })
+        gsap.to(this, {
+            opacity: 0
+        })
+    }
+
     attack({attack, recipient, renderedSprites}) {
         document.querySelector('#dialogueBox').style.display = 'block'
         document.querySelector('#dialogueBox').innerHTML = this.name + ' used ' + attack.name
@@ -98,7 +123,7 @@ class Sprite {
         let rotation = 1
         if(this.isEnemy) rotation = -2
 
-        this.health -= attack.damage
+        recipient.health -= attack.damage
 
         // if(this.health === 0) {
         //     gsap.to(this, {
@@ -143,7 +168,7 @@ class Sprite {
                     y: recipient.position.y,
                     onComplete: () => {
                         gsap.to(healthBar, {
-                            width: this.health + '%'
+                            width: recipient.health + '%'
                         })
                         gsap.to(recipient.position, {
                             x: recipient.position.x + 10,
@@ -162,7 +187,7 @@ class Sprite {
                 })
 
 
-            break
+                break
             case 'Tackle' :
                 const tl = gsap.timeline()
 
@@ -177,7 +202,7 @@ class Sprite {
                     duration: 0.1,
                     onComplete: () => {
                         gsap.to(healthBar, {
-                            width: this.health + '%'
+                            width: recipient.health + '%'
                         })
                         gsap.to(recipient.position, {
                             x: recipient.position.x + 10,
@@ -195,8 +220,23 @@ class Sprite {
                 }).to(this.position, {
                     x: this.position.x
                 })
-            break
+                break
         }
+    }
+}
 
+// Boundary class
+class Boundary {
+    static width = 64
+    static height = 64
+    constructor({position}) {
+        this.position = position
+        this.width = 64
+        this.height = 64
+    }
+
+    draw() {
+        c.fillStyle = 'rgba(255, 0, 0, 0.1)'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
