@@ -93,6 +93,7 @@ const player = new Sprite({
     image: playerDownImage,
     frames: {
         max: 4,
+        hold: 10
     },
     framesHeight: 1,
     sprites: {
@@ -199,7 +200,6 @@ function animate() {
 
     // activate battle
     if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed )) {
-        console.log(Math.random())
         // check for battle zone collision
         for (let i = 0; i < battleZones.length; i++) {
             const battleZone = battleZones[i]
