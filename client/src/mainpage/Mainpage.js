@@ -21,9 +21,8 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const url = "http://localhost:8080/user/12345/updateClassNote";
+  const url = "http://localhost:8080/user/12345/updateClass";
 
-  
   //handler for delete buttons
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
@@ -36,7 +35,6 @@ function Mainpage() {
   const handleGameClose = () => {
     setIsGameOpen(false);
     handleReset();
-
   };
   const handleReset = () => {
     setProgress(0);
@@ -48,10 +46,10 @@ function Mainpage() {
   };
 
   //update Note Progress
-  const updateNoteProgress = (value) =>{
+  const updateNoteProgress = (value) => {
     setProgress(value);
-   }
-  
+  };
+
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -92,7 +90,7 @@ function Mainpage() {
         updatedNote.content;
       //handle update title
       newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
-      handleDatabaseUpdate(newData);
+      handleDatabaseUpdate(SelectedClass);
 
       // Return the updated data object
       return newData;
@@ -115,7 +113,7 @@ function Mainpage() {
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
       // Return the updated data object
-      handleDatabaseUpdate(newData);
+      handleDatabaseUpdate(SelectedClass);
 
       return newData;
     });
@@ -130,10 +128,14 @@ function Mainpage() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
       },
       body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
     })
       .then((response) => {
+        console.log(JSON.stringify(data));
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -163,7 +165,7 @@ function Mainpage() {
         newData.classes.splice(classIndex, 1);
         // Return the updated data object
       }
-      handleDatabaseUpdate(newData);
+      handleDatabaseUpdate(SelectedClass);
 
       return newData;
     });
@@ -191,7 +193,7 @@ function Mainpage() {
         newData.classes[classIndex].notes.splice(noteIndex, 1);
         // Return the updated data object
       }
-      handleDatabaseUpdate(newData);
+      handleDatabaseUpdate(SelectedClass);
 
       return newData;
     });
@@ -199,7 +201,6 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
-  
   return (
     <div className="mainpage">
       {/* header without button */}
@@ -236,7 +237,10 @@ function Mainpage() {
         updateProgress={updateNoteProgress}
         isReset={reset}
       />
-      <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
+      <ProgressGameBar
+        progress={progress}
+        onButtonClick={handleGameButtonClick}
+      />
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
 
       {/*delete button component */}
@@ -248,7 +252,6 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
-
     </div>
   );
 }

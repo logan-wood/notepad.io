@@ -1,5 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+
+router.use(cors(corsOptions));
 
 // import controllers
 const userController = require("../controllers/userController");
@@ -21,6 +28,7 @@ router.get("/user/:id/getInfo", function (req, res) {
 // updates and overwrites single class, or adds them if they don't already exist.
 router.put("/user/:id/updateClass", (req, res) => {
   const id = req.params.id;
+  console.log(req.body);
   userController.updateClass(req, res, id);
 });
 
