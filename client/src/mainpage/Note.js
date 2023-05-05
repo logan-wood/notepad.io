@@ -1,40 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, updateProgress, isReset}) => {
+const Note = ({
+  SelectedClass,
+  SelectedNote,
+  updateNote,
+  updateClass,
+  progress,
+  updateProgress,
+  isReset,
+}) => {
+  //State hooks for className, Note Title, Note Content and Keyup
   const [className, setClassName] = useState(
     SelectedClass ? SelectedClass.name : ""
   );
-  const [keyUpCounter, setKeyUpCounter] = useState(0);
-
-
-  // State hooks for note title and content
   const [noteTitle, setNoteTitle] = useState(
     SelectedNote ? SelectedNote.title : ""
   );
   const [noteContent, setNoteContent] = useState(
     SelectedNote ? SelectedNote.content : ""
   );
+  const [keyUpCounter, setKeyUpCounter] = useState(0);
+
   // reference for Tiny MCE editor
   const editorRef = useRef(null);
 
-
-  //handlers for when the note titles or content change
+  //handlers for when the Note Title, Class Name changes
   const handleTitleChange = (e) => {
     setNoteTitle(e.target.value);
   };
 
-  //handlers for when the note titles or content change
   const handleClassNameChange = (e) => {
     setClassName(e.target.value);
   };
 
-  const handleContentChange = (e) => {
-    setNoteContent(e.target.value);
-   
-  };
-
-  //handler when focus on note is lost
+  //handler when focus on note, note title or class name is lost
   const handleNoteBlur = () => {
     updateNote({
       ...SelectedNote,
@@ -49,7 +49,7 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, 
       title: noteTitle,
     });
   };
-  //handler when focus on note is lost
+
   const handleClassNameBlur = () => {
     updateClass({
       ...SelectedClass,
@@ -77,18 +77,39 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, 
     });
   };
 
-  //effect hook that updates note titel and content when selected note prop is passed through
+  //Handler for when key is pressed
+  const handleKeyUp = (event) => {
+    updateProgress((prevProgress) => {
+      const newProgress = calculateProgress();
+      updateProgress(newProgress);
+      return newProgress;
+    });
+    setKeyUpCounter((prevCount) => prevCount + 1);
+  };
+
+  //Function for calculating progress in progress bar based on number of keypresses
+  const calculateProgress = () => {
+    if (progress < 100) {
+      console.log("keyup", keyUpCounter);
+      return (keyUpCounter / 2500) * 100;
+    } else {
+      setKeyUpCounter(0);
+
+      return 100;
+    }
+  };
+
+  //effect hook that updates note title and content when selected note prop is passed through
   useEffect(() => {
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     setClassName(SelectedClass ? SelectedClass.name : "");
-   
   }, [SelectedNote]);
 
+  //Effect hook for updating the progress bar
   useEffect(() => {
     updateProgress(0);
     setKeyUpCounter(0);
-
   }, [isReset]);
 
   //render if there isnt a selected class and/note
@@ -97,29 +118,6 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, 
   } else if (!SelectedNote) {
     return <div className="note">Click on something...</div>;
   }
-
-  const handleKeyUp  = (event) => {
-
-    updateProgress((prevProgress) => {
-      const newProgress = calculateProgress();
-      updateProgress(newProgress);
-      return newProgress;
-    });
-    setKeyUpCounter((prevCount) => prevCount + 1);
-    
-  };
-  
-  const calculateProgress = () => {
-    if (progress < 100) {
-      console.log("keyup",keyUpCounter);
-      return (keyUpCounter / 2500) * 100;
-    } else {
-      setKeyUpCounter(0);
-
-      return 100;
-    }
-  
-  };
 
   return (
     <div className="note">
@@ -157,15 +155,30 @@ const Note = ({ SelectedClass, SelectedNote, updateNote, updateClass ,progress, 
           menubar: true,
           resize: false,
           plugins: [
-            "advlist autolink lists link image charmap print preview anchor",
+            "textpatterns  autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
             "insertdatetime media table paste code help wordcount emoticons",
           ],
-          toolbar:
+          textpattern_patterns: [
+            { start: "*", end: "*", format: "italic" },
+            { start: "**", end: "**", format: "bold" },
+            { start: "#", format: "h1" },
+            { start: "##", format: "h2" },
+            { start: "###", format: "h3" },
+            { start: "####", format: "h4" },
+            { start: "#####", format: "h5" },
+            { start: "######", format: "h6" },
+            // The following text patterns require the `lists` plugin
+            { start: "1. ", cmd: "InsertOrderedList" },
+            { start: "* ", cmd: "InsertUnorderedList" },
+            { start: "- ", cmd: "InsertUnorderedList" },
+          ],
+          toolbar: [
             "undo redo | formatselect | " +
-            "bold italic backcolor | alignleft aligncenter " +
-            "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help",
+              "bold italic backcolor | alignleft aligncenter " +
+              "alignright alignjustify | bullist numlist outdent indent | " +
+              "removeformat | help",
+          ],
         }}
       />
     </div>
