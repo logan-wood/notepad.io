@@ -1,4 +1,5 @@
-import React from "react";
+// Import necessary dependencies
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
@@ -7,9 +8,21 @@ import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 
-const Header = ({ showButtons, pageName, showSignOutButton }) => {
+const Header = ({
+  showButtons,
+  pageName,
+  showDarkModeButton,
+  showDashBoardButtons,
+}) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle("dark-mode");
+  };
+
   return (
-    <header className="header">
+    <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
         <Link to={pageName}>
           <img src={logo} alt="Logo" className="logo" />
@@ -32,16 +45,19 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
           </Link>
         </div>
       )}
-      {showSignOutButton && (
+      {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
+          <Button className="dark-mode-toggle" onClick={handleDarkMode}>
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          </Button>
           <Link to="/settings" className="settings-button">
-              <img src={settingsIcon} alt="Settings" className="settings-icon" />
+            <img src={settingsIcon} alt="Settings" className="settings-icon" />
           </Link>
           <Link to="/profile" className="profile-button">
-              <img src={profileIcon} alt="Profile" className="profile-icon" />
+            <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
           <Link to="/" className="sign-out-button">
-              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
           </Link>
         </div>
       )}
