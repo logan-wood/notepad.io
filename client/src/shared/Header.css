@@ -76,7 +76,9 @@
   color: #bb4430 !important;
 }
 
-.sign-out-button {
+.sign-out-button,
+.settings-button,
+.profile-button {
   border-top-left-radius: 15px !important;
   border-bottom-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
@@ -95,17 +97,39 @@
 }
 
 .sign-out-button:hover,
-.sign-out-button:focus {
+.sign-out-button:focus,
+.settings-button:hover,
+.settings-button:focus,
+.profile-button:hover,
+.profile-button:focus {
   background-color: #fffbf6 !important;
   border-color: #bb4430 !important;
   color: #bb4430!important;
 }
 
 .sign-out-icon {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 40px;
   margin-right: 10px;
   vertical-align: middle;
 }
 
+.profile-icon {
+  width: 40px;
+  height: 50px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
 
+.settings-icon {
+  width: 39px;
+  height: 49px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.dashboard-buttons-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}

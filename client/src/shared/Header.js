@@ -4,6 +4,8 @@ import "./Header.css";
 import logo from "./notey.png";
 import { Link } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
+import settingsIcon from "./settings_icon.png";
+import profileIcon from "./profile_icon.png";
 
 const Header = ({ showButtons, pageName, showSignOutButton }) => {
   return (
@@ -31,12 +33,15 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
         </div>
       )}
       {showSignOutButton && (
-        <div className="sign-out-button">
-          <Link to="/">
-            <Button variant="primary" className="sign-out-button">
+        <div className="dashboard-buttons-container">
+          <Link to="/settings" className="settings-button">
+              <img src={settingsIcon} alt="Settings" className="settings-icon" />
+          </Link>
+          <Link to="/profile" className="profile-button">
+              <img src={profileIcon} alt="Profile" className="profile-icon" />
+          </Link>
+          <Link to="/" className="sign-out-button">
               <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
-              Sign Out
-            </Button>
           </Link>
         </div>
       )}
