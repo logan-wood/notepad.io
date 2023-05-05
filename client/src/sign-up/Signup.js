@@ -13,8 +13,7 @@ import { Button } from "react-bootstrap";
 import "./Signup.css";
 import googleLogo from "../loginpage/google_logo.png";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate} from 'react-router-dom';
 
 const SignUp = () => {
   // set state variables
@@ -25,6 +24,7 @@ const SignUp = () => {
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  
 
   // google sign up fuctionality
   const signUpWithGoogle = () => {
