@@ -23,6 +23,18 @@ const Header = ({
   };
 
   // return the Header element
+import { useSelector, useDispatch } from "react-redux";
+
+const Header = ({ showButtons, pageName, showSignOutButton }) => {
+  // user object
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const logoutUser = () => {
+    console.log('logging out user')
+    dispatch({ type: 'CLEAR_USER' })
+  }
+
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
@@ -69,6 +81,15 @@ const Header = ({
           <Link to="/" className="sign-out-button">
             <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
           </Link>
+      {showSignOutButton && (
+        <div className="sign-out-button">
+          <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div>
+          {/* <Link to="/"> */}
+            <Button variant="primary" onClick={logoutUser} className="sign-out-button">
+              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+              Sign Out
+            </Button>
+          {/* </Link> */}
         </div>
       )}
     </header>

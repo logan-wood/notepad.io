@@ -1,6 +1,6 @@
 import "./Mainpage.css";
 import Header from "../shared/Header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
@@ -10,10 +10,11 @@ import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
+import { Button } from "react-bootstrap";
 
 function Mainpage() {
-  //stating Variables
-  const [isGameOpen, setIsGameOpen] = useState(true);
+  //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
+  const [isGameOpen, setIsGameOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
@@ -23,11 +24,13 @@ function Mainpage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const url = "http://localhost:8080/user/12345/updateClass";
+ 
 
   //handler for delete buttons
   const handleDeleteButton = () => {
     setIsExpanded(!isExpanded);
   };
+
   const handleDeleteBlur = () => {
     setIsExpanded(false);
   };
@@ -38,9 +41,15 @@ function Mainpage() {
     handleReset();
   };
   const handleReset = () => {
+    console.log("handleReset called");
     setProgress(0);
+    console.log("progress set to 0");
     setReset(true);
+    updateNoteProgress(0);
   };
+  useEffect(() => {
+    console.log(progress);
+  }, [progress]);
 
   const handleGameButtonClick = () => {
     setIsGameOpen(true);
@@ -48,6 +57,7 @@ function Mainpage() {
 
   //update Note Progress
   const updateNoteProgress = (value) => {
+    console.log(value);
     setProgress(value);
   };
 
@@ -91,7 +101,7 @@ function Mainpage() {
         updatedNote.content;
       //handle update title
       newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
-      handleDatabaseUpdate(SelectedClass);
+      handleDatabaseUpdateClass(SelectedClass);
 
       // Return the updated data object
       return newData;
@@ -114,7 +124,7 @@ function Mainpage() {
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
       // Return the updated data object
-      handleDatabaseUpdate(SelectedClass);
+      handleDatabaseUpdateClass(SelectedClass);
 
       return newData;
     });
@@ -124,7 +134,65 @@ function Mainpage() {
   };
 
   // handle for updating the
-  const handleDatabaseUpdate = (data) => {
+  const handleDatabaseUpdateClass = (data) => {
+     // constant url for testing purposes
+  const url = "http://localhost:8080/user/12345/updateClass";
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+      body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
+    })
+      .then((response) => {
+        console.log(JSON.stringify(data));
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log(data); // Do something with the response data
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
+// Handle for deleting a note from the database
+const databaseGetNote = (data) => {
+  const url = "http://localhost:8080/user/12345/getInfo";
+
+  fetch(url, {
+    method: "Get",
+    headers: {
+      "Content-Type": "application/json", // Make sure to set the content type of the request body
+      Accept: "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      Connection: "keep-alive",
+    },
+    body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
+  })
+    .then((response) => {
+     setData(JSON.stringify(data));
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json(); // Parse the response body as JSON
+    })
+    .then((data) => {
+      console.log(data); // Do something with the response data
+    })
+    .catch((error) => {
+      console.error("There was an error retrieving the request:", error);
+    });
+};
+  // Handle for deleting a note from the database
+  const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
+    const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;
+
     fetch(url, {
       method: "PUT",
       headers: {
@@ -150,8 +218,37 @@ function Mainpage() {
       });
   };
 
+  const handleDatabaseDeleteClass = (data, selectedClassId) => {
+    const url = "http://localhost:8080/user/12345/removeClass?classId="+selectedClassId;
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+      body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
+    })
+      .then((response) => {
+        console.log(JSON.stringify(data));
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log(data); // Do something with the response data
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
+
   const handleDeleteClass = () => {
-    // callback function that recieves the previous state
+    
+
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
@@ -166,7 +263,7 @@ function Mainpage() {
         newData.classes.splice(classIndex, 1);
         // Return the updated data object
       }
-      handleDatabaseUpdate(SelectedClass);
+      handleDatabaseDeleteClass(SelectedClass, SelectedClass.id);
 
       return newData;
     });
@@ -194,7 +291,7 @@ function Mainpage() {
         newData.classes[classIndex].notes.splice(noteIndex, 1);
         // Return the updated data object
       }
-      handleDatabaseUpdate(SelectedClass);
+      handleDatabaseDeleteNote(SelectedNote, SelectedClass.id, SelectedNote.id);
 
       return newData;
     });
@@ -203,6 +300,7 @@ function Mainpage() {
   };
 
   return (
+   
     <div className="mainpage">
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true}/>
@@ -236,12 +334,15 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
         updateProgress={updateNoteProgress}
+        progress={progress}
         isReset={reset}
       />
+
       <ProgressGameBar
         progress={progress}
         onButtonClick={handleGameButtonClick}
       />
+
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
 
       {/*delete button component */}
@@ -253,6 +354,13 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
+
+      <Button
+        onClick={handleDatabaseUpdateClass(SelectedClass)}
+        className="save-button"
+      >
+        Save Note
+      </Button>
     </div>
   );
 }

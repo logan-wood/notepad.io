@@ -1,15 +1,18 @@
 // Import required dependancies
 import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../shared/Header.js";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { app } from "../firebase.js";
+// import {
+//   getAuth,
+//   signInWithPopup,
+//   GoogleAuthProvider,
+//   signInWithEmailAndPassword,
+// } from "firebase/auth";
+// import { app } from "../firebase.js";
+// import googleLogo from "./google_logo.png";
 import { Button } from "react-bootstrap";
 import "./Login.css";
+import { useDispatch, useSelector } from 'react-redux';
 import googleLogo from "./google_logo.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
@@ -20,10 +23,7 @@ const Login = () => {
   // Declare state variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   // google sign in fuctionality
   const signInWithGoogle = () => {
@@ -52,9 +52,33 @@ const Login = () => {
       } else {
         // notify user of their error
         setError(`Error signing in with Google: ${error.message}`);
+
+  // shared across different react files/components
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const signInWithEmail = () => {
+    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email
+      })
+    })
+    .then(async (response) => {
+      // user found
+      if (response.status === 200) {
+        const data = await response.json()
+        return data
+      } else {
+        setMessage("No user found")
       }
-    });
-  };
+    })
+    .then((data) => {
+      dispatch({ type: 'SET_USER', payload: data })
+      setMessage("Welcome back, " + user.username)
 
   // email sign in fuctionality
   const signInWithEmail = () => {
@@ -67,6 +91,13 @@ const Login = () => {
         // notify user of error
         setError(`Error signing in with Email: ${error.message}`);
       });
+      // show link to dash
+      const link = document.getElementById("visit-dashboard");
+      link.style.display = "block";
+    })
+    .catch(error => {
+      console.error(error)
+    })
   };
 
   // return the Login element
@@ -115,22 +146,32 @@ const Login = () => {
           >
             Sign in with Email
           </Button>
-          <div className="or-divider">
+          {/* <div className="or-divider">
             <span className="or-text">or</span>
           </div>
+          <Button
+            variant="primary"
+            className="google-signin-button"
+            onClick={signInWithGoogle}
+          >
+            <img src={googleLogo} alt="Google logo" className="google-logo" />
+            Sign in with Google
+          </Button> */}
+          <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
+          <a href='/dashboard' id='visit-dashboard' style={{display: 'none'}}>dashboard</a>
           <div className="button-group">
             {/* calls signInWithGoogle function on activation */}
-            <Button
+            {/* <Button
               variant="primary"
               className="google-signin-button"
               onClick={signInWithGoogle}
-            >
               <img src={googleLogo} alt="Google logo" className="google-logo" />
               Sign in with Google
             </Button>
             {/* Diplays error message, if any */}
             <p className="error-message signin-error">{error}</p>
             {/* send user to sign up page on activation */}
+            <p className="error-message signin-error">{error}</p> */}
             <Link to="/signup">
               <Button variant="link" className="register-button">
                 Don't have an account?
