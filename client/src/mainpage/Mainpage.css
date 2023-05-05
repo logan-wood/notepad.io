@@ -20,7 +20,7 @@ body {
 .sidenav {
     position: absolute;
     transition: all 0.3s ease-in-out;
-    height: calc(100vh - 65px);
+    height: calc(100vh - 100px);
     background: #EFE6DD;
     float: left;
     width: 300px;
@@ -210,3 +210,23 @@ noteTitleStyle {
     color: #4f4f4f;
     margin-top: 20px;
 }
+
+.save-button {
+    color: #694b2c !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin-top: 1.15rem !important;
+    font-size: 18px !important;
+    position:absolute;
+    right:10px;
+    top: 10vh;
+    background-color: #f3dfa2 !important;
+}
+  
+  .save-button:hover {
+    text-decoration: underline !important;
+    background-color: #efe6dd !important;
+
+    color: #694b2c !important;
+}
+  
