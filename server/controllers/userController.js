@@ -54,4 +54,29 @@ module.exports = {
       }
     }
   },
+  removeClass: function (req, res, uid, classId) {
+    if (uid && classId) {
+      try {
+        database.removeClass(uid, classId);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error saving class to database: " + error.message);
+      }
+    } else {
+      if (!classId && !uid) {
+        res
+          .status(400)
+          .send("Bad Request: uid parameter is missing; classId not found.");
+      }
+      if (!classId) {
+        res.status(404).send("Error: classId not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
 };

@@ -29,4 +29,21 @@ module.exports = {
       return ref;
     }
   },
+  removeClass: async function (uid, classId) {
+    const ref = await db
+      .ref("/users/" + uid)
+      .child(classId)
+      .once("value");
+    if (!ref.exists()) {
+      console.log("Class doesn't exist");
+      return ref;
+    } else {
+      console.log("removing class");
+      await db
+        .ref("/users/" + uid)
+        .child(classId)
+        .remove();
+      return ref;
+    }
+  },
 };

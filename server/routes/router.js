@@ -28,7 +28,17 @@ router.get("/user/:id/getInfo", function (req, res) {
 // updates and overwrites single class, or adds them if they don't already exist.
 router.put("/user/:id/updateClass", (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
+  userController.updateClass(req, res, id);
+});
+
+router.delete("/user/:id/removeClass", (req, res) => {
+  const id = req.params.id;
+  const classId = req.query.classId;
+  console.log(classId);
+  userController.removeClass(req, res, id, classId);
+});
+router.delete("/user/:id/removeNote", (req, res) => {
+  const id = req.params.id;
   userController.updateClass(req, res, id);
 });
 
