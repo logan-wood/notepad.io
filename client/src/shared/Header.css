@@ -1,3 +1,4 @@
+/* Header styling */
 .header {
   padding: 2rem;
   background-color: #fffbf6;
@@ -28,6 +29,7 @@
   color: #bb4430;
 }
 
+/* contains log in and sign up buttons */
 .buttons-container {
   display: flex;
   gap: 5px;
@@ -121,17 +123,20 @@
   vertical-align: middle;
 }
 
+/* contains profile, settings, darkmode, and sign out buttons */
 .dashboard-buttons-container {
   display: flex;
   gap: 5px;
   align-items: center;
 }
 
+/* styling for dark mode */
 .header.dark-mode {
   background-color: #1f1f1f;
   color: #fff;
 }
 
+/* styling for dark mode button */
 .dark-mode-toggle {
   border-top-left-radius: 15px !important;
   border-bottom-left-radius: 15px !important;
@@ -145,12 +150,7 @@
   font-size: 18px !important;
 }
 
-.darkmode-container{
-  display: flex;
-  gap: 5px;
-  align-items: right !important;
-}
-
+/* inverts the colour of logo for contrast */
 .header.dark-mode .logo {
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
