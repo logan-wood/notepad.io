@@ -248,7 +248,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In some cases pressing the Backspace or Delete key would incorrectly step into tables rather than remain outside. #TINY-8592
 - Links opened when Alt+Enter or Option+Return was typed even when `preventDefault()` was called on the keydown event. #TINY-8661
 - Inconsistent visual behavior between choosing Edit -> Select All and typing Ctrl+A or Cmd+A when a document contained an image. #TINY-4550
-- Ctrl+Shift+Home/End or Cmd+Shift+Up-arrow/Down-arrow did not expand the selection to a `contenteditable="false"` element if the element was at the beginning or end of a document. #TINY-7795
+- Ctrl+Shift+Landing/End or Cmd+Shift+Up-arrow/Down-arrow did not expand the selection to a `contenteditable="false"` element if the element was at the beginning or end of a document. #TINY-7795
 - Triple-clicking did not select a paragraph in Google Chrome in some circumstances. #TINY-8215
 - Images were not showing as selected when selected along with other content. #TINY-5947
 - Selection direction was not stored or restored when getting or setting selection bookmarks. #TINY-8599
@@ -418,7 +418,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Anchor elements would render incorrectly when using the `allow_html_in_named_anchor` option. #TINY-3799
 - The `AstNode` HTML serializer did not serialize `pre` or `textarea` elements correctly when they contained newlines. #TINY-8446
 - Fixed sub-menu items not read by screen readers. Patch contributed by westonkd. #TINY-8417
-- The Home or End keys would move out of a editable element contained within a noneditable element. #TINY-8201
+- The Landing or End keys would move out of a editable element contained within a noneditable element. #TINY-8201
 - Dialogs could not be opened in inline mode before the editor had been rendered. #TINY-8397
 - Clicking on menu items could cause an unexpected console warning if the `onAction` function caused the menu to close. #TINY-8513
 - Fixed various color and contrast issues for the dark skins. #TINY-8527
@@ -1468,7 +1468,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an issue where dialog collection items (emoticon and special character dialogs) couldn't be selected with touch devices. #TINY-3444
 - Fixed a type error introduced in TinyMCE version 5.0.2 when calling `editor.getContent()` with nested bookmarks. #TINY-3400
 - Fixed an issue that prevented default icons from being overridden. #TINY-3449
-- Fixed an issue where **Home/End** keys wouldn't move the caret correctly before or after `contenteditable=false` inline elements. #TINY-2995
+- Fixed an issue where **Landing/End** keys wouldn't move the caret correctly before or after `contenteditable=false` inline elements. #TINY-2995
 - Fixed styles to be preserved in IE 11 when editing via the `fullpage` plugin. #TINY-3464
 - Fixed the `link` plugin context toolbar missing the open link button. #TINY-3461
 - Fixed inconsistent dialog component spacing. #TINY-3436
@@ -1766,7 +1766,7 @@ Initial list of features and changes is available at https://www.tiny.cloud/docs
 ## 4.9.4 - 2019-03-20
 
 ### Fixed
-- Fixed an issue where **Home/End** keys wouldn't move the caret correctly before or after `contenteditable=false` inline elements. #TINY-2995
+- Fixed an issue where **Landing/End** keys wouldn't move the caret correctly before or after `contenteditable=false` inline elements. #TINY-2995
 - Fixed an issue where content may have been lost when using permanent bookmarks. #TINY-3400
 - Fixed the mobile editor to clean up properly when removed. #TINY-3445
 - Fixed an issue where retrieving the selected content as text didn't create newlines. #TINY-3197

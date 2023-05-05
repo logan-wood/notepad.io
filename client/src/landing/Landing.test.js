@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import MainContent from "./Home";
+import MainContent from "./Landing";
 
 describe("MainContent component", () => {
     it("renders the title", () => {
