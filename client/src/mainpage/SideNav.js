@@ -1,5 +1,7 @@
-import React ,{useRef}from "react";
+import React, { useContext, useRef } from "react";
 import arrow from "../assets/lefticon.png";
+import { data } from "./data";
+import { useSelector } from "react-redux";
 import { addNewClass, addNewNote } from "./data";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,6 +11,9 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
   const draggingItem = useRef();
+
+  const user = useSelector((state) => state.user);
+
 
   const draggingStart = (e, position) =>{
     draggingItem.current = position;
@@ -98,6 +103,9 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <img src={arrow}></img>
       </button>
       <div>
+        {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
+        {/* <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div> */}
+
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
