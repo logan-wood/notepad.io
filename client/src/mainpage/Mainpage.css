@@ -1,6 +1,11 @@
 body {
     margin: 0;
     font-family: 'Fjalla One', 'Nunito', sans-serif;
+    background-color: #FFFFFF;
+}
+
+.mainpage{
+    background-color: #ffffff;
 }
 
 .mainpage_header {
@@ -126,10 +131,6 @@ noteTitleStyle {
 
 }
 
-
-
-
-
 .trashcan {
     height: 40px;
 }
@@ -209,4 +210,29 @@ noteTitleStyle {
     font-family: 'Nunito', sans-serif;
     color: #4f4f4f;
     margin-top: 20px;
+}
+
+body.dark-mode .sidenav,
+body.dark-mode .sidenav h1
+{
+    background-color: #333 !important;
+    color: #FFFFFF;
+}
+
+body.dark-mode .noteTitleStyle{
+    background-color: #616161;
+    color: #ffffff;
+}
+
+body.dark-mode .noteClassStyle{
+    background-color: #616161 !important;
+}
+
+body.dark-mode .mainpage{
+    background-color: #616161;
+}
+
+body.dark-mode .note{
+    background-color: #616161 !important;
+    color: #FFFFFF;
 }

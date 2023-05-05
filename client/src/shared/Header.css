@@ -83,9 +83,6 @@
   border-bottom-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
-  background-color: #FFFBF6 !important;
-  border-color: #bb4430 !important;
-  color: #bb4430 !important;
   font-family: "Nunito", sans-serif;
   padding-left: 8px;
   padding-right: 8px;
@@ -102,7 +99,6 @@
 .settings-button:focus,
 .profile-button:hover,
 .profile-button:focus {
-  background-color: #fffbf6 !important;
   border-color: #bb4430 !important;
   color: #bb4430!important;
 }
@@ -110,21 +106,18 @@
 .sign-out-icon {
   width: 35px;
   height: 40px;
-  margin-right: 10px;
   vertical-align: middle;
 }
 
 .profile-icon {
   width: 40px;
   height: 50px;
-  margin-right: 10px;
   vertical-align: middle;
 }
 
 .settings-icon {
   width: 39px;
   height: 49px;
-  margin-right: 10px;
   vertical-align: middle;
 }
 
@@ -132,4 +125,37 @@
   display: flex;
   gap: 5px;
   align-items: center;
+}
+
+.header.dark-mode {
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+.dark-mode-toggle {
+  border-top-left-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background-color: #bb4430 !important;
+  border-color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 18px !important;
+}
+
+.darkmode-container{
+  display: flex;
+  gap: 5px;
+  align-items: right !important;
+}
+
+.header.dark-mode .logo {
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
 }
