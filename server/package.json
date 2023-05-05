@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/logan-wood/notepad.io/issues"
   },
-  "landing": "https://github.com/logan-wood/notepad.io#readme",
+  "homepage": "https://github.com/logan-wood/notepad.io#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
