@@ -63,7 +63,7 @@ module.exports = {
         console.log(error);
         res
           .status(500)
-          .send("Error saving class to database: " + error.message);
+          .send("Error removing class from database: " + error.message);
       }
     } else {
       if (!classId && !uid) {
@@ -72,7 +72,37 @@ module.exports = {
           .send("Bad Request: uid parameter is missing; classId not found.");
       }
       if (!classId) {
-        res.status(404).send("Error: classId not found.");
+        res.status(404).send("Bad Request: classId not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
+  removeNote: function (req, res, uid, classId, noteId) {
+    if (uid && classId && noteId) {
+      try {
+        database.removeNote(uid, classId, noteId);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!classId && !uid && !noteId) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: uid parameter is missing; classId & noteId both not found."
+          );
+      }
+      if (!classId) {
+        res.status(404).send("Bad Request: classId not found.");
+      }
+      if (!noteId) {
+        res.status(404).send("Bad Request: noteId not found.");
       }
       if (!uid) {
         res.status(400).send("Bad Request: uid parameter is missing.");

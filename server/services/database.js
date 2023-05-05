@@ -20,7 +20,7 @@ module.exports = {
     const ref = db.ref("/users/" + uid).child(classToUpdate.id);
     const snapshot = await db.ref("/users/" + uid).once("value");
     if (!snapshot.exists()) {
-      console.log("user doesn't exist - creating new user!");
+      //user doesn't exist - creating new user
       this.addNewUser(uid);
       await ref.update(classToUpdate);
       return ref;
@@ -35,14 +35,52 @@ module.exports = {
       .child(classId)
       .once("value");
     if (!ref.exists()) {
-      console.log("Class doesn't exist");
+      //class doesnt exist; do nothing
       return ref;
     } else {
-      console.log("removing class");
+      //remove class
       await db
         .ref("/users/" + uid)
         .child(classId)
         .remove();
+      return ref;
+    }
+  },
+
+  removeNote: async function (uid, classId, noteId) {
+    const ref = (
+      await db
+        .ref("/users/" + uid)
+        .child(classId)
+        .once("value")
+    ).exists();
+    if (!ref) {
+      //class doesnt exist; do nothing
+      return ref;
+    } else {
+      //Class found
+      //loop to find notes
+      const notes = await db
+        .ref("/users/" + uid)
+        .child(classId)
+        .child("notes")
+        .once("value");
+      if (notes.exists()) {
+        //notes array exists
+        notes.forEach((note) => {
+          const key = note.key;
+          const value = note.val();
+          //correct note is found.
+          if (value.id == noteId) {
+            //remove note
+            db.ref("/users/" + uid)
+              .child(classId)
+              .child("notes")
+              .child(key)
+              .remove();
+          }
+        });
+      }
       return ref;
     }
   },

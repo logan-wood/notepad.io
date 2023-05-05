@@ -39,7 +39,9 @@ router.delete("/user/:id/removeClass", (req, res) => {
 });
 router.delete("/user/:id/removeNote", (req, res) => {
   const id = req.params.id;
-  userController.updateClass(req, res, id);
+  const classId = req.query.classId;
+  const noteId = req.query.noteId;
+  userController.removeNote(req, res, id, classId, noteId);
 });
 
 module.exports = router;
