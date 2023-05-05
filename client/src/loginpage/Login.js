@@ -35,26 +35,27 @@ const Login = () => {
         email: email
       })
     })
-    .then((response) => {
+    .then(async (response) => {
       // user found
       if (response.status === 200) {
-        return response.json()
+        const data = await response.json()
+        return data
       } else {
         setMessage("No user found")
       }
     })
-    .then(data => {
-      console.log(data)
+    .then((data) => {
       dispatch({ type: 'SET_USER', payload: data })
+      setMessage("Welcome back, " + user.username)
+
+      // show link to dash
+      const link = document.getElementById("visit-dashboard");
+      link.style.display = "block";
     })
     .catch(error => {
       console.error(error)
     })
   };
-
-  const logoutUser = () => {
-    dispatch({ type: 'CLEAR_USER' })
-  }
 
   return (
     <>
@@ -108,12 +109,10 @@ const Login = () => {
             <img src={googleLogo} alt="Google logo" className="google-logo" />
             Sign in with Google
           </Button> */}
-          <div className="register-text">Don't have an account?</div>
-          <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
           <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
-          <div><button onClick={() => logoutUser()}>Logout User</button></div>
+          <a href='/dashboard' id='visit-dashboard' style={{display: 'none'}}>dashboard</a>
           <div className="button-group">
-            <Button
+            {/* <Button
               variant="primary"
               className="google-signin-button"
               onClick={signInWithGoogle}
@@ -121,7 +120,7 @@ const Login = () => {
               <img src={googleLogo} alt="Google logo" className="google-logo" />
               Sign in with Google
             </Button>
-            <p className="error-message signin-error">{error}</p>
+            <p className="error-message signin-error">{error}</p> */}
             <Link to="/signup">
               <Button variant="link" className="register-button">
                 Don't have an account?

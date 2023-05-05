@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import arrow from "../assets/lefticon.png";
 import { data } from "./data";
-import { useSelector, useDispatch } from "react-redux";
-import React ,{useRef}from "react";
-import arrow from "../assets/lefticon.png";
+import { useSelector } from "react-redux";
 import { addNewClass, addNewNote } from "./data";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,8 +12,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [openClasses, setOpenClasses] = React.useState([]);
   const draggingItem = useRef();
 
-  // user object
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
 
@@ -101,20 +97,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
     );
   };
 
-  const logoutUser = () => {
-    fetch(process.env.REACT_APP_API_DOMAIN + '/logoutUser', {
-      method: 'get',
-      headers: {
-        'Cookie': document.cookie
-      }
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({ type: 'CLEAR_USER' })
-      }
-    })
-  }
-
   return (
     <div className={`sidenav ${isOpen ? "open" : ""}`}>
       <button onClick={toggleNav} className="navButton">
@@ -122,8 +104,8 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       </button>
       <div>
         {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
-        <div>{user ? (<p>Welcome back, {user.username}</p>) : (<p>no user signed in...</p>)}</div>
-        <div><button onClick={() => logoutUser()}>Logout User</button></div>
+        {/* <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div> */}
+
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
