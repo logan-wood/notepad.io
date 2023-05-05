@@ -22,6 +22,8 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const url = "http://localhost:8080/user/12345/updateClass";
  
 
   //handler for delete buttons
@@ -301,7 +303,7 @@ const databaseGetNote = (data) => {
    
     <div className="mainpage">
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showSignOutButton={true} />
+      <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true}/>
 
       {/* viewport so that its responsive*/}
       <meta
