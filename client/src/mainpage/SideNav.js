@@ -1,14 +1,16 @@
 import React ,{useRef}from "react";
 import arrow from "../assets/lefticon.png";
-import { addNewClass, addNewNote } from "./data";
 import { v4 as uuidv4 } from 'uuid';
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, dataState , noteData}) => {
+ 
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = React.useState(null);
   const [selectNote, setSelectNote] = React.useState(null);
   const [openClasses, setOpenClasses] = React.useState([]);
   const draggingItem = useRef();
+  console.log('data in sidenav:', dataState);
+  
 
   const draggingStart = (e, position) =>{
     draggingItem.current = position;
@@ -25,12 +27,12 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       notes: [],
       noteSize: 0,
     };
-    addNewClass(newClass);
+    noteData.addNewClass(newClass);
     onSelectClass(newClass);
   };
   //Handles selecting a class
   const handleSelectClass = (id) => {
-    const selectClass = data.classes.find((classObj) => classObj.id === id);
+    const selectClass = dataState.classes.find((classObj) => classObj.id === id);
     setSelectClass(selectClass);
     setSelectNote(null);
     onSelectClass(selectClass);
@@ -47,14 +49,14 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   //CREATE NEW NOTE HANDLER
 
   const handleNewNote = (id) => {
-    const classObj = data.classes.find((classObj) => classObj.id === id);
+    const classObj = dataState.classes.find((classObj) => classObj.id === id);
     if (classObj) {
       const newNote = {
         id: uuidv4(),
         title: `new Note`,
         content: ``,
       };
-      addNewNote(classObj.id, newNote);
+      noteData.addNewNote(classObj.id, newNote);
       onSelectNote(newNote);
     } else {
       console.log("error with handle note");
@@ -101,7 +103,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
-          {data.classes.map((classItem) => (
+          {dataState.classes.map((classItem) => (
             <div key={classItem.id}>
               <h3>
                 <button

@@ -4,25 +4,21 @@ import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import { classes } from "./data";
 import Note from "./Note";
-import { data as initialData } from "./data";
-import { updateNoteData, updateClassData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
-
-function Mainpage() {
+function Mainpage({ noteData }) {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
   const [isGameOpen, setIsGameOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(noteData.state);
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
- 
 
   //handler for delete buttons
   const handleDeleteButton = () => {
@@ -48,6 +44,11 @@ function Mainpage() {
   useEffect(() => {
     console.log(progress);
   }, [progress]);
+  
+  useEffect(() => {
+    setData(noteData.state);
+    console.log("data updated", data);
+  }, [noteData]);
 
   const handleGameButtonClick = () => {
     setIsGameOpen(true);
@@ -104,7 +105,7 @@ function Mainpage() {
       // Return the updated data object
       return newData;
     });
-    updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
+    data.updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
     SetSelectedNote(updatedNote);
   };
 
@@ -127,14 +128,14 @@ function Mainpage() {
       return newData;
     });
 
-    updateClassData(updatedClass.id, updatedClass);
+    data.updateClassData(updatedClass.id, updatedClass);
     SetSelectedClass(updatedClass);
   };
 
   // handle for updating the
   const handleDatabaseUpdateClass = (data) => {
-     // constant url for testing purposes
-  const url = "http://localhost:8080/user/12345/updateClass";
+    // constant url for testing purposes
+    const url = "http://localhost:8080/user/12345/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -159,37 +160,14 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
-// Handle for deleting a note from the database
-const databaseGetNote = (data) => {
-  const url = "http://localhost:8080/user/12345/getInfo";
 
-  fetch(url, {
-    method: "Get",
-    headers: {
-      "Content-Type": "application/json", // Make sure to set the content type of the request body
-      Accept: "*/*",
-      "Accept-Encoding": "gzip, deflate, br",
-      Connection: "keep-alive",
-    },
-    body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
-  })
-    .then((response) => {
-     setData(JSON.stringify(data));
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json(); // Parse the response body as JSON
-    })
-    .then((data) => {
-      console.log(data); // Do something with the response data
-    })
-    .catch((error) => {
-      console.error("There was an error retrieving the request:", error);
-    });
-};
   // Handle for deleting a note from the database
-  const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
-    const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;
+  const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
+    const url =
+      "http://localhost:8080/user/12345/removeNote?classId=" +
+      selectedClassId +
+      "&&noteId=" +
+      selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -217,7 +195,8 @@ const databaseGetNote = (data) => {
   };
 
   const handleDatabaseDeleteClass = (data, selectedClassId) => {
-    const url = "http://localhost:8080/user/12345/removeClass?classId="+selectedClassId;
+    const url =
+      "http://localhost:8080/user/12345/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
       method: "DELETE",
@@ -245,8 +224,6 @@ const databaseGetNote = (data) => {
   };
 
   const handleDeleteClass = () => {
-    
-
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
@@ -298,11 +275,9 @@ const databaseGetNote = (data) => {
   };
 
   return (
-   
     <div className="mainpage">
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showSignOutButton={true} />
-
       {/* viewport so that its responsive*/}
       <meta
         name="viewport"
@@ -321,8 +296,10 @@ const databaseGetNote = (data) => {
         toggleNav={toggleNav}
         onSelectClass={handleSelectClass}
         onSelectNote={handleSelectNote}
+        noteData={noteData}
+        dataState={data}
+
         className="classmenu"
-        data={initialData}
       />
 
       {/*Note component*/}
