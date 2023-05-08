@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Notedata extends Component {
+class Notedata extends React.Component {
   constructor(props) {
     super(props);
 
@@ -113,9 +113,8 @@ class Notedata extends Component {
     updatedClasses[classIndex].name = updatedClass.name;
     this.setState({ classes: updatedClasses });
   };
-
   render() {
-    return null; // Return null since you don't need to render anything
+    return null; // don't render anything
   }
 }
 export default Notedata;

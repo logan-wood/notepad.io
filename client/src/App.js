@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,11 +13,10 @@ import Mainpage from "./mainpage/Mainpage";
 import "./AppTransitions.css";
 import Notedata from "./mainpage/Notedata";
 
-const initialNotedata = new Notedata();
 
-function AnimatedRoutes() {
+function AnimatedRoutes({ noteData }) {
   const location = useLocation();
-
+console.log("animated",noteData);
   return (
     <TransitionGroup>
       <CSSTransition key={location.pathname} classNames="fade" timeout={1000}>
@@ -28,7 +27,7 @@ function AnimatedRoutes() {
             <Route path="/login" element={<Login />} />
             <Route
               path="/dashboard"
-              element={<Mainpage noteData={initialNotedata} />}
+              element={<Mainpage noteData={noteData} />}
             />
           </Routes>
         </div>
@@ -38,12 +37,13 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  const [noteData, setNoteData] = useState(new Notedata());
+
   return (
     <Router>
-      <Notedata />
-
       <div className="App">
-        <AnimatedRoutes />
+        <Notedata />
+        <AnimatedRoutes noteData={noteData} />
       </div>
     </Router>
   );
