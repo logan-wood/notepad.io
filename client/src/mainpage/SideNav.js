@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React ,{useRef}from "react";
 import arrow from "../assets/lefticon.png";
 import { addNewClass, addNewNote } from "./data";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
@@ -10,12 +10,10 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [openClasses, setOpenClasses] = React.useState([]);
   const draggingItem = useRef();
 
-  //useEffect hook to update the data when the classes or notes are changed
-
-  const draggingStart = (e, position) => {
+  const draggingStart = (e, position) =>{
     draggingItem.current = position;
     console.log(e.target.innerHTML);
-  };
+  }
   //unique ids for the
   //TODO:
   // CREATE NEW CLASS HANDLER
@@ -111,8 +109,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                   className={`classButton ${
                     isClassButtonActive(classItem.id) ? "active" : ""
                   }`}
-                  draggable
-                >
+                draggable>
                   {classItem.name}
                 </button>
               </h3>
@@ -125,25 +122,22 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                     + new Note
                   </button>
 
-                  {classItem.notes && (
-                    <ul>
-                      {classItem.notes.map((note) => (
-                        <li key={note.id}>
-                          <button
-                            onClick={() => handleSelectNote(note.id)}
-                            className={`noteButton ${
-                              isNoteButtonActive(note.id, classItem.id)
-                                ? "active"
-                                : ""
-                            }`}
-                            draggable
-                          >
-                            {note.title}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <ul>
+                    {classItem.notes.map((note) => (
+                      <li key={note.id}>
+                        <button
+                          onClick={() => handleSelectNote(note.id)}
+                          className={`noteButton ${
+                            isNoteButtonActive(note.id, classItem.id)
+                              ? "active"
+                              : ""
+                          }`}
+                          draggable>
+                          {note.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </>
               )}
             </div>

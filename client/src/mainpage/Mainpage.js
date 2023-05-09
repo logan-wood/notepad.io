@@ -2,8 +2,10 @@ import "./Mainpage.css";
 import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
+import { classes } from "./data";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
+import { data as initialData } from "./data";
+import { updateNoteData, updateClassData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
@@ -16,7 +18,7 @@ function Mainpage() {
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const [data, setData] = useState({ classes: [] });
+  const [data, setData] = useState(initialData);
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -73,14 +75,6 @@ function Mainpage() {
     console.log("note", selectedNote);
     SetSelectedNote(selectedNote);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-     await getDatabaseData();
-      console.log("get DB data in mainpage", dataInData);
-      setData(dataInData);
-    };
-    fetchData();
-  }, []);
 
   // Handle selection update of note content
   //
@@ -328,7 +322,7 @@ const databaseGetNote = (data) => {
         onSelectClass={handleSelectClass}
         onSelectNote={handleSelectNote}
         className="classmenu"
-        data={data}
+        data={initialData}
       />
 
       {/*Note component*/}
