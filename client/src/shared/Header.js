@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,9 +11,12 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
+  // redirection & navigation
+  const navigate = useNavigate();
+
   const logoutUser = () => {
-    console.log('logging out user')
     dispatch({ type: 'CLEAR_USER' })
+    navigate('/')
   }
 
   return (
