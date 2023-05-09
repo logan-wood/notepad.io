@@ -62,29 +62,28 @@ module.exports = {
   loginUser: async function (req, res) {
     var user;
     const email = req.body.email
+    const password = req.body.password
 
     // get uid from email
     try {
       user = await database.getUserFromEmail(email)
     } catch (e) {
       res.status(400).send('No user found')
-      console.error(e)
       return
     }
 
     if (user) {
-      // add user data to req.session object
-      req.session.user = user
-      console.log(req.session)
-      console.log(req.sessionID)
+      if (await bcrypt.compare(password, user.password)) {
+        // add user data to req.session object
+        req.session.user = user
 
-      // set cookie
-      res.cookie('mySessionID', req.sessionID, { httpOnly: true })
-
-      // send response
-      res.status(200).json(user)
+        // send response
+        res.status(200).json(user)
+      } else {
+        res.status(401).send('Invalid password')
+      }
     } else {
-      res.status(400).send('No user exists')
+      res.status(404).send('No user found')
     }
   },
 

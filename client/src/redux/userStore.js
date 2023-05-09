@@ -4,9 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 // Define initial state
 const initialState = {
-  user: {
-    username: 'Test'
-  }
+  user: null
 };
 
 // Define reducer function

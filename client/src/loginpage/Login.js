@@ -1,25 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Header from "../shared/Header.js";
-// import {
-//   getAuth,
-//   signInWithPopup,
-//   GoogleAuthProvider,
-//   signInWithEmailAndPassword,
-// } from "firebase/auth";
-// import { app } from "../firebase.js";
-// import googleLogo from "./google_logo.png";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
-import googleLogo from "./google_logo.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { setDoc, doc } from "firebase/firestore";
+import { Link, redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   // shared across different react files/components
   const user = useSelector((state) => state.user);
@@ -32,7 +22,8 @@ const Login = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: email
+        email: email,
+        password: password
       })
     })
     .then(async (response) => {
@@ -40,17 +31,22 @@ const Login = () => {
       if (response.status === 200) {
         const data = await response.json()
         return data
-      } else {
+      } else if (response.status === 404){
+        console.log(response)
         setMessage("No user found")
+      } else if (response.status === 401) {
+        setMessage("Incorrect password")
+      } else {
+        setMessage("An error occured. Please try again later")
       }
     })
     .then((data) => {
-      dispatch({ type: 'SET_USER', payload: data })
-      setMessage("Welcome back, " + user.username)
+      if (data)
+      {
+        dispatch({ type: 'SET_USER', payload: data })
 
-      // show link to dash
-      const link = document.getElementById("visit-dashboard");
-      link.style.display = "block";
+        navigate('/dashboard')
+      }
     })
     .catch(error => {
       console.error(error)
