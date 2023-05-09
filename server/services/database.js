@@ -15,18 +15,17 @@ module.exports = {
           matchFound = true
         }
       })
-    } while (matchFound = true)
+    } while (matchFound)
     
     // insert into DB
     const uid = randNum
-    set(ref(db, "users/" + uid), {
+    db.ref("users/" + uid).set({
       uid: uid,
       username: user.username,
       email: user.email,
       password: user.password,
       classes: '',
     });
-    return "User successfully";
   },
 
   getUserData: function (uid) {

@@ -23,37 +23,40 @@ module.exports = {
 
   /**
    * Adds a new user to the database, includes password hashing.
-   * @param {String} displayName
-   * @param {String} email
-   * @param {String} password
+   * 
    */
-  addNewUser: async function (displayName, email, password) {
-    try {
-      // check if user exists
-      if (await database.getUserFromEmail(email) == null) {
-        res.status(401).json({ message: "Email already in use" });
-      }
+  addNewUser: async function (req, res) {
+    const displayName = req.body.displayName
+    const email = req.body.email
+    const password = req.body.password
 
-      // hash password
-      const saltRound = 10;
-
-      bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) throw new Error("Internal Server Error");
-
-        // 'User' to be decalred
-        // Create new user object
-        let user = {
-          displayName: displayName,
-          email: email,
-          hash: hash,
-        };
-
-        // Save new user to database
-        database.writeUserData(user)
-      });
-    } catch (err) {
-      res.status(401).send(err.message);
+    // check if user exists
+    if (await database.getUserFromEmail(email) != null) {
+      res.status(409).json({ message: "Email already in use" });
+      return
     }
+
+    // hash password
+    const saltRounds = 10;
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) throw new Error("Internal Server Error");
+
+      // 'User' to be decalred
+      // Create new user object
+      let user = {
+        username: displayName,
+        email: email,
+        password: hash,
+      };
+      
+      // Save new user to database
+      database.writeUserData(user)
+      .then((result) => {
+        console.log(result)
+        res.status(201).send('user added to database')
+      })
+    });
   },
 
   loginUser: async function (req, res) {
