@@ -1,6 +1,5 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import arrow from "../assets/lefticon.png";
-import { data } from "./data";
 import { useSelector } from "react-redux";
 import { addNewClass, addNewNote } from "./data";
 import { v4 as uuidv4 } from 'uuid';

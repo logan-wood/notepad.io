@@ -15,7 +15,7 @@ const SignUp = () => {
 
   const signUpWithEmail = () => {
     // check fields are not blank
-    if (name == "" || email == "" || password == "") {
+    if (name === "" || email === "" || password === "") {
       setError("Please enter a valid name, email and password")
       return
     } 

@@ -1,20 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Header from "../shared/Header.js";
-// import {
-//   getAuth,
-//   signInWithPopup,
-//   GoogleAuthProvider,
-//   signInWithEmailAndPassword,
-// } from "firebase/auth";
-// import { app } from "../firebase.js";
-// import googleLogo from "./google_logo.png";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
-import googleLogo from "./google_logo.png";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { setDoc, doc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
