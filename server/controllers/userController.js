@@ -1,12 +1,19 @@
 const bcrypt = require("bcrypt");
 const database = require("../services/database");
-const session = require("express-session");
 
 // functions
 module.exports = {
-  getUser: function (req, res) {
-    console.log("calling database");
+  addNewUser: function (req, res) {
     const { uid } = req.query;
+    if (uid) {
+      database.addNewUser(uid);
+      res.status(200).send("User successfully added!");
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
+  },
+
+  getInfo: function (req, res, uid) {
     if (uid) {
       database
         .getInfo(uid)
@@ -20,74 +27,33 @@ module.exports = {
       res.status(400).send("Bad Request: uid parameter is missing.");
     }
   },
-
-  /**
-   * Adds a new user to the database, includes password hashing.
-   * 
-   */
-  addNewUser: async function (req, res) {
-    const displayName = req.body.displayName
-    const email = req.body.email
-    const password = req.body.password
-
-    // check if user exists
-    if (await database.getUserFromEmail(email) != null) {
-      res.status(409).json({ message: "Email already in use" });
-      return
-    }
-
-    // hash password
-    const saltRounds = 10;
-
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) throw new Error("Internal Server Error");
-
-      // 'User' to be decalred
-      // Create new user object
-      let user = {
-        username: displayName,
-        email: email,
-        password: hash,
-      };
-      
-      // Save new user to database
-      database.writeUserData(user)
-      .then((result) => {
-        console.log(result)
-        res.status(201).send('user added to database')
-      })
-    });
-  },
-
-  loginUser: async function (req, res) {
-    var user;
-    const email = req.body.email
-
-    // get uid from email
-    try {
-      user = await database.getUserFromEmail(email)
-    } catch (e) {
-      res.status(400).send('No user found')
-      console.error(e)
-      return
-    }
-
-    if (user) {
-      // add user data to req.session object
-      req.session.user = user
-      console.log(req.session)
-      console.log(req.sessionID)
-
-      // set cookie
-      res.cookie('mySessionID', req.sessionID, { httpOnly: true })
-
-      // send response
-      res.status(200).json(user)
+  updateClass: function (req, res, uid) {
+    console.log("calling database");
+    const classToUpdate = req.body;
+    if (uid && classToUpdate) {
+      try {
+        database.updateClass(uid, classToUpdate);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error saving class to database: " + error.message);
+      }
     } else {
-      res.status(400).send('No user exists')
+      if (!classToUpdate && !uid) {
+        res
+          .status(400)
+          .send("Bad Request: uid parameter is missing; Classes not found.");
+      }
+      if (!classToUpdate) {
+        res.status(404).send("Error: classes not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
     }
   },
-
   removeClass: function (req, res, uid, classId) {
     if (uid && classId) {
       try {
