@@ -14,6 +14,12 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const signUpWithEmail = () => {
+    // check fields are not blank
+    if (name == "" || email == "" || password == "") {
+      setError("Please enter a valid name, email and password")
+      return
+    } 
+
     fetch(process.env.REACT_APP_API_DOMAIN + "/addNewUser", {
       method: 'POST',
       headers: {
