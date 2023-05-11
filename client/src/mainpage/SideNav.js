@@ -53,32 +53,42 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       setOpenClasses([classId]);
     }
   };
-
+  
   //handle for changing class name on change
   const handleClassNameChange = (e, id) => {
     const classObj = data.classes.find((classObj) => classObj.id === id);
     classObj.name = e.target.value;
     setEditingClassName(e.target.value);
-    setSelectClass(classObj);
+    onSelectClass(classObj);
   };
 
   const handleFinishClassNameChange = (id) => {
     const classObj = data.classes.find((classObj) => classObj.id === id);
     setIsClassEditing(false);
+    setSelectClass(classObj);
+
     updateClassData(classObj.id, classObj);
+    onSelectClass(classObj);
   };
 
   //handle for changing class name on change
   const handleNoteTitleChange = (e, id) => {
+    if (selectClass) {
     const selectNote = selectClass.notes.find((note) => note.id === id);
     selectNote.title = e.target.value;
-    setEditingNoteTitle(e.target.value);
     setSelectNote(selectNote);
+    setEditingNoteTitle(e.target.value);
+    onSelectNote(selectNote);
+    }
   };
   const handleFinishNoteTitleChange = (ClassObjId, id) => {
+    if (selectClass) {
     const noteObj = selectClass.notes.find((note) => note.id === id);
     setIsNoteEditing(false);
     updateNoteData(ClassObjId, noteObj.id, noteObj);
+    onSelectNote(selectNote);
+
+    }
   };
 
   // handler for creating a new note
@@ -143,7 +153,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <div className="classDiv">
           {data.classes.map((classItem) => (
             <div key={classItem.id}>
-              {isClassEditing && selectClass.id === classItem.id ? (
+              {isClassEditing && selectClass && selectClass.id === classItem.id ? (
                 <input
                   type="text"
                   value={isClassEditing ? editingClassName : classItem.name}
@@ -163,6 +173,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                     handleSelectClass(classItem.id);
                   }}
                   onDoubleClick={() => {
+                    handleSelectClass(classItem.id);
                     setIsClassEditing(true);
                   }}
                   className={`classButton ${
@@ -186,7 +197,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                     <ul>
                       {classItem.notes.map((note) => (
                         <li key={note.id}>
-                          {isNoteEditing && selectNote.id === note.id ? (
+                          {isNoteEditing &&selectNote && selectNote.id === note.id ? (
                             <input
                               type="text"
                               value={
@@ -204,6 +215,10 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                                 }
                               }}
                               onBlur={() => {
+                                handleFinishNoteTitleChange(
+                                  classItem.id,
+                                  note.id
+                                );
                                 setIsNoteEditing(false);
                               }}
                             />

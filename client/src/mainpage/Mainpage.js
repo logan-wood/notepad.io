@@ -165,7 +165,7 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
-
+   
   // Handle for deleting a note from the database
   const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
     const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;

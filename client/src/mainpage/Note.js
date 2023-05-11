@@ -104,7 +104,7 @@ const Note = ({
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     setClassName(SelectedClass ? SelectedClass.name : "");
-  }, [SelectedNote]);
+  }, [SelectedNote,SelectedClass]);
 
   //Effect hook for updating the progress bar
   useEffect(() => {
