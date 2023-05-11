@@ -41,6 +41,13 @@ noteTitleStyle {
     color: #4f4f4f;
     size: 30px
 }
+.sideNavEditing
+{
+    background-color: #FFFBF6;
+    border:none;
+    outline: none;
+
+}
 
 .noteClassStyle {
     font-family: 'Nunito', sans-serif;

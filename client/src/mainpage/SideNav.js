@@ -155,6 +155,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
             <div key={classItem.id}>
               {isClassEditing && selectClass && selectClass.id === classItem.id ? (
                 <input
+                className="sideNavEditing"
                   type="text"
                   value={isClassEditing ? editingClassName : classItem.name}
                   onChange={(e) => handleClassNameChange(e, classItem.id)}
@@ -199,6 +200,8 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                         <li key={note.id}>
                           {isNoteEditing &&selectNote && selectNote.id === note.id ? (
                             <input
+                            className="sideNavEditing"
+
                               type="text"
                               value={
                                 isNoteEditing ? editingNoteTitle : note.title
