@@ -165,34 +165,7 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
-// Handle for deleting a note from the database
-const databaseGetNote = (data) => {
-  const url = "http://localhost:8080/user/12345/getInfo";
 
-  fetch(url, {
-    method: "Get",
-    headers: {
-      "Content-Type": "application/json", // Make sure to set the content type of the request body
-      Accept: "*/*",
-      "Accept-Encoding": "gzip, deflate, br",
-      Connection: "keep-alive",
-    },
-    body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
-  })
-    .then((response) => {
-     setData(JSON.stringify(data));
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json(); // Parse the response body as JSON
-    })
-    .then((data) => {
-      console.log(data); // Do something with the response data
-    })
-    .catch((error) => {
-      console.error("There was an error retrieving the request:", error);
-    });
-};
   // Handle for deleting a note from the database
   const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
     const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;

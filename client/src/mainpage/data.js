@@ -18,6 +18,9 @@ export const addNewClass = (newClass) => {
   dataInData.classes.push(newClass);
 };
 
+export const setClassesData = (updatedClasses) => {
+  dataInData.classes= updatedClasses;
+};
 export const addNewNote = (classID, Note) => {
   const classObj = dataInData.classes.find((classObj) => classObj.id === classID);
   if (classObj) {
