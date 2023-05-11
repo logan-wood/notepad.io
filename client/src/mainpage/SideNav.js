@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import arrow from "../assets/lefticon.png";
 import {
   addNewClass,
@@ -7,9 +7,6 @@ import {
   updateNoteData,
 } from "./data";
 import { v4 as uuidv4 } from "uuid";
-import { useSelector } from "react-redux";
-import { addNewClass, addNewNote } from "./data";
-
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
@@ -22,16 +19,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [editingClassName, setEditingClassName] = useState(false);
   const [editingNoteTitle, setEditingNoteTitle] = useState(false);
 
-  const user = useSelector((state) => state.user);
-
-
-  const draggingStart = (e, position) =>{
-    draggingItem.current = position;
-    console.log(e.target.innerHTML);
-  }
-  //unique ids for the
-  //TODO:
-  // CREATE NEW CLASS HANDLER
   //Handle for creating a new class
   const handleNewClass = () => {
     const newClass = {
@@ -151,9 +138,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <img src={arrow}></img>
       </button>
       <div>
-        {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
-        {/* <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div> */}
-
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">

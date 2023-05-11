@@ -11,29 +11,14 @@ router.use(cors(corsOptions));
 // import controllers
 const userController = require("../controllers/userController");
 
-router.get('/', function(req, res) {
-    console.log(req.session)
-    res.send('This is a response from the server!')
-})
-
-// use this route to get session info
-router.get('/getSession', function(req, res) {
-    userController.getUserSession(req, res);
-})
-
-router.post('/addNewUser', (req, res) => {
-    userController.addNewUser(req, res)
-})
-
-router.get('/getUser', function(req, res) {
-    userController.getUser(req, res)
-})
-
-// authenticates whether the email matches the password. Does not set a session or cookie in its current implementation
-router.post('/loginUser', function(req, res) {
-    userController.loginUser(req, res)
-})
-
+router.get("/", function (req, res) {
+  res.json(JSON.parse('{"message": "This is a response from the server!"}'));
+});
+// adds a new user to the database
+// query params: uid
+router.post("/user/add", (req, res) => {
+  userController.addNewUser(req, res);
+});
 // retrieves all user data based on uid
 // query params: uid
 router.get("/user/:id/getInfo", function (req, res) {
