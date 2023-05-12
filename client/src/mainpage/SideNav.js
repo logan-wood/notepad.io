@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import arrow from "../assets/lefticon.png";
 import {
   addNewClass,
@@ -90,6 +90,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
 
     }
   };
+ //effect hook that updates note title and content when selected note prop is passed through
 
   // handler for creating a new note
   const handleNewNote = (id) => {
