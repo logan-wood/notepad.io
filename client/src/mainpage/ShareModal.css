@@ -12,4 +12,11 @@
   background-color: #f8e7b4;
   padding:10px;
     border-radius: 10px;
+    z-index: 100;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.modalShareWrapper h1{
+    font-family: 'Nunito',sans-serif;
+    font-size:20px;
 }
