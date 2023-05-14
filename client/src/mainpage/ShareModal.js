@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./ShareModal.css";
 
 const ShareModal = ({ onClose, isOpen }) => {
   const [copyText, setCopyText] = useState(
     "https://notepad.io/sharelink/sdkfjhsdkjf"
   );
-  const handleWrapperClick = (event) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
-  };
+
 
   return (
     <div
-      className={`modalShareWrapper ${isOpen ? "open" : ""}`}
-      onClick={handleWrapperClick}
+      className={`modalShareWrapper ${isOpen ? "open" : ""}` }
     >
-      <div className="shareModal">
+      <div className="shareModal" >
         <h1> Share this note!</h1>
         <hr />
         <input type="text" value={copyText} readOnly />

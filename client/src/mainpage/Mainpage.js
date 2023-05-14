@@ -23,7 +23,15 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
- 
+  useEffect(() => {
+    function handleClickShareOutside(event) {
+      if (isShareOpen && !event.target.closest('.modalShareWrapper')) {
+        setIsShareOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickShareOutside);
+    return () => document.removeEventListener('mousedown', handleClickShareOutside);
+  }, [isShareOpen]);
 
   //handler for delete buttons
   const handleDeleteButton = () => {
@@ -288,7 +296,7 @@ function Mainpage() {
 
   return (
    
-    <div className="mainpage">
+    <div className="mainpage"  >
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showSignOutButton={true} />
 
