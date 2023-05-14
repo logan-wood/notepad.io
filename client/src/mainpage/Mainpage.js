@@ -9,10 +9,13 @@ import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
+import ShareModal from "./ShareModal";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
   const [isGameOpen, setIsGameOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
@@ -36,6 +39,10 @@ function Mainpage() {
     setIsGameOpen(false);
     handleReset();
   };
+  //handler for share component
+  const handleShareClose = () => {
+    setIsShareOpen(false);
+  };
   const handleReset = () => {
     console.log("handleReset called");
     setProgress(0);
@@ -51,6 +58,9 @@ function Mainpage() {
     setIsGameOpen(true);
   };
 
+  const handleShareButtonClick = () => {
+    setIsShareOpen(true);
+  };
   //update Note Progress
   const updateNoteProgress = (value) => {
     console.log(value);
@@ -321,7 +331,7 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-
+      <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
@@ -331,13 +341,24 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
-
+      {/*Save and Share button component, display only if SelectedNote is not null*/}
+      {SelectedNote !== null && (
+  <div className="button-div">
       <Button
         onClick={handleDatabaseUpdateClass(SelectedClass)}
-        className="save-button"
+        className="saveshare-button"
       >
         Save Note
       </Button>
+      
+      <Button
+        className="saveshare-button"
+        onClick={handleShareButtonClick}
+      >
+        Share
+      </Button>
+      </div>)
+}
     </div>
   );
 }

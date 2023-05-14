@@ -1,0 +1,15 @@
+.modalShareWrapper {
+    position: absolute;
+    top:170px;
+    right:10px;
+    display:none;
+}
+
+.modalShareWrapper.open {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8e7b4;
+  padding:10px;
+    border-radius: 10px;
+}
