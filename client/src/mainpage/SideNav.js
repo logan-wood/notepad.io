@@ -13,7 +13,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
 
   const user = useSelector((state) => state.user);
 
-
   const draggingStart = (e, position) =>{
     draggingItem.current = position;
     console.log(e.target.innerHTML);
