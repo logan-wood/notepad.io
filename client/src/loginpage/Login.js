@@ -23,8 +23,6 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // google sign in functionality
-  /*
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
@@ -46,7 +44,6 @@ const Login = () => {
         }
       });
   }
-  */
 
   // shared across different react files/components
   const user = useSelector((state) => state.user);
