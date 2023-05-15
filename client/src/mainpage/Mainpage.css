@@ -41,6 +41,13 @@ noteTitleStyle {
     color: #4f4f4f;
     size: 30px
 }
+.sideNavEditing
+{
+    background-color: #FFFBF6;
+    border:none;
+    outline: none;
+
+}
 
 .noteClassStyle {
     font-family: 'Nunito', sans-serif;
@@ -211,21 +218,31 @@ noteTitleStyle {
     margin-top: 20px;
 }
 
-.save-button {
+.button-div{
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top:90px;
+    right:10px;
+
+}
+
+.saveshare-button {
     color: #694b2c !important;
     text-decoration: none !important;
     cursor: pointer !important;
     margin-top: 1.15rem !important;
     font-size: 18px !important;
-    position:absolute;
-    right:10px;
-    top: 10vh;
+    position:relative;
     background-color: #f3dfa2 !important;
+    opacity: 70%;
+    margin:10px;
 }
   
-  .save-button:hover {
+  .saveshare-button:hover {
     text-decoration: underline !important;
-    background-color: #efe6dd !important;
+    opacity: 100%;
 
     color: #694b2c !important;
 }

@@ -91,7 +91,7 @@ const Note = ({
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup", keyUpCounter);
-      return (keyUpCounter / 2500) * 100;
+      return (keyUpCounter / 100) * 100;
     } else {
       setKeyUpCounter(0);
 
@@ -104,7 +104,7 @@ const Note = ({
     setNoteTitle(SelectedNote ? SelectedNote.title : "");
     setNoteContent(SelectedNote ? SelectedNote.content : "");
     setClassName(SelectedClass ? SelectedClass.name : "");
-  }, [SelectedNote]);
+  }, [SelectedNote,SelectedClass]);
 
   //Effect hook for updating the progress bar
   useEffect(() => {

@@ -9,10 +9,13 @@ import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
+import ShareModal from "./ShareModal";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
   const [isGameOpen, setIsGameOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
@@ -20,7 +23,15 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
- 
+  useEffect(() => {
+    function handleClickShareOutside(event) {
+      if (isShareOpen && !event.target.closest('.modalShareWrapper')) {
+        setIsShareOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickShareOutside);
+    return () => document.removeEventListener('mousedown', handleClickShareOutside);
+  }, [isShareOpen]);
 
   //handler for delete buttons
   const handleDeleteButton = () => {
@@ -35,6 +46,10 @@ function Mainpage() {
   const handleGameClose = () => {
     setIsGameOpen(false);
     handleReset();
+  };
+  //handler for share component
+  const handleShareClose = () => {
+    setIsShareOpen(false);
   };
   const handleReset = () => {
     console.log("handleReset called");
@@ -51,6 +66,9 @@ function Mainpage() {
     setIsGameOpen(true);
   };
 
+  const handleShareButtonClick = () => {
+    setIsShareOpen(true);
+  };
   //update Note Progress
   const updateNoteProgress = (value) => {
     console.log(value);
@@ -165,7 +183,7 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
-
+   
   // Handle for deleting a note from the database
   const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
     const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;
@@ -278,7 +296,7 @@ function Mainpage() {
 
   return (
    
-    <div className="mainpage">
+    <div className="mainpage"  >
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showSignOutButton={true} />
 
@@ -321,7 +339,7 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-
+      <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
@@ -331,13 +349,24 @@ function Mainpage() {
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
       />
-
+      {/*Save and Share button component, display only if SelectedNote is not null*/}
+      {SelectedNote !== null && (
+  <div className="button-div">
       <Button
         onClick={handleDatabaseUpdateClass(SelectedClass)}
-        className="save-button"
+        className="saveshare-button"
       >
         Save Note
       </Button>
+      
+      <Button
+        className="saveshare-button"
+        onClick={handleShareButtonClick}
+      >
+        Share
+      </Button>
+      </div>)
+}
     </div>
   );
 }
