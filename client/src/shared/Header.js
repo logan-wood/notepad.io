@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
+import { useSelector, useDispatch } from "react-redux";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
@@ -22,27 +23,23 @@ const Header = ({
     document.body.classList.toggle("dark-mode");
   };
 
-  // return the Header element
-import { useSelector, useDispatch } from "react-redux";
-
-const Header = ({ showButtons, pageName, showSignOutButton }) => {
   // user object
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   const logoutUser = () => {
-    console.log('logging out user')
-    dispatch({ type: 'CLEAR_USER' })
-  }
+    console.log('logging out user');
+    dispatch({ type: 'CLEAR_USER' });
+  };
 
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
-        {/** Link to a specfied page when Logo is clicked */}
+        {/** Link to a specified page when Logo is clicked */}
         <Link to={pageName}>
           <img src={logo} alt="Logo" className="logo" />
         </Link>
-        {/** Link to a specfied page when Title is clicked */}
+        {/** Link to a specified page when Title is clicked */}
         <Link to={pageName} className="app-title link-class">
           <h1 className="app-title">Notepad.io</h1>
         </Link>
@@ -78,18 +75,9 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
           {/* links to landing page when clicked */}
-          <Link to="/" className="sign-out-button">
+          <Link to="/" className="sign-out-button" onClick={logoutUser}>
             <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
           </Link>
-      {showSignOutButton && (
-        <div className="sign-out-button">
-          <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div>
-          {/* <Link to="/"> */}
-            <Button variant="primary" onClick={logoutUser} className="sign-out-button">
-              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
-              Sign Out
-            </Button>
-          {/* </Link> */}
         </div>
       )}
     </header>
