@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
@@ -11,7 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
-  showDashBoardButtons, // determines dashboard (profile, sign out, settings, darkmode) buttons being shown
+  showDarkModeButton,
+  showDashBoardButtons,
 }) => {
   // state variable to hold value of darkMode setting
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -32,7 +34,7 @@ const Header = ({
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
         <Link to={pageName}>
           <img src={logo} alt="Logo" className="logo" />
@@ -66,7 +68,7 @@ const Header = ({
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-          <Link to="/" className="sign-out-button" onClick={logoutUser}>
+          <Link to="/" className="sign-out-button">
             <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
           </Link>
         </div>
