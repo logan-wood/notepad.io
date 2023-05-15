@@ -1,27 +1,24 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef, useState } from "react";
 import arrow from "../assets/lefticon.png";
-import { data } from "./data";
-import { useSelector } from "react-redux";
-import { addNewClass, addNewNote } from "./data";
-import { v4 as uuidv4 } from 'uuid';
+import {
+  addNewClass,
+  addNewNote,
+  updateClassData,
+  updateNoteData,
+} from "./data";
+import { v4 as uuidv4 } from "uuid";
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
-  const [selectClass, setSelectClass] = React.useState(null);
-  const [selectNote, setSelectNote] = React.useState(null);
-  const [openClasses, setOpenClasses] = React.useState([]);
-  const draggingItem = useRef();
+  const [selectClass, setSelectClass] = useState(null);
+  const [selectNote, setSelectNote] = useState(null);
+  const [openClasses, setOpenClasses] = useState([]);
+  const [isNoteEditing, setIsNoteEditing] = useState("");
+  const [isClassEditing, setIsClassEditing] = useState("");
 
-  const user = useSelector((state) => state.user);
+  const [editingClassName, setEditingClassName] = useState(false);
+  const [editingNoteTitle, setEditingNoteTitle] = useState(false);
 
-
-  const draggingStart = (e, position) =>{
-    draggingItem.current = position;
-    console.log(e.target.innerHTML);
-  }
-  //unique ids for the
-  //TODO:
-  // CREATE NEW CLASS HANDLER
   //Handle for creating a new class
   const handleNewClass = () => {
     const newClass = {
@@ -30,27 +27,61 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       notes: [],
       noteSize: 0,
     };
+    // calling the addNewClass function from data.js  and passing in the new class
     addNewClass(newClass);
+    // calling the onSelectClass function and passing in the new class
     onSelectClass(newClass);
   };
+
   //Handles selecting a class
-  const handleSelectClass = (id) => {
-    const selectClass = data.classes.find((classObj) => classObj.id === id);
+  const handleSelectClass = (classId) => {
+    const selectClass = data.classes.find(
+      (classObj) => classObj.id === classId
+    );
+    setEditingClassName(selectClass.name);
+
     setSelectClass(selectClass);
     setSelectNote(null);
     onSelectClass(selectClass);
     onSelectNote(null);
+
     // stops displaying the notes in a class if a different class is selected.
     // if a class is selected it calls the open note function
-    if (openClasses.includes(id)) {
-      setOpenClasses(openClasses.filter((id) => id !== id));
+    if (openClasses.includes(classId)) {
+      setOpenClasses(openClasses.filter((id) => id !== classId));
     } else {
-      setOpenClasses([id]);
+      setOpenClasses([classId]);
     }
   };
 
-  //CREATE NEW NOTE HANDLER
+  //handle for changing class name on change
+  const handleClassNameChange = (e, id) => {
+    const classObj = data.classes.find((classObj) => classObj.id === id);
+    classObj.name = e.target.value;
+    setEditingClassName(e.target.value);
+    setSelectClass(classObj);
+  };
 
+  const handleFinishClassNameChange = (id) => {
+    const classObj = data.classes.find((classObj) => classObj.id === id);
+    setIsClassEditing(false);
+    updateClassData(classObj.id, classObj);
+  };
+
+  //handle for changing class name on change
+  const handleNoteTitleChange = (e, id) => {
+    const selectNote = selectClass.notes.find((note) => note.id === id);
+    selectNote.title = e.target.value;
+    setEditingNoteTitle(e.target.value);
+    setSelectNote(selectNote);
+  };
+  const handleFinishNoteTitleChange = (ClassObjId, id) => {
+    const noteObj = selectClass.notes.find((note) => note.id === id);
+    setIsNoteEditing(false);
+    updateNoteData(ClassObjId, noteObj.id, noteObj);
+  };
+
+  // handler for creating a new note
   const handleNewNote = (id) => {
     const classObj = data.classes.find((classObj) => classObj.id === id);
     if (classObj) {
@@ -59,6 +90,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         title: `new Note`,
         content: ``,
       };
+      // call addNewNote function from data.js and pass classObj.id and newNote as arguments
       addNewNote(classObj.id, newNote);
       onSelectNote(newNote);
     } else {
@@ -71,9 +103,12 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
     return openClasses.includes(classid);
   };
 
+  // handler for selecting a note\
   const handleSelectNote = (id) => {
     if (selectClass) {
       const selectNote = selectClass.notes.find((note) => note.id === id);
+      setEditingNoteTitle(selectNote.title);
+
       if (selectNote) {
         setSelectNote(selectNote);
         onSelectNote(selectNote);
@@ -103,24 +138,41 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <img src={arrow}></img>
       </button>
       <div>
-        {/* Please delete this later and make it look good just putting this here to show the login stuff working */}
-        {/* <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div> */}
-
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
           {data.classes.map((classItem) => (
             <div key={classItem.id}>
-              <h3>
+              {isClassEditing && selectClass.id === classItem.id ? (
+                <input
+                  type="text"
+                  value={isClassEditing ? editingClassName : classItem.name}
+                  onChange={(e) => handleClassNameChange(e, classItem.id)}
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                      handleFinishClassNameChange(classItem.id);
+                    }
+                  }}
+                  onBlur={() => {
+                    setIsClassEditing(false);
+                  }}
+                />
+              ) : (
                 <button
-                  onClick={() => handleSelectClass(classItem.id)}
+                  onClick={() => {
+                    handleSelectClass(classItem.id);
+                  }}
+                  onDoubleClick={() => {
+                    setIsClassEditing(true);
+                  }}
                   className={`classButton ${
                     isClassButtonActive(classItem.id) ? "active" : ""
                   }`}
-                draggable>
+                  draggable
+                >
                   {classItem.name}
                 </button>
-              </h3>
+              )}
               {isClassOpen(classItem.id) && (
                 <>
                   <button
@@ -130,22 +182,53 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                     + new Note
                   </button>
 
-                  <ul>
-                    {classItem.notes.map((note) => (
-                      <li key={note.id}>
-                        <button
-                          onClick={() => handleSelectNote(note.id)}
-                          className={`noteButton ${
-                            isNoteButtonActive(note.id, classItem.id)
-                              ? "active"
-                              : ""
-                          }`}
-                          draggable>
-                          {note.title}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
+                  {classItem.notes && (
+                    <ul>
+                      {classItem.notes.map((note) => (
+                        <li key={note.id}>
+                          {isNoteEditing && selectNote.id === note.id ? (
+                            <input
+                              type="text"
+                              value={
+                                isNoteEditing ? editingNoteTitle : note.title
+                              }
+                              onChange={(e) =>
+                                handleNoteTitleChange(e, note.id)
+                              }
+                              onKeyUp={(e) => {
+                                if (e.key === "Enter") {
+                                  handleFinishNoteTitleChange(
+                                    classItem.id,
+                                    note.id
+                                  );
+                                }
+                              }}
+                              onBlur={() => {
+                                setIsNoteEditing(false);
+                              }}
+                            />
+                          ) : (
+                            <button
+                              onClick={() => {
+                                handleSelectNote(note.id);
+                              }}
+                              onDoubleClick={() => {
+                                setIsNoteEditing(true);
+                              }}
+                              className={`noteButton ${
+                                isNoteButtonActive(note.id, classItem.id)
+                                  ? "active"
+                                  : ""
+                              }`}
+                              draggable
+                            >
+                              {note.title}
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </>
               )}
             </div>

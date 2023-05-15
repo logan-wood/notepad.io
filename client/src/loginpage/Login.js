@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // shared across different react files/components
@@ -33,11 +34,11 @@ const Login = () => {
         return data
       } else if (response.status === 404){
         console.log(response)
-        setMessage("No user found")
+        setError("No user found")
       } else if (response.status === 401) {
-        setMessage("Incorrect password")
+        setError("Incorrect password")
       } else {
-        setMessage("An error occured. Please try again later")
+        setError("An error occured. Please try again later")
       }
     })
     .then((data) => {
@@ -94,29 +95,11 @@ const Login = () => {
           >
             Sign in with Email
           </Button>
-          {/* <div className="or-divider">
+          <div className="or-divider">
             <span className="or-text">or</span>
           </div>
-          <Button
-            variant="primary"
-            className="google-signin-button"
-            onClick={signInWithGoogle}
-          >
-            <img src={googleLogo} alt="Google logo" className="google-logo" />
-            Sign in with Google
-          </Button> */}
-          <div>{message ? (<p>{message}</p>) : (<p></p>)}</div>
-          <a href='/dashboard' id='visit-dashboard' style={{display: 'none'}}>dashboard</a>
           <div className="button-group">
-            {/* <Button
-              variant="primary"
-              className="google-signin-button"
-              onClick={signInWithGoogle}
-            >
-              <img src={googleLogo} alt="Google logo" className="google-logo" />
-              Sign in with Google
-            </Button>
-            <p className="error-message signin-error">{error}</p> */}
+            <p className="error-message signin-error">{error}</p>
             <Link to="/signup">
               <Button variant="link" className="register-button">
                 Don't have an account?

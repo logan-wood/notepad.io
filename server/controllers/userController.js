@@ -1,12 +1,19 @@
 const bcrypt = require("bcrypt");
 const database = require("../services/database");
-const session = require("express-session");
 
 // functions
 module.exports = {
-  getUser: function (req, res) {
-    console.log("calling database");
+  addNewUser: function (req, res) {
     const { uid } = req.query;
+    if (uid) {
+      database.addNewUser(uid);
+      res.status(200).send("User successfully added!");
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
+  },
+
+  getInfo: function (req, res, uid) {
     if (uid) {
       database
         .getInfo(uid)
@@ -87,6 +94,48 @@ module.exports = {
     }
   },
 
+  getUserFromEmail: async function (email) {
+    const ref = db.ref("/users/");
+    const snapshot = await ref.once("value");
+
+    let userData = null;
+    snapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.val();
+      if (user.email === email) {
+        userData = user;
+      }
+    });
+
+  return userData;
+  },
+
+  updateClass: function (req, res, uid) {
+    console.log("calling database");
+    const classToUpdate = req.body;
+    if (uid && classToUpdate) {
+      try {
+        database.updateClass(uid, classToUpdate);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error saving class to database: " + error.message);
+      }
+    } else {
+      if (!classToUpdate && !uid) {
+        res
+          .status(400)
+          .send("Bad Request: uid parameter is missing; Classes not found.");
+      }
+      if (!classToUpdate) {
+        res.status(404).send("Error: classes not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
   removeClass: function (req, res, uid, classId) {
     if (uid && classId) {
       try {

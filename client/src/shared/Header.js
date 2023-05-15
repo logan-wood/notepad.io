@@ -52,7 +52,7 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
               Sign Out
             </Button>
           {/* </Link> */}
-        </div>
+      </div>
       )}
     </header>
   );
