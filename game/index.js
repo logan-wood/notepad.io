@@ -42,6 +42,7 @@ collisionMap.forEach((row, i) => {
     })
 })
 
+// set Battle zone onto the map
 const battleZones = []
 battleFoxMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
@@ -116,6 +117,17 @@ const background = new Sprite({
     npcScale: 1
 })
 
+// set foreground image coordinates
+const foreground = new Sprite({
+    position: {
+        x: -1550,
+        y: -1000,
+    },
+    image: foregroundImage,
+    framesHeight: 1,
+    npcScale: 1
+})
+
 const npc = new Sprite( {
     position: {
         x: 670,
@@ -127,15 +139,6 @@ const npc = new Sprite( {
     },
     framesHeight: 7,
     npcScale: 3
-})
-
-// set foreground image coordinates
-const foreground = new Sprite({
-    position: {
-        x: -1550,
-        y: -1000,
-    },
-    image: foregroundImage
 })
 
 // which key is pressed
@@ -185,13 +188,14 @@ function animate() {
          battleZone.draw()
     })
 
-    npc.draw()
 
     //draw player
     player.draw()
 
     //draw foreground objects
     foreground.draw()
+
+    npc.draw()
 
     let moving = true
     player.animate = false
