@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import Header from "../shared/Header.js";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import googleLogo from "./google_logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { setDoc, doc } from "firebase/firestore";
+import { useSelector, useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,29 +19,33 @@ const Login = () => {
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-    .then(async (result) => {
+      .then(async (result) => {
+        if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+          const userRef = doc(app, "users", result.user.uid);
+          await setDoc(userRef, {
+            signedUpWithGoogle: true,
+          });
+        }
 
-      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
-        const userRef = doc(app, "users", result.user.uid);
-        await setDoc(userRef, {
-          signedUpWithGoogle: true,
-        });
-      }
-
-      console.log(result);
-      navigate("/dashboard");
-    })
-    .catch((error) => {
-      console.log(error);
-      if(error.message.includes(
-        "undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')")){
-        setError(`Error signing in with Google: ${error.message}`);
-      } else if (error.message.includes("Firebase: Error (auth/popup-closed-by-user).")) {
-        // do nothing
-      } else {
-        setError(`Error signing in with Google: ${error.message}`);
-      }
-    });
+        console.log(result);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.log(error);
+        if (
+          error.message.includes(
+            "undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')"
+          )
+        ) {
+          setError(`Error signing in with Google: ${error.message}`);
+        } else if (
+          error.message.includes("Firebase: Error (auth/popup-closed-by-user).")
+        ) {
+          // do nothing
+        } else {
+          setError(`Error signing in with Google: ${error.message}`);
+        }
+      });
   };
 
   // shared across different react files/components
@@ -53,39 +53,35 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const signInWithEmail = () => {
-    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
-      method: 'post',
+    fetch(process.env.REACT_APP_API_DOMAIN + "/loginUser", {
+      method: "post",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email
+        email: email,
+      }),
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          const data = await response.json();
+          return data;
+        } else {
+          setError("No user found");
+        }
       })
-    })
-    .then(async (response) => {
-      if (response.status === 200) {
-        const data = await response.json()
-        return data
-      } else {
-        setMessage("No user found")
-      }
-    })
-    .then((data) => {
-      dispatch({ type: 'SET_USER', payload: data })
-      setMessage("Welcome back, " + user.username)
-    })
-    .catch(error => {
-      console.error(error)
-    })
-
-    /*
-    const link = document.getElementById("visit-dashboard");
-    link.style.display = "block";
-    */
+      .then((data) => {
+        dispatch({ type: "SET_USER", payload: data });
+        setError("Welcome back, " + user.username);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <>
-      <Header showButtons={false} pageName = "/" />
+      <Header showButtons={false} pageName="/" />
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
@@ -107,7 +103,7 @@ const Login = () => {
             className="input-field"
             type="password"
             placeholder="Password"
-            value={password}
+                        value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{
               border: "none",
@@ -150,3 +146,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import { Provider } from 'react-redux';
+import rootReducer from './redux/userStore';
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
