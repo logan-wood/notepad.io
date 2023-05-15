@@ -1,5 +1,4 @@
-// Import necessary dependencies
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
@@ -32,8 +31,9 @@ const Header = ({
     dispatch({ type: 'CLEAR_USER' });
   };
 
+const Header = ({ showButtons, pageName, showSignOutButton }) => {
   return (
-    <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
+    <header className="header">
       <div className="logo-title d-flex align-items-center">
         {/** Link to a specified page when Logo is clicked */}
         <Link to={pageName}>
@@ -44,7 +44,6 @@ const Header = ({
           <h1 className="app-title">Notepad.io</h1>
         </Link>
       </div>
-      {/* Conditionally render the login and sign up buttons */}
       {showButtons && (
         <div className="buttons-container">
           <Link to="/login">
@@ -77,6 +76,13 @@ const Header = ({
           {/* links to landing page when clicked */}
           <Link to="/" className="sign-out-button" onClick={logoutUser}>
             <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+      {showSignOutButton && (
+        <div className="sign-out-button">
+          <Link to="/">
+            <Button variant="primary" className="sign-out-button">
+              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
+              Sign Out
+            </Button>
           </Link>
         </div>
       )}
