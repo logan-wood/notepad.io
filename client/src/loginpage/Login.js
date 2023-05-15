@@ -10,8 +10,7 @@ import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
 import googleLogo from "./google_logo.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { setDoc, doc } from "firebase/firestore";
 
 const Login = () => {
@@ -49,16 +48,40 @@ const Login = () => {
     });
   };
 
+  // shared across different react files/components
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const signInWithEmail = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        console.log(result);
-        navigate("/dashboard");
+    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email
       })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    })
+    .then(async (response) => {
+      if (response.status === 200) {
+        const data = await response.json()
+        return data
+      } else {
+        setMessage("No user found")
+      }
+    })
+    .then((data) => {
+      dispatch({ type: 'SET_USER', payload: data })
+      setMessage("Welcome back, " + user.username)
+    })
+    .catch(error => {
+      console.error(error)
+    })
+
+    /*
+    const link = document.getElementById("visit-dashboard");
+    link.style.display = "block";
+    */
 
   return (
     <>
