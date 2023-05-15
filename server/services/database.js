@@ -30,11 +30,12 @@ module.exports = {
     }
   },
   removeClass: async function (uid, classId) {
-    const ref = await db
+    const ref = (await db
       .ref("/users/" + uid)
       .child(classId)
-      .once("value");
-    if (!ref.exists()) {
+      .once("value")
+      ).exists();
+    if (!ref) {
       //class doesnt exist; do nothing
       return ref;
     } else {
