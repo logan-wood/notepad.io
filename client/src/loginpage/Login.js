@@ -1,6 +1,5 @@
 // Import required dependancies
 import React, { useState } from "react";
-import React, { useState, useContext } from "react";
 import Header from "../shared/Header.js";
 // import {
 //   getAuth,
@@ -14,44 +13,40 @@ import { Button } from "react-bootstrap";
 import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
 import googleLogo from "./google_logo.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { setDoc, doc } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+// import { setDoc, doc } from "firebase/firestore";
 
-// 
 const Login = () => {
   // Declare state variables
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  // google sign in fuctionality
+  // google sign in functionality
+  /*
   const signInWithGoogle = () => {
-
-    signInWithPopup(auth, provider) // prompts the user for sign in with google 
-    .then(async (result) => { // gets result
-
-      // if user is not a new user/has signed up before
-      if (result.additionalUserInfo && !result.additionalUserInfo.isNewUser) {
-        const userRef = doc(app, "users", result.user.uid); // get userRef
-        await setDoc(userRef, {
-          signedUpWithGoogle: true, // successful sign in attempt
-        });
-      }
-      // move user to the dashboard 
-      navigate("/dashboard");
-    })
-    .catch((error) => {
-      console.log(error);
-      if(error.message.includes(
-        // notify user of unsuccessful sign in due to an account not found
-        "undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')")){
-        setError(`Account not found. Please sign up.`); // prompt to sign up instead. 
-      } else if (error.message.includes("Firebase: Error (auth/popup-closed-by-user).")) {
-        // do nothing
-      } else {
-        // notify user of their error
-        setError(`Error signing in with Google: ${error.message}`);
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        if (result.additionalUserInfo && !result.additionalUserInfo.isNewUser) {
+          const userRef = doc(app, "users", result.user.uid);
+          await setDoc(userRef, {
+            signedUpWithGoogle: true,
+          });
+        }
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.log(error);
+        if(error.message.includes("undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')")){
+          setError(`Account not found. Please sign up.`);
+        } else if (error.message.includes("Firebase: Error (auth/popup-closed-by-user).")) {
+        } else {
+          setError(`Error signing in with Google: ${error.message}`);
+        }
+      });
+  }
+  */
 
   // shared across different react files/components
   const user = useSelector((state) => state.user);
@@ -68,7 +63,6 @@ const Login = () => {
       })
     })
     .then(async (response) => {
-      // user found
       if (response.status === 200) {
         const data = await response.json()
         return data
@@ -79,25 +73,15 @@ const Login = () => {
     .then((data) => {
       dispatch({ type: 'SET_USER', payload: data })
       setMessage("Welcome back, " + user.username)
-
-  // email sign in fuctionality
-  const signInWithEmail = () => {
-    signInWithEmailAndPassword(auth, email, password) // checks email and password match
-      .then((result) => { 
-        // move user to dashboard if successful
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        // notify user of error
-        setError(`Error signing in with Email: ${error.message}`);
-      });
-      // show link to dash
-      const link = document.getElementById("visit-dashboard");
-      link.style.display = "block";
     })
     .catch(error => {
       console.error(error)
     })
+
+    /*
+    const link = document.getElementById("visit-dashboard");
+    link.style.display = "block";
+    */
   };
 
   // return the Login element
