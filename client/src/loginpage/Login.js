@@ -155,7 +155,7 @@ const Login = () => {
             {/* Diplays error message, if any */}
             <p className="error-message signin-error">{error}</p>
             {/* send user to sign up page on activation */}
-            <p className="error-message signin-error">{error}</p> */}
+            <p className="error-message signin-error">{error}</p>
             <Link to="/signup">
               <Button variant="link" className="register-button">
                 Don't have an account?
