@@ -154,6 +154,9 @@ const keys ={
     },
     d: {
         pressed: false
+    },
+    esc: {
+        pressed: false
     }
 }
 
@@ -179,6 +182,15 @@ function animate() {
     // infinite loop
     const animationId = window.requestAnimationFrame(animate)
 
+    if(keys.esc.pressed) {
+        console.log(keys.esc.pressed)
+        const menu = document.querySelector('#menuDiv').style.display = 'block'
+    } else if(!keys.esc.pressed) {
+        const menu = document.querySelector('#menuDiv').style.display = 'none'
+    }
+
+
+
     // draw map and character here cause of infinite loop
     background.draw()
     boundaries.forEach(boundary => {
@@ -188,14 +200,13 @@ function animate() {
          battleZone.draw()
     })
 
+    npc.draw()
 
     //draw player
     player.draw()
 
     //draw foreground objects
     foreground.draw()
-
-    npc.draw()
 
     let moving = true
     player.animate = false
@@ -407,6 +418,16 @@ window.addEventListener('keydown', (e) => {
         case 'd':
             keys.d.pressed = true
             lastKey = 'd'
+            break
+        case 'Escape':
+            if(keys.esc.pressed) {
+                keys.esc.pressed = false
+                console.log('keys true')
+            } else if (!keys.esc.pressed) {
+                keys.esc.pressed = true
+                console.log('keys false')
+            }
+            lastKey = 'esc'
             break
     }
 })
