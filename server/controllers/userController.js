@@ -3,16 +3,6 @@ const database = require("../services/database");
 
 // functions
 module.exports = {
-  addNewUser: function (req, res) {
-    const { uid } = req.query;
-    if (uid) {
-      database.addNewUser(uid);
-      res.status(200).send("User successfully added!");
-    } else {
-      res.status(400).send("Bad Request: uid parameter is missing.");
-    }
-  },
-
   getInfo: function (req, res, uid) {
     if (uid) {
       database
@@ -58,10 +48,15 @@ module.exports = {
       };
       
       // Save new user to database
+      console.log('calling write function...')
       database.writeUserData(user)
       .then((result) => {
         console.log(result)
         res.status(201).send('user added to database')
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(400).send('Could not write user to database')
       })
     });
   },
