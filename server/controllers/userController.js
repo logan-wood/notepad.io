@@ -1,12 +1,9 @@
 const bcrypt = require("bcrypt");
 const database = require("../services/database");
-const session = require("express-session");
 
 // functions
 module.exports = {
-  getUser: function (req, res) {
-    console.log("calling database");
-    const { uid } = req.query;
+  getInfo: function (req, res, uid) {
     if (uid) {
       database
         .getInfo(uid)
@@ -51,10 +48,15 @@ module.exports = {
       };
       
       // Save new user to database
+      console.log('calling write function...')
       database.writeUserData(user)
       .then((result) => {
         console.log(result)
         res.status(201).send('user added to database')
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(400).send('Could not write user to database')
       })
     });
   },
@@ -62,32 +64,72 @@ module.exports = {
   loginUser: async function (req, res) {
     var user;
     const email = req.body.email
+    const password = req.body.password
 
     // get uid from email
     try {
       user = await database.getUserFromEmail(email)
     } catch (e) {
       res.status(400).send('No user found')
-      console.error(e)
       return
     }
 
     if (user) {
-      // add user data to req.session object
-      req.session.user = user
-      console.log(req.session)
-      console.log(req.sessionID)
+      if (await bcrypt.compare(password, user.password)) {
+        // add user data to req.session object
 
-      // set cookie
-      res.cookie('mySessionID', req.sessionID, { httpOnly: true })
-
-      // send response
-      res.status(200).json(user)
+        // send response
+        res.status(200).json(user)
+      } else {
+        res.status(401).send('Invalid password')
+      }
     } else {
-      res.status(400).send('No user exists')
+      res.status(404).send('No user found')
     }
   },
 
+  getUserFromEmail: async function (email) {
+    const ref = db.ref("/users/");
+    const snapshot = await ref.once("value");
+
+    let userData = null;
+    snapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.val();
+      if (user.email === email) {
+        userData = user;
+      }
+    });
+
+  return userData;
+  },
+
+  updateClass: function (req, res, uid) {
+    console.log("calling database");
+    const classToUpdate = req.body;
+    if (uid && classToUpdate) {
+      try {
+        database.updateClass(uid, classToUpdate);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error saving class to database: " + error.message);
+      }
+    } else {
+      if (!classToUpdate && !uid) {
+        res
+          .status(400)
+          .send("Bad Request: uid parameter is missing; Classes not found.");
+      }
+      if (!classToUpdate) {
+        res.status(404).send("Error: classes not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
   removeClass: function (req, res, uid, classId) {
     if (uid && classId) {
       try {

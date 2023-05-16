@@ -10,8 +10,8 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const signUpWithEmail = () => {
     // check fields are not blank
@@ -46,7 +46,7 @@ const SignUp = () => {
       console.error(error)
       setError('An unknown error occured. Please try again later')
     })
-  };
+  }
 
   return (
     <>
