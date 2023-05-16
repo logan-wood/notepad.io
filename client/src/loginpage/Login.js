@@ -1,58 +1,26 @@
 import React, { useState } from "react";
 import Header from "../shared/Header.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { app } from "../firebase.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
-import googleLogo from "./google_logo.png";
-import { Link, useNavigate } from "react-router-dom";
-import { setDoc, doc } from "firebase/firestore";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const navigate = useNavigate();
   const [error, setError] = useState("");
-
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
-          const userRef = doc(app, "users", result.user.uid);
-          await setDoc(userRef, {
-            signedUpWithGoogle: true,
-          });
-        }
-
-        console.log(result);
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        console.log(error);
-        if (
-          error.message.includes(
-            "undefined is not an object (evaluating 'result.additionalUserInfo.isNewUser')"
-          )
-        ) {
-          setError(`Error signing in with Google: ${error.message}`);
-        } else if (
-          error.message.includes("Firebase: Error (auth/popup-closed-by-user).")
-        ) {
-          // do nothing
-        } else {
-          setError(`Error signing in with Google: ${error.message}`);
-        }
-      });
-  };
+  const navigate = useNavigate();
 
   // shared across different react files/components
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const signInWithEmail = () => {
+    if (email === '' || password === '') {
+      setError("Please enter an email and password")
+      return
+    }
+
     fetch(process.env.REACT_APP_API_DOMAIN + "/loginUser", {
       method: "post",
       headers: {
@@ -60,23 +28,34 @@ const Login = () => {
       },
       body: JSON.stringify({
         email: email,
-      }),
+        password: password
+      })
     })
-      .then(async (response) => {
-        if (response.status === 200) {
-          const data = await response.json();
-          return data;
-        } else {
-          setError("No user found");
-        }
-      })
-      .then((data) => {
-        dispatch({ type: "SET_USER", payload: data });
-        setError("Welcome back, " + user.username);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then(async (response) => {
+      // user found
+      if (response.status === 200) {
+        const data = await response.json()
+        return data
+      } else if (response.status === 404){
+        console.log(response)
+        setError("No user found")
+      } else if (response.status === 401) {
+        setError("Incorrect password")
+      } else {
+        setError("An error occured. Please try again later")
+      }
+    })
+    .then((data) => {
+      if (data)
+      {
+        dispatch({ type: 'SET_USER', payload: data })
+
+        navigate('/dashboard')
+      }
+    })
+    .catch(error => {
+      console.error(error)
+    })
   };
 
   return (
@@ -124,14 +103,6 @@ const Login = () => {
             <span className="or-text">or</span>
           </div>
           <div className="button-group">
-            <Button
-              variant="primary"
-              className="google-signin-button"
-              onClick={signInWithGoogle}
-            >
-              <img src={googleLogo} alt="Google logo" className="google-logo" />
-              Sign in with Google
-            </Button>
             <p className="error-message signin-error">{error}</p>
             <Link to="/signup">
               <Button variant="link" className="register-button">

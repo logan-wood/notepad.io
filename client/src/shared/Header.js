@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
@@ -28,10 +28,13 @@ const Header = ({
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
+  // redirection & navigation
+  const navigate = useNavigate();
+
   const logoutUser = () => {
-    console.log('logging out user');
-    dispatch({ type: 'CLEAR_USER' });
-  };
+    dispatch({ type: 'CLEAR_USER' })
+    navigate('/')
+  }
 
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
@@ -59,6 +62,7 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
+          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </Button>
@@ -68,9 +72,7 @@ const Header = ({
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-          <Link to="/" className="sign-out-button">
-            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
-          </Link>
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
         </div>
       )}
     </header>
