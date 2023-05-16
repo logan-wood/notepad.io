@@ -2,18 +2,57 @@ const firebase = require("./firebase");
 const db = firebase.db();
 
 module.exports = {
-  addNewUser: async function (uid) {
-    await db.ref("users/" + uid).set({
-      creationDate: new Date().toISOString(),
+  writeUserData: async function (user) {
+    // check UID is not being used
+    var randNum
+    do {
+      var matchFound = false
+      randNum = Math.floor(Math.random() * 9000000000) + 1000000000;
+      await this.getInfo(randNum)
+      .then((res) => {
+        console.log(res)
+        if (res != null) {
+          matchFound = true
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        return
+      })
+    } while (matchFound)
+    
+    // insert into DB
+    const uid = randNum
+    console.log(uid)
+    console.log(user)
+    db.ref("users/" + uid).set({
+      uid: uid,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      classes: '',
     });
-    return "User successfully";
   },
+
   getInfo: async function (uid) {
     const ref = db.ref("/users/" + uid);
-    return await ref.once("value", (snapshot) => {
-      const data = snapshot.val();
-      return data;
+    const snapshot = await ref.once("value");
+    return snapshot.val();
+  },
+
+  getUserFromEmail: async function (email) {
+    const ref = db.ref("/users/");
+    const snapshot = await ref.once("value");
+
+    let userData = null;
+    snapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.val();
+      if (user.email === email) {
+        userData = user;
+      }
     });
+
+  return userData;
   },
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
   updateClass: async function (uid, classToUpdate) {

@@ -5,7 +5,9 @@ import Home from "./homepage/Home";
 import Login from "./loginpage/Login";
 import Signup from "./sign-up/Signup";
 import Mainpage from "./mainpage/Mainpage";
-import "./AppTransitions.css";
+import { Provider } from "react-redux"
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from "./redux/userStore";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -28,11 +30,15 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <AnimatedRoutes />
-      </div>
-    </Router>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <div className="App">
+            <AnimatedRoutes />
+          </div>
+        </Router>
+      </PersistGate>
+    </Provider>
   );
 }
 
