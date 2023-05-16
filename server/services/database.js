@@ -2,12 +2,7 @@ const firebase = require("./firebase");
 const db = firebase.db();
 
 module.exports = {
-  addNewUser: async function (uid) {
-    await db.ref("users/" + uid).set({
-      creationDate: new Date().toISOString(),
-    });
-    return "User successfully";
-  },
+
   getInfo: async function (uid) {
     const ref = db.ref("/users/" + uid);
     return await ref.once("value", (snapshot) => {

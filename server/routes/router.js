@@ -33,11 +33,6 @@ router.post('/loginUser', function(req, res) {
   userController.loginUser(req, res)
 })
 
-// adds a new user to the database
-// query params: uid
-router.post("/user/add", (req, res) => {
-  userController.addNewUser(req, res);
-});
 // retrieves all user data based on uid
 // query params: uid
 router.get("/user/:id/getInfo", function (req, res) {

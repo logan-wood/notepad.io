@@ -1,12 +1,29 @@
-import React from "react";
+// Import necessary dependencies
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
 import logo from "./notey.png";
 import { Link, useNavigate } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
+import settingsIcon from "./settings_icon.png";
+import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 
-const Header = ({ showButtons, pageName, showSignOutButton }) => {
+const Header = ({
+  showButtons, // determines log in / sign up buttons being shown
+  pageName, // determines the page to link to from the logo and title
+  showDarkModeButton,
+  showDashBoardButtons,
+}) => {
+  // state variable to hold value of darkMode setting
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // handles the toggle of the dark mode button 
+  const handleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle("dark-mode");
+  };
+
   // user object
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -20,7 +37,7 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
   }
 
   return (
-    <header className="header">
+    <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
         <Link to={pageName}>
           <img src={logo} alt="Logo" className="logo" />
@@ -43,16 +60,20 @@ const Header = ({ showButtons, pageName, showSignOutButton }) => {
           </Link>
         </div>
       )}
-      {showSignOutButton && (
-        <div className="sign-out-button">
-          <div>{user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}</div>
-          {/* <Link to="/"> */}
-            <Button variant="primary" onClick={logoutUser} className="sign-out-button">
-              <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" />
-              Sign Out
-            </Button>
-          {/* </Link> */}
-      </div>
+      {showDashBoardButtons && (
+        <div className="dashboard-buttons-container">
+          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
+          <Button className="dark-mode-toggle" onClick={handleDarkMode}>
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          </Button>
+          <Link to="/settings" className="settings-button">
+            <img src={settingsIcon} alt="Settings" className="settings-icon" />
+          </Link>
+          <Link to="/profile" className="profile-button">
+            <img src={profileIcon} alt="Profile" className="profile-icon" />
+          </Link>
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
+        </div>
       )}
     </header>
   );

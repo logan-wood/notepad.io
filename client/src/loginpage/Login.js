@@ -8,7 +8,6 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -17,10 +16,15 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const signInWithEmail = () => {
-    fetch(process.env.REACT_APP_API_DOMAIN + '/loginUser', {
-      method: 'post',
+    if (email === '' || password === '') {
+      setError("Please enter an email and password")
+      return
+    }
+
+    fetch(process.env.REACT_APP_API_DOMAIN + "/loginUser", {
+      method: "post",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
@@ -56,7 +60,7 @@ const Login = () => {
 
   return (
     <>
-      <Header showButtons={false} pageName = "/" />
+      <Header showButtons={false} pageName="/" />
       <div className="login-page">
         <div className="login-box">
           <h2 className="login-title">Log in</h2>
@@ -78,7 +82,7 @@ const Login = () => {
             className="input-field"
             type="password"
             placeholder="Password"
-            value={password}
+                        value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{
               border: "none",
@@ -113,3 +117,4 @@ const Login = () => {
 };
 
 export default Login;
+

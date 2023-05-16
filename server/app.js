@@ -21,6 +21,6 @@ app.use(cors({
 const router = require("./routes/router");
 app.use(router);
 
-app.listen(process.env.PORT, function () {
+app.listen(8080, function () {
   console.log("server listening on http://localhost:" + process.env.PORT);
 });
