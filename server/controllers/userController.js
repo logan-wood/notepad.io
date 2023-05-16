@@ -82,7 +82,6 @@ module.exports = {
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
         // add user data to req.session object
-        req.session.user = user
 
         // send response
         res.status(200).json(user)

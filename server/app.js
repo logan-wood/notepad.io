@@ -6,15 +6,21 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config("./env");
 
-// body-parser (for forms)
+// body parser (for forms)
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+// cors, which allows the server side to send data to the client
+const cors = require('cors');
+app.use(cors({
+  origin: process.env.CLIENT_DOMAIN,
+  credentials: true // allow cookies
+}));
 
 // initiate router
 const router = require("./routes/router");
 app.use(router);
 
-app.listen(8080, function () {
+app.listen(process.env.PORT, function () {
   console.log("server listening on http://localhost:" + process.env.PORT);
 });

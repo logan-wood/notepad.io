@@ -15,6 +15,21 @@ module.exports = {
       return data;
     });
   },
+
+  getUserFromEmail: async function (email) {
+    const ref = db.ref("/users/");
+    const snapshot = await ref.once("value");
+
+    let userData = null;
+    snapshot.forEach((userSnapshot) => {
+      const user = userSnapshot.val();
+      if (user.email === email) {
+        userData = user;
+      }
+    });
+
+  return userData;
+  },
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
   updateClass: async function (uid, classToUpdate) {
     const ref = db.ref("/users/" + uid).child(classToUpdate.id);
