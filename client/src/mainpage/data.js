@@ -47,9 +47,9 @@ export const updateClassData = (classId,  updatedClass) => {
   dataInData.classes[classIndex].name = updatedClass.name;
 };
 
-//call database
-export const getDatabaseData = () => {
-  const url = "http://localhost:8080/user/12345/getInfo";
+//call databaseuser.uid
+export const getDatabaseData = (userUID) => {
+  const url = "http://localhost:8080/user/" + userUID + "/getInfo";
   fetch(url, {
     method: "GET",
     headers: {
