@@ -168,16 +168,28 @@ module.exports = {
     db.ref("/users/" + newUid).update(newUser);
   },
 
-  retrieve: async function (noteId, newUid) {
+  retrieveSharedNotes: async function (uid) {
+    let finalNotes = new Array();
     //updates note under /sharedNotes database with newUid.
-    const ref = db.ref("/sharedNotes/" + noteId);
-    let note = (await ref.once("value")).val();
+    const ref = db.ref("/sharedNotes/");
+    let notes = (await ref.once("value")).val();
+    // console.log(notes);
+    Object.keys(notes).forEach((noteKey) => {
+      const note = notes[noteKey];
+      const users = note.users;
 
-    ref.update(note);
+      // Iterate through the inner object using Object.keys()
+      Object.keys(users).forEach((userKey) => {
+        const user = users[userKey];
+        if (user == uid) {
+          finalNotes.push(note);
+          // console.log(note);
+          console.log(finalNotes);
+        }
+      });
+    });
+    return finalNotes;
 
-    //updates the user under /users database with a reference to the noteId that was shared with them.
-    let newUser = await this.getInfo(newUid);
-    newUser.sharedNotes = [noteId];
-    db.ref("/users/" + newUid).update(newUser);
+    // console.log(notes);
   },
 };
