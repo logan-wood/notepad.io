@@ -294,7 +294,7 @@ function Mainpage() {
   }, []);
 
   async function testConnection() {
-    await fetch("http://localhost:8090/", {
+    await fetch("http://localhost:8080/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
