@@ -198,6 +198,15 @@ noteTitleStyle {
   margin-top: 20px;
 }
 
+.disconnected {
+  color: black !important;
+  padding-left: 2px;
+}
+.connected {
+  color: green !important;
+  padding-left: 2px;
+}
+
 .save-button {
   color: #694b2c !important;
   text-decoration: none !important;
@@ -217,11 +226,26 @@ noteTitleStyle {
   color: #694b2c !important;
 }
 
-.disconnected {
-  color: black !important;
-  padding-left: 2px;
+body.dark-mode .sidenav,
+body.dark-mode .sidenav h1 {
+  background-color: #333 !important;
+  color: #ffffff;
 }
-.connected {
-  color: green !important;
-  padding-left: 2px;
+
+body.dark-mode .noteTitleStyle {
+  background-color: #616161;
+  color: #ffffff;
+}
+
+body.dark-mode .noteClassStyle {
+  background-color: #616161 !important;
+}
+
+body.dark-mode .mainpage {
+  background-color: #616161;
+}
+
+body.dark-mode .note {
+  background-color: #616161 !important;
+  color: #ffffff;
 }
