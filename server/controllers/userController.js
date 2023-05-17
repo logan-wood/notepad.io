@@ -216,4 +216,36 @@ module.exports = {
       }
     }
   },
+
+  addSharedUser: function (req, res, noteId, newUid) {
+    if ((noteId, newUid)) {
+      try {
+        database.addSharedUser(noteId, newUid);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!noteId && !newUid) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: uid parameter is missing; classId & noteId both not found."
+          );
+      }
+      if (!noteId) {
+        res.status(404).send("Bad Request: noteId not found.");
+      }
+      if (!newUid) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: newUid parameter is missing. The uid of the user you wish to share the note with is required."
+          );
+      }
+    }
+  },
 };

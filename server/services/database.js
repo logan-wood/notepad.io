@@ -116,11 +116,11 @@ module.exports = {
           if (value.id == noteId) {
             //remove note
             noteFound = note.val();
-            db.ref("/users/" + uid)
-              .child(classId)
-              .child("notes")
-              .child(key)
-              .remove();
+            // db.ref("/users/" + uid)
+            //   .child(classId)
+            //   .child("notes")
+            //   .child(key)
+            //   .remove();
             return noteFound;
           }
         });
@@ -133,10 +133,21 @@ module.exports = {
     let oldNote = await this.removeNote(uid, classId, noteId);
     //adds old owner as owner
     oldNote.owner = uid;
-    console.log(oldNote);
+    oldNote.users = [0];
+    let noteMap = {};
+    noteMap[noteId] = oldNote;
+    console.log(noteMap);
 
     //adds to shared notes database:
     const ref = db.ref("sharedNotes");
-    await ref.update(oldNote);
+    await ref.update(noteMap);
+  },
+
+  addSharedUser: async function (noteId, newUid) {
+    const ref = db.ref("/sharedNotes/" + noteId);
+    console.log((await ref.once("value")).val());
+    let note = (await ref.once("value")).val();
+    note.users.push(newUid);
+    ref.update(note);
   },
 };

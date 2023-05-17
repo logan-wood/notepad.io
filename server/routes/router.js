@@ -63,5 +63,10 @@ router.put("/user/:id/setSharedNote", (req, res) => {
   const noteId = req.query.noteId;
   userController.setSharedNote(req, res, id, classId, noteId);
 });
+router.put("/addSharedUser", (req, res) => {
+  const newUid = req.query.newUid;
+  const noteId = req.query.noteId;
+  userController.addSharedUser(req, res, noteId, newUid);
+});
 
 module.exports = router;
