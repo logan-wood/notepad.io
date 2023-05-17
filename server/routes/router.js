@@ -63,9 +63,9 @@ router.put("/user/:id/setSharedNote", (req, res) => {
   const noteId = req.query.noteId;
   userController.setSharedNote(req, res, id, classId, noteId);
 });
-router.put("/addSharedUser", (req, res) => {
+router.put("/note/:noteId/addSharedUser", (req, res) => {
   const newUid = req.query.newUid;
-  const noteId = req.query.noteId;
+  const noteId = req.params.noteId;
   userController.addSharedUser(req, res, noteId, newUid);
 });
 
