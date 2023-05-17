@@ -322,7 +322,7 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      <GameFrame />
+      {/* <GameFrame /> */}
 
       {/*delete button component */}
       <DeleteButton
