@@ -9,6 +9,7 @@ import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
+import GameFrame from '../gameframe/GameFrame';
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -321,6 +322,7 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
+      <GameFrame />
 
       {/*delete button component */}
       <DeleteButton
