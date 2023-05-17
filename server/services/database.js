@@ -133,8 +133,10 @@ module.exports = {
     let oldNote = await this.removeNote(uid, classId, noteId);
     //adds old owner as owner
     oldNote.owner = uid;
-    oldNote.users = [0];
     let noteMap = {};
+    let userMap = {};
+    userMap[uid] = uid;
+    oldNote.users = userMap;
     noteMap[noteId] = oldNote;
     console.log(noteMap);
 
@@ -147,7 +149,30 @@ module.exports = {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
     let note = (await ref.once("value")).val();
-    note.users.push(newUid);
+    if (note.users[newUid] == null) {
+      note.users[newUid] = newUid;
+    }
+    console.log(note);
+    ref.update(note);
+
+    //updates the user under /users database with a reference to the noteId that was shared with them.
+    let newUser = await this.getInfo(newUid);
+    let notes = newUser.sharedNotes;
+    if (notes == null) {
+      let notesMap = {};
+      notesMap[noteId] = noteId;
+      newUser.sharedNotes = notesMap;
+    } else {
+      notes[noteId] = noteId;
+    }
+    db.ref("/users/" + newUid).update(newUser);
+  },
+
+  retrieve: async function (noteId, newUid) {
+    //updates note under /sharedNotes database with newUid.
+    const ref = db.ref("/sharedNotes/" + noteId);
+    let note = (await ref.once("value")).val();
+
     ref.update(note);
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
