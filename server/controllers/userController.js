@@ -193,9 +193,7 @@ module.exports = {
         res.status(200).send("Request successfully sent!");
       } catch (error) {
         console.log(error);
-        res
-          .status(500)
-          .send("Error removing note from database: " + error.message);
+        res.status(500).send("Error setting note as shared: " + error.message);
       }
     } else {
       if (!classId && !uid && !noteId) {
@@ -226,7 +224,7 @@ module.exports = {
         console.log(error);
         res
           .status(500)
-          .send("Error removing note from database: " + error.message);
+          .send("Error adding shared user to note: " + error.message);
       }
     } else {
       if (!noteId && !newUid) {
@@ -245,6 +243,24 @@ module.exports = {
           .send(
             "Bad Request: newUid parameter is missing. The uid of the user you wish to share the note with is required."
           );
+      }
+    }
+  },
+  retrieveSharedNotes: function (req, res, uid) {
+    if (uid) {
+      try {
+        database.retrieveSharedNotes(uid).then((data) => {
+          res.status(200).send(data);
+        });
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid) {
+        res.status(400).send("Bad Request: uid is missing from request.");
       }
     }
   },
