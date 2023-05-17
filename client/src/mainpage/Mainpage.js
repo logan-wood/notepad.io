@@ -318,7 +318,7 @@ function Mainpage() {
     <div className="mainpage">
       <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showSignOutButton={true} />
+      <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true}/>
 
       {/* viewport so that its responsive*/}
       <meta

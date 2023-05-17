@@ -208,44 +208,47 @@ noteTitleStyle {
 }
 
 .save-button {
-  color: #694b2c !important;
-  text-decoration: none !important;
-  cursor: pointer !important;
-  margin-top: 1.15rem !important;
-  font-size: 18px !important;
-  position: absolute;
-  right: 10px;
-  top: 10vh;
-  background-color: #f3dfa2 !important;
+    color: #694b2c !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin-top: 1.15rem !important;
+    font-size: 18px !important;
+    position:absolute;
+    right:10px;
+    top: 10vh;
+    background-color: #f3dfa2 !important;
+}
+  
+  .save-button:hover {
+    text-decoration: underline !important;
+    background-color: #efe6dd !important;
+
+    color: #694b2c !important;
 }
 
-.save-button:hover {
-  text-decoration: underline !important;
-  background-color: #efe6dd !important;
-
-  color: #694b2c !important;
-}
 
 body.dark-mode .sidenav,
-body.dark-mode .sidenav h1 {
-  background-color: #333 !important;
-  color: #ffffff;
+body.dark-mode .sidenav h1
+{
+    background-color: #333 !important;
+    color: #FFFFFF;
 }
 
-body.dark-mode .noteTitleStyle {
-  background-color: #616161;
-  color: #ffffff;
+body.dark-mode .noteTitleStyle{
+    background-color: #616161;
+    color: #ffffff;
 }
 
-body.dark-mode .noteClassStyle {
-  background-color: #616161 !important;
+body.dark-mode .noteClassStyle{
+    background-color: #616161 !important;
 }
 
-body.dark-mode .mainpage {
-  background-color: #616161;
+body.dark-mode .mainpage{
+    background-color: #616161;
 }
 
-body.dark-mode .note {
-  background-color: #616161 !important;
-  color: #ffffff;
+body.dark-mode .note{
+    background-color: #616161 !important;
+    color: #FFFFFF;
 }
+
