@@ -1,6 +1,6 @@
 export const dataInData = {
   classes: [],
-  sharedNotes: [  ], //notes that are shared with otherusers
+  sharedNotes: [], //notes that are shared with otherusers
 };
 export default dataInData;
 
@@ -18,7 +18,7 @@ export const addNewClass = (newClass) => {
 };
 
 export const setClassesData = (updatedClasses) => {
-  dataInData.classes= updatedClasses;
+  dataInData.classes = updatedClasses;
 };
 export const addNewNote = (classID, Note) => {
   const classObj = dataInData.classes.find((classObj) => classObj.id === classID);
@@ -31,9 +31,7 @@ export const addNewNote = (classID, Note) => {
 //function that updates the data with changes made to the notes
 export const updateNoteData = (classId, noteId, updatedNote) => {
   const classIndex = dataInData.classes.findIndex((cls) => cls.id === classId);
-  const noteIndex = dataInData.classes[classIndex].notes.findIndex(
-    (note) => note.id === noteId
-  );
+  const noteIndex = dataInData.classes[classIndex].notes.findIndex((note) => note.id === noteId);
 
   dataInData.classes[classIndex].notes[noteIndex] = updatedNote;
 };
@@ -46,9 +44,8 @@ export const updateSharedNoteData = (noteId, updatedNote) => {
 };
 
 //function that updates the data with changes made to the notes
-export const updateClassData = (classId,  updatedClass) => {
+export const updateClassData = (classId, updatedClass) => {
   const classIndex = dataInData.classes.findIndex((cls) => cls.id === classId);
- 
 
   dataInData.classes[classIndex].name = updatedClass.name;
 };
@@ -67,51 +64,47 @@ export const getDatabaseData = (userUID) => {
     },
   })
     .then((response) => {
-      console.log("response",response);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return response.json(); // Parse the response body as JSON
     })
     .then((data) => {
-      console.log("data log",JSON.stringify(data));
+      console.log("data log", JSON.stringify(data));
 
       const initialArray = Object.values(data);
-      const updatedClasses = initialArray.map((initClass) => {
-          console.log("updatedclasses log",JSON.stringify(data));
+      const updatedClasses = initialArray
+        .map((initClass) => {
           if (initClass.id && initClass.name && initClass.noteSize !== undefined) {
-
-          if (Array.isArray(initClass.notes)) {
-
+            if (Array.isArray(initClass.notes)) {
               return initClass;
             } else if (initClass.notes && typeof initClass.notes === "object") {
-
               const newNotesArray = [];
               for (const initialNotes of Object.values(initClass.notes)) {
                 newNotesArray.push(initialNotes);
               }
-              console.log("initclass",initClass);
+              console.log("initclass", initClass);
 
               return { ...initClass, notes: newNotesArray };
             } else {
-              console.log("initclass",initClass);
+              console.log("initclass", initClass);
 
               return { ...initClass, notes: [] };
-              
-        }
-      }else{
-        return null;
-      }}).filter(obj => obj !== null); // filter out the null/undefined values
-  
-      console.log("uisarray",JSON.stringify(updatedClasses));
-      dataInData.classes= updatedClasses;
-      console.log("called state",dataInData.classes);
+            }
+          } else {
+            return null;
+          }
+        })
+        .filter((obj) => obj !== null); // filter out the null/undefined values
+
+      console.log("uisarray", JSON.stringify(updatedClasses));
+      dataInData.classes = updatedClasses;
+      console.log("called state", dataInData.classes);
     })
     .catch((error) => {
       console.error("There was an error sending the request:", error);
     });
 };
-
 
 export const getSharedNoteData = (userUID) => {
   const url = "http://localhost:8080/user/12345/retrieveSharedNotes ";
@@ -138,6 +131,8 @@ export const getSharedNoteData = (userUID) => {
       const updatedSharedNote = initialArray
         .map((initClass) => {
           console.log("sharedNote log", JSON.stringify(data));
+
+          return initClass;
         })
         .filter((obj) => obj !== null); // filter out the null/undefined values
 
@@ -149,5 +144,3 @@ export const getSharedNoteData = (userUID) => {
       console.error("There was an error sending the request:", error);
     });
 };
-
-
