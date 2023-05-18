@@ -3,13 +3,14 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
+import dataInData, { updateNoteData, updateClassData,getDatabaseData, getSharedNoteData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
 import ShareModal from "./ShareModal";
+import { useSelector } from "react-redux";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -23,14 +24,18 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  //user object
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
     function handleClickShareOutside(event) {
-      if (isShareOpen && !event.target.closest('.modalShareWrapper')) {
+      if (isShareOpen && !event.target.closest(".modalShareWrapper")) {
         setIsShareOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickShareOutside);
-    return () => document.removeEventListener('mousedown', handleClickShareOutside);
+    document.addEventListener("mousedown", handleClickShareOutside);
+    return () => document.removeEventListener("mousedown", handleClickShareOutside);
   }, [isShareOpen]);
 
   //handler for delete buttons
@@ -93,11 +98,17 @@ function Mainpage() {
   };
   useEffect(() => {
     const fetchData = async () => {
-     await getDatabaseData();
+      await getDatabaseData(user.uid);
       console.log("get DB data in mainpage", dataInData);
       setData(dataInData);
     };
     fetchData();
+    const fetchData2 = async () => {
+      await getSharedNoteData(user.uid);
+      console.log("get DB shared data in mainpage", dataInData);
+      setData(dataInData);
+    };
+    fetchData2();
   }, []);
 
   // Handle selection update of note content
@@ -109,18 +120,13 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex(
-        (cls) => cls.id === SelectedClass.id
-      );
+      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
 
       // Find the index of the note to be updated in the notes array of the selected class
-      const noteIndex = newData.classes[classIndex].notes.findIndex(
-        (note) => note.id === updatedNote.id
-      );
+      const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === updatedNote.id);
 
       // Update the content of the note in the notes array of the selected class
-      newData.classes[classIndex].notes[noteIndex].content =
-        updatedNote.content;
+      newData.classes[classIndex].notes[noteIndex].content = updatedNote.content;
       //handle update title
       newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
       handleDatabaseUpdateClass(SelectedClass);
@@ -139,9 +145,7 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex(
-        (cls) => cls.id === updatedClass.id
-      );
+      const classIndex = newData.classes.findIndex((cls) => cls.id === updatedClass.id);
 
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
@@ -157,8 +161,8 @@ function Mainpage() {
 
   // handle for updating the
   const handleDatabaseUpdateClass = (data) => {
-     // constant url for testing purposes
-  const url = "http://localhost:8080/user/12345/updateClass";
+    // constant url for testing purposes
+    const url = "http://localhost:8080/user/"+user.uid+"/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -183,10 +187,10 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
-   
+
   // Handle for deleting a note from the database
-  const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
-    const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;
+  const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
+    const url = "http://localhost:8080/user/"+user.uid+"/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -214,7 +218,7 @@ function Mainpage() {
   };
 
   const handleDatabaseDeleteClass = (data, selectedClassId) => {
-    const url = "http://localhost:8080/user/12345/removeClass?classId="+selectedClassId;
+    const url = "http://localhost:8080/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
       method: "DELETE",
@@ -242,16 +246,12 @@ function Mainpage() {
   };
 
   const handleDeleteClass = () => {
-    
-
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex(
-        (cls) => cls.id === SelectedClass.id
-      );
+      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
 
       if (classIndex !== -1) {
         //remove class from array
@@ -273,14 +273,10 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex(
-        (cls) => cls.id === SelectedClass.id
-      );
+      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
 
       // Find the index of the note to be deleted in the notes array of the selected class
-      const noteIndex = newData.classes[classIndex].notes.findIndex(
-        (note) => note.id === SelectedNote.id
-      );
+      const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === SelectedNote.id);
       if (noteIndex !== -1) {
         //remove class from array
         newData.classes[classIndex].notes.splice(noteIndex, 1);
@@ -295,78 +291,40 @@ function Mainpage() {
   };
 
   return (
-   
-    <div className="mainpage"  >
+    <div className="mainpage">
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showSignOutButton={true} />
+      <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true} />
 
       {/* viewport so that its responsive*/}
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-      ></meta>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 
       {/*style import from google fonts */}
-      <style>
-        @import
-        url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');
-      </style>
+      <style>@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');</style>
 
       {/*Side Nav component*/}
-      <SideNav
-        isOpen={isNavOpen}
-        toggleNav={toggleNav}
-        onSelectClass={handleSelectClass}
-        onSelectNote={handleSelectNote}
-        className="classmenu"
-        data={data}
-      />
+      <SideNav isOpen={isNavOpen} toggleNav={toggleNav} onSelectClass={handleSelectClass} onSelectNote={handleSelectNote} className="classmenu" data={data} />
 
       {/*Note component*/}
-      <Note
-        SelectedClass={SelectedClass}
-        SelectedNote={SelectedNote}
-        updateNote={handleUpdateNote}
-        updateClass={handleUpdateClass}
-        updateProgress={updateNoteProgress}
-        progress={progress}
-        isReset={reset}
-      />
+      <Note SelectedClass={SelectedClass} SelectedNote={SelectedNote} updateNote={handleUpdateNote} updateClass={handleUpdateClass} updateProgress={updateNoteProgress} progress={progress} isReset={reset} />
 
-      <ProgressGameBar
-        progress={progress}
-        onButtonClick={handleGameButtonClick}
-      />
+      <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
       <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
       {/*delete button component */}
-      <DeleteButton
-        handleDeleteButton={handleDeleteButton}
-        handleDeleteClass={handleDeleteClass}
-        handleDeleteNote={handleDeleteNote}
-        isExpanded={isExpanded}
-        SelectedNote={SelectedNote}
-        SelectedClass={SelectedClass}
-      />
+      <DeleteButton handleDeleteButton={handleDeleteButton} handleDeleteClass={handleDeleteClass} handleDeleteNote={handleDeleteNote} isExpanded={isExpanded} SelectedNote={SelectedNote} SelectedClass={SelectedClass} />
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (
-  <div className="button-div">
-      <Button
-        onClick={handleDatabaseUpdateClass(SelectedClass)}
-        className="saveshare-button"
-      >
-        Save Note
-      </Button>
-      
-      <Button
-        className="saveshare-button"
-        onClick={handleShareButtonClick}
-      >
-        Share
-      </Button>
-      </div>)
-}
+        <div className="button-div">
+          <Button onClick={handleDatabaseUpdateClass(SelectedClass)} className="saveshare-button">
+            Save Note
+          </Button>
+
+          <Button className="saveshare-button" onClick={handleShareButtonClick}>
+            Share
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
