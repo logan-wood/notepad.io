@@ -107,7 +107,7 @@ const Note = ({
     setNoteTitle(selectedNote ? selectedNote.title : "");
     setNoteContent(selectedNote ? selectedNote.content : "");
     setClassName(selectedClass ? selectedClass.name : "");
-  }, [selectedNote,selectedClass]);
+  }, [selectedNote, selectedClass, isShareNote]);
 
   //Effect hook for updating the progress bar
   useEffect(() => {
@@ -115,8 +115,12 @@ const Note = ({
     setKeyUpCounter(0);
   }, [isReset]);
 
-  //render if there isnt a selected class and/note
-  if (!selectedClass || !isShareNote || !selectedNote)  {
+  //reSnder if there isnt a selected class and/note
+ if (!selectedClass && !selectedNote) {
+    if(!selectedClass){
+    return <div className="note">Click on something...</div>;
+    }
+  } else if (!selectedNote)  {
     return <div className="note">Click on something...</div>;
   } 
   return (

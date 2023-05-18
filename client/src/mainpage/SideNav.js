@@ -3,11 +3,11 @@ import arrow from "../assets/lefticon.png";
 import { addNewClass, addNewNote, updateClassData, updateNoteData } from "./data";
 import { v4 as uuidv4 } from "uuid";
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isSharedTrue }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isSharedTrue,onShareNote }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = useState(null);
   const [selectNote, setSelectNote] = useState(null);
-    const [isShared, setisShared] = useState(isSharedTrue);
+const [isShared, setIsShared] = useState(isSharedTrue);
 
     const [openClasses, setOpenClasses] = useState([]);
   const [isNoteEditing, setIsNoteEditing] = useState("");
@@ -88,7 +88,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
 
   // handler for creating a new note
   const handleNewNote = (id) => {
-        setisShared(false);
+    setIsShared(false);
     const classObj = data.classes.find((classObj) => classObj.id === id);
     if (classObj) {
       const newNote = {
@@ -102,6 +102,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
     } else {
       console.log("error with handle note");
     }
+    onShareNote(false); //  callback function with the updated value
   };
 
   //checks if a class is open
@@ -111,7 +112,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
 
   // handler for selecting a note\
   const handleSelectNote = (id) => {
-    setisShared(false);
+    setIsShared(false);
 
     if (selectClass) {
       const selectNote = selectClass.notes.find((note) => note.id === id);
@@ -122,19 +123,22 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
         onSelectNote(selectNote);
       }
     }
+    onShareNote(false); //  callback function with the updated value
   };
 
   const handleSelectShareNote = (id) => {
-    setisShared(true);
+        setIsShared(true);
+
     const selectSharedNote = data.sharedNotes.find((shareNoteObj) => shareNoteObj.id === id);
     setEditingNoteTitle(selectSharedNote.title);
 
     setSelectNote(selectSharedNote);
-    console.log("Select Shgared note", selectSharedNote
-    )
-            setSelectNote(selectSharedNote);
+    console.log("Select Shgared note", selectSharedNote);
+    setSelectNote(selectSharedNote);
     onSelectNote(selectSharedNote);
-
+    setSelectClass(null);
+    onSelectClass(null);
+    onShareNote(true); //  callback function with the updated value
   };
 
   //checks if a class button is active
