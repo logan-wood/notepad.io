@@ -57,5 +57,20 @@ router.delete("/user/:id/removeNote", (req, res) => {
   const noteId = req.query.noteId;
   userController.removeNote(req, res, id, classId, noteId);
 });
+router.put("/user/:id/setSharedNote", (req, res) => {
+  const id = req.params.id;
+  const classId = req.query.classId;
+  const noteId = req.query.noteId;
+  userController.setSharedNote(req, res, id, classId, noteId);
+});
+router.put("/note/:noteId/addSharedUser", (req, res) => {
+  const newUid = req.query.newUid;
+  const noteId = req.params.noteId;
+  userController.addSharedUser(req, res, noteId, newUid);
+});
+router.get("/user/:id/retrieveSharedNotes", (req, res) => {
+  const id = req.params.id;
+  userController.retrieveSharedNotes(req, res, id);
+});
 
 module.exports = router;

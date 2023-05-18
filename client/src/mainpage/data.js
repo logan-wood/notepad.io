@@ -1,7 +1,6 @@
 export const dataInData = {
-  classes: [
-    
-  ],
+  classes: [],
+  sharedNotes: [  ], //notes that are shared with otherusers
 };
 export default dataInData;
 
@@ -37,6 +36,13 @@ export const updateNoteData = (classId, noteId, updatedNote) => {
   );
 
   dataInData.classes[classIndex].notes[noteIndex] = updatedNote;
+};
+
+//function that updates the shared Note data with changes made to the notes
+export const updateSharedNoteData = (noteId, updatedNote) => {
+  const shareNoteIndex = dataInData.sharedNotes.findIndex((note) => note.id === noteId);
+
+  dataInData.sharedNotes[shareNoteIndex] = updatedNote;
 };
 
 //function that updates the data with changes made to the notes
@@ -107,8 +113,8 @@ export const getDatabaseData = (userUID) => {
 };
 
 
-export const getSharedNoteDate = (userUID) => {
-  const url = "http://localhost:8080/user/" + userUID + "/retrieveSharedNotes ";
+export const getSharedNoteData = (userUID) => {
+  const url = "http://localhost:8080/user/12345/retrieveSharedNotes ";
   fetch(url, {
     method: "GET",
     headers: {
@@ -129,34 +135,15 @@ export const getSharedNoteDate = (userUID) => {
       console.log("data log", JSON.stringify(data));
 
       const initialArray = Object.values(data);
-      const updatedClasses = initialArray
+      const updatedSharedNote = initialArray
         .map((initClass) => {
-          console.log("updatedclasses log", JSON.stringify(data));
-          if (initClass.id && initClass.name && initClass.noteSize !== undefined) {
-            if (Array.isArray(initClass.notes)) {
-              return initClass;
-            } else if (initClass.notes && typeof initClass.notes === "object") {
-              const newNotesArray = [];
-              for (const initialNotes of Object.values(initClass.notes)) {
-                newNotesArray.push(initialNotes);
-              }
-              console.log("initclass", initClass);
-
-              return { ...initClass, notes: newNotesArray };
-            } else {
-              console.log("initclass", initClass);
-
-              return { ...initClass, notes: [] };
-            }
-          } else {
-            return null;
-          }
+          console.log("sharedNote log", JSON.stringify(data));
         })
         .filter((obj) => obj !== null); // filter out the null/undefined values
 
-      console.log("uisarray", JSON.stringify(updatedClasses));
-      dataInData.classes = updatedClasses;
-      console.log("called state", dataInData.classes);
+      console.log("uisarray", JSON.stringify(updatedSharedNote));
+      dataInData.sharedNotes = updatedSharedNote;
+      console.log("called state", dataInData.sharedNotes);
     })
     .catch((error) => {
       console.error("There was an error sending the request:", error);

@@ -3,7 +3,7 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
+import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
@@ -21,9 +21,11 @@ function Mainpage() {
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const [data, setData] = useState({ classes: [] });
+  const [data, setData] = useState({ classes: [], sharedNotes: [] });
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
+  const [SelectedShareNote, SetSelectedShareNote] = useState(null);
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   //user object
@@ -104,7 +106,12 @@ function Mainpage() {
       setData(dataInData);
     };
     fetchData();
-   
+    const fetchData2 = async () => {
+      await getSharedNoteData(user.uid);
+      console.log("get DB data in mainpage", dataInData);
+      setData(dataInData);
+    };
+    fetchData2();
   }, []);
 
   // Handle selection update of note content
@@ -134,6 +141,32 @@ function Mainpage() {
     SetSelectedNote(updatedNote);
   };
 
+  // Handle selection update of note content
+  //
+  const handleUpdateShareNote = (updatedShareNote) => {
+    // callback function that recieves the previous state
+    setData((prevData) => {
+      // Create a copy of the previous data and save to new data
+      const newData = { ...prevData };
+
+      // Find the index of the selected sharednote in the Shared Note array
+      const shareNoteIndex = newData.sharedNotes.findIndex((sharedNote) => sharedNote.id === updatedShareNote.id);
+
+    
+
+      // Update the content of the note in the notes array of the selected class
+      newData.sharedNotes[shareNoteIndex].content = updatedShareNote.content;
+      //handle update title
+      newData.sharedNotes[shareNoteIndex].title = updatedShareNote.title;
+      handleDatabaseUpdateClass(SelectedShareNote);
+
+      // Return the updated data object
+      return newData;
+    });
+    updateSharedNoteData(updatedShareNote.id, updatedShareNote);
+    SetSelectedNote(updatedShareNote);
+  };
+
   const handleUpdateClass = (updatedClass) => {
     // callback function that recieves the previous state
     setData((prevData) => {
@@ -158,7 +191,7 @@ function Mainpage() {
   // handle for updating the
   const handleDatabaseUpdateClass = (data) => {
     // constant url for testing purposes
-    const url = process.env.REACT_APP_API_DOMAIN+"/user/"+user.uid+"/updateClass";
+    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -186,7 +219,7 @@ function Mainpage() {
 
   // Handle for deleting a note from the database
   const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
-    const url = process.env.REACT_APP_API_DOMAIN+"/user/"+user.uid+"/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
+    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -214,7 +247,7 @@ function Mainpage() {
   };
 
   const handleDatabaseDeleteClass = (data, selectedClassId) => {
-    const url = process.env.REACT_APP_API_DOMAIN+"/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
+    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
       method: "DELETE",

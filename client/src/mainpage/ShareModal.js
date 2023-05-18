@@ -28,7 +28,7 @@ const copyText  = async () => {
       <div className="shareModal">
         <div className="shareHeader">
           <h1> Share this note!</h1>
-          <buton onClick={onClose}>x</buton>
+          <button onClick={onClose}>x</button>
         </div>
         <hr />
         <div className="shareLinkContent">
