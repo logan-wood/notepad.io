@@ -15,6 +15,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   const [openClasses, setOpenClasses] = useState([]);
   const [isNoteEditing, setIsNoteEditing] = useState("");
   const [isClassEditing, setIsClassEditing] = useState("");
+  const [sharedNotes, setSharedNotes] = useState([]);
 
   const [editingClassName, setEditingClassName] = useState(false);
   const [editingNoteTitle, setEditingNoteTitle] = useState(false);

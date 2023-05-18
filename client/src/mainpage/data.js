@@ -2,6 +2,9 @@ export const dataInData = {
   classes: [
     
   ],
+  sharedNotes:[
+
+  ],
 };
 export default dataInData;
 
@@ -107,7 +110,7 @@ export const getDatabaseData = (userUID) => {
 };
 
 
-export const getSharedNoteDate = (userUID) => {
+export const getSharedNoteData = (userUID) => {
   const url = "http://localhost:8080/user/" + userUID + "/retrieveSharedNotes ";
   fetch(url, {
     method: "GET",

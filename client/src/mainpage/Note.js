@@ -9,6 +9,7 @@ const Note = ({
   progress,
   updateProgress,
   isReset,
+  isShared
 }) => {
   //State hooks for className, Note Title, Note Content and Keyup
   const [className, setClassName] = useState(
@@ -121,7 +122,7 @@ const Note = ({
 
   return (
     <div className="note">
-      {SelectedClass && (
+      {SelectedClass && !isShared (
         <input
           type="text"
           value={className}
