@@ -11,6 +11,7 @@ import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
 import ShareModal from "./ShareModal";
 import { useSelector } from "react-redux";
+import Loading from "./Loading.jsx";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -290,8 +291,40 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
+  let buffer = 0;
+  //passed into Loading component to determine if it is loading or not.
+  const [connected, setConnected] = useState(false);
+  //timer that checks server status every 2000ms
+  const interval = 1000;
+  useEffect(() => {
+    const timer = setInterval(testConnection, interval);
+    return () => clearInterval(timer);
+  }, []);
+
+  async function testConnection() {
+    await fetch("http://localhost:8080/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((data) => {
+        if (data.status == 200) {
+          //if successfully connects then sets the buffer back to 0;
+          buffer = 0;
+          setConnected(buffer);
+        }
+      })
+      .catch((error) => {
+        setConnected(buffer++);
+      });
+  }
   return (
     <div className="mainpage">
+      <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true} />
 
