@@ -122,6 +122,10 @@ function Mainpage() {
   //
   const handleUpdateNote = (updatedNote, updatedClass) => {
     // callback function that recieves the previous state
+    if(isShared){
+      handleUpdateShareNote(updatedNote);
+    }
+    else{
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
@@ -143,6 +147,7 @@ function Mainpage() {
     });
     updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
     SetSelectedNote(updatedNote);
+  }
   };
 
   // Handle selection update of note content
