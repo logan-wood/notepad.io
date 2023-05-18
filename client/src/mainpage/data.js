@@ -70,7 +70,6 @@ export const getDatabaseData = (userUID) => {
       return response.json(); // Parse the response body as JSON
     })
     .then((data) => {
-      console.log("data log", JSON.stringify(data));
 
       const initialArray = Object.values(data);
       const updatedClasses = initialArray
@@ -125,7 +124,6 @@ export const getSharedNoteData = (userUID) => {
       return response.json(); // Parse the response body as JSON
     })
     .then((data) => {
-      console.log("data log", JSON.stringify(data));
 
       const initialArray = Object.values(data);
       const updatedSharedNote = initialArray

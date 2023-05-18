@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
 const Note = ({
-  SelectedClass,
-  SelectedNote,
+  selectedClass,
+  selectedNote,
+  isShareNote,
   updateNote,
   updateClass,
   progress,
@@ -12,13 +13,15 @@ const Note = ({
 }) => {
   //State hooks for className, Note Title, Note Content and Keyup
   const [className, setClassName] = useState(
-    SelectedClass ? SelectedClass.name : ""
+    selectedClass ? selectedClass.name : ""
   );
   const [noteTitle, setNoteTitle] = useState(
-    SelectedNote ? SelectedNote.title : ""
+    selectedNote ? selectedNote.title : ""
   );
+  //const [shareNoteTitle, setShareNoteTitle] = useState(selectedShareNote ? selectedShareNote.title : "");
+
   const [noteContent, setNoteContent] = useState(
-    SelectedNote ? SelectedNote.content : ""
+    selectedNote ? selectedNote.content : ""
   );
   const [keyUpCounter, setKeyUpCounter] = useState(0);
 
@@ -37,7 +40,7 @@ const Note = ({
   //handler when focus on note, note title or class name is lost
   const handleNoteBlur = () => {
     updateNote({
-      ...SelectedNote,
+      ...selectedNote,
       content: noteContent,
     });
   };
@@ -45,14 +48,14 @@ const Note = ({
   //handler when focus on note is lost
   const handleTitleNoteBlur = () => {
     updateNote({
-      ...SelectedNote,
+      ...selectedNote,
       title: noteTitle,
     });
   };
 
   const handleClassNameBlur = () => {
     updateClass({
-      ...SelectedClass,
+      ...selectedClass,
       name: className,
     });
   };
@@ -61,7 +64,7 @@ const Note = ({
   const handleEditorChange = (content) => {
     setNoteContent(content);
     updateNote({
-      ...SelectedNote,
+      ...selectedNote,
       content: content,
     });
   };
@@ -69,9 +72,9 @@ const Note = ({
   //Tiny MCE initializer handler
   const handleEditorInit = (editor) => {
     editorRef.current = editor;
-    editor.setContent(SelectedNote ? SelectedNote.content : "");
+    editor.setContent(selectedNote ? selectedNote.content : "");
     updateNote({
-      ...SelectedNote,
+      ...selectedNote,
       title: noteTitle,
       content: noteContent,
     });
@@ -101,10 +104,10 @@ const Note = ({
 
   //effect hook that updates note title and content when selected note prop is passed through
   useEffect(() => {
-    setNoteTitle(SelectedNote ? SelectedNote.title : "");
-    setNoteContent(SelectedNote ? SelectedNote.content : "");
-    setClassName(SelectedClass ? SelectedClass.name : "");
-  }, [SelectedNote,SelectedClass]);
+    setNoteTitle(selectedNote ? selectedNote.title : "");
+    setNoteContent(selectedNote ? selectedNote.content : "");
+    setClassName(selectedClass ? selectedClass.name : "");
+  }, [selectedNote,selectedClass]);
 
   //Effect hook for updating the progress bar
   useEffect(() => {
@@ -113,19 +116,16 @@ const Note = ({
   }, [isReset]);
 
   //render if there isnt a selected class and/note
-  if (!SelectedClass) {
+  if (!selectedClass || !isShareNote || !selectedNote)  {
     return <div className="note">Click on something...</div>;
-  } else if (!SelectedNote) {
-    return <div className="note">Click on something...</div>;
-  }
-
+  } 
   return (
     <div className="note">
-      {SelectedClass && (
+      {selectedClass && (
         <input
           type="text"
           value={className}
-          defaultValue={SelectedClass ? SelectedClass.Name : ""}
+          defaultValue={selectedClass ? selectedClass.Name : ""}
           onChange={handleClassNameChange}
           onBlur={handleClassNameBlur}
           className="noteClassStyle"
@@ -137,7 +137,7 @@ const Note = ({
       <input
         type="text"
         value={noteTitle}
-        defaultValue={SelectedNote ? SelectedNote.title : ""}
+        defaultValue={selectedNote ? selectedNote.title : ""}
         onChange={handleTitleChange}
         onBlur={handleTitleNoteBlur}
         className="noteTitleStyle"

@@ -25,7 +25,7 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [SelectedShareNote, SetSelectedShareNote] = useState(null);
-
+  const [isShared, setisShared] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   //user object
@@ -86,6 +86,10 @@ function Mainpage() {
   //toggle for the side navigation, Initially off
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
+  };
+
+  const handleIsShare = (isShare) => {
+    setisShared(isShare);
   };
 
   // Handle selection of class from the sideNav
@@ -363,10 +367,10 @@ function Mainpage() {
       <style>@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');</style>
 
       {/*Side Nav component*/}
-      <SideNav isOpen={isNavOpen} toggleNav={toggleNav} onSelectClass={handleSelectClass} onSelectNote={handleSelectNote} className="classmenu" data={data} />
+      <SideNav isOpen={isNavOpen} toggleNav={toggleNav} onSelectClass={handleSelectClass} onSelectNote={handleSelectNote} className="classmenu" data={data} isShareNote={handleIsShare} />
 
       {/*Note component*/}
-      <Note SelectedClass={SelectedClass} SelectedNote={SelectedNote} updateNote={handleUpdateNote} updateClass={handleUpdateClass} updateProgress={updateNoteProgress} progress={progress} isReset={reset} />
+      <Note SelectedClass={SelectedClass} SelectedNote={SelectedNote} updateNote={handleUpdateNote} updateClass={handleUpdateClass} updateProgress={updateNoteProgress} progress={progress} isReset={reset} isShareNote={isShared} />
 
       <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
 
