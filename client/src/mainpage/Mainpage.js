@@ -3,7 +3,7 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData, getSharedNoteData } from "./data";
+import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
@@ -104,12 +104,7 @@ function Mainpage() {
       setData(dataInData);
     };
     fetchData();
-    const fetchData2 = async () => {
-      await getSharedNoteData(user.uid);
-      console.log("get DB shared data in mainpage", dataInData);
-      setData(dataInData);
-    };
-    fetchData2();
+   
   }, []);
 
   // Handle selection update of note content
@@ -163,7 +158,7 @@ function Mainpage() {
   // handle for updating the
   const handleDatabaseUpdateClass = (data) => {
     // constant url for testing purposes
-    const url = "http://localhost:8080/user/"+user.uid+"/updateClass";
+    const url = process.env.REACT_APP_API_DOMAIN+"/user/"+user.uid+"/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -191,7 +186,7 @@ function Mainpage() {
 
   // Handle for deleting a note from the database
   const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
-    const url = "http://localhost:8080/user/"+user.uid+"/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
+    const url = process.env.REACT_APP_API_DOMAIN+"/user/"+user.uid+"/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -219,7 +214,7 @@ function Mainpage() {
   };
 
   const handleDatabaseDeleteClass = (data, selectedClassId) => {
-    const url = "http://localhost:8080/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
+    const url = process.env.REACT_APP_API_DOMAIN+"/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
       method: "DELETE",
@@ -302,7 +297,7 @@ function Mainpage() {
   }, []);
 
   async function testConnection() {
-    await fetch("http://localhost:8080/", {
+    await fetch(process.env.REACT_APP_API_DOMAIN, {
       method: "GET",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
