@@ -3,7 +3,7 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
+import dataInData, { updateNoteData, updateClassData,getDatabaseData, getSharedNoteData } from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
@@ -103,6 +103,12 @@ function Mainpage() {
       setData(dataInData);
     };
     fetchData();
+    const fetchData2 = async () => {
+      await getSharedNoteData(user.uid);
+      console.log("get DB shared data in mainpage", dataInData);
+      setData(dataInData);
+    };
+    fetchData2();
   }, []);
 
   // Handle selection update of note content
