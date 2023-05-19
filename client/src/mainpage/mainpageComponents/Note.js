@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import UserComponent from "./UserComponent";
 
 const Note = ({
   selectedClass,
@@ -116,13 +117,13 @@ const Note = ({
   }, [isReset]);
 
   //reSnder if there isnt a selected class and/note
- if (!selectedClass && !selectedNote) {
-    if(!selectedClass){
-    return <div className="note">Click on something...</div>;
+  if (!selectedClass && !selectedNote) {
+    if (!selectedClass) {
+      return <div className="note">Click on something...</div>;
     }
-  } else if (!selectedNote)  {
+  } else if (!selectedNote) {
     return <div className="note">Click on something...</div>;
-  } 
+  }
   return (
     <div className="note">
       {selectedClass && (
@@ -137,7 +138,10 @@ const Note = ({
         />
       )}
       <br></br>
-
+      
+      {isShareNote && (
+       <UserComponent noteData={selectedNote}/>
+      )}
       <input
         type="text"
         value={noteTitle}
