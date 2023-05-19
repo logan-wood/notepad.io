@@ -208,6 +208,9 @@ function animate() {
     //draw foreground objects
     foreground.draw()
 
+    // check how many points they have
+
+
     let moving = true
     player.animate = false
 
