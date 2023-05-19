@@ -1,17 +1,17 @@
-import "./Mainpage.css";
+import "./mainpageComponents/Mainpage.css";
 import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
-import SideNav from "./SideNav";
-import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData } from "./data";
-import trashcan from "./trashcan.png";
-import ProgressGameBar from "./ProgressGameBar";
-import GameModal from "./GameModal";
-import DeleteButton from "./DeleteButton";
+import SideNav from "./mainpageComponents/SideNav";
+import Note from "./mainpageComponents/Note";
+import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData } from "./mainpageComponents/data";
+import trashcan from "./mainpageComponents/trashcan.png";
+import ProgressGameBar from "./mainpageComponents/ProgressGameBar";
+import GameModal from "./mainpageComponents/GameModal";
+import DeleteButton from "./mainpageComponents/DeleteButton";
 import { Button } from "react-bootstrap";
-import ShareModal from "./ShareModal";
+import ShareModal from "./mainpageComponents/ShareModal";
 import { useSelector } from "react-redux";
-import Loading from "./Loading.jsx";
+import Loading from "./mainpageComponents/Loading.jsx";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded

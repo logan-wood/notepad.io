@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import arrow from "../assets/lefticon.png";
+import arrow from "../../assets/lefticon.png";
 import { addNewClass, addNewNote, updateClassData, updateNoteData } from "./data";
 import { v4 as uuidv4 } from "uuid";
 
@@ -245,27 +245,29 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
           ))}
         </div>
         {data.sharedNotes.length > 0 && (
-          <div className="sharedNoteDiv">
+          <>
             <h4>My Shared Notes</h4>
-            <ul>
-              {data.sharedNotes.map((noteShare) => (
-                <li key={noteShare.id}>
-                  <button
-                    className={`noteButton ${isSelectNoteButtonActive(noteShare.id) ? "active" : ""}`}
-                    onClick={() => {
-                      handleSelectShareNote(noteShare.id);
-                    }}
-                    onDoubleClick={() => {
-                      handleSelectShareNote(noteShare.id);
-                      setIsClassEditing(true);
-                    }}
-                    draggable>
-                    {noteShare.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="sharedNoteDiv">
+              <ul>
+                {data.sharedNotes.map((noteShare) => (
+                  <li key={noteShare.id}>
+                    <button
+                      className={`noteButton ${isSelectNoteButtonActive(noteShare.id) ? "active" : ""}`}
+                      onClick={() => {
+                        handleSelectShareNote(noteShare.id);
+                      }}
+                      onDoubleClick={() => {
+                        handleSelectShareNote(noteShare.id);
+                        setIsClassEditing(true);
+                      }}
+                      draggable>
+                      {noteShare.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         )}
       </div>
       <div className="sideNavButtonDiv">
