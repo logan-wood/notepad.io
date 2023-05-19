@@ -3,6 +3,7 @@ import "./ShareModal.css";
 
 const ShareModal = ({ onClose, isOpen, noteId}) => {
     const [URL, setURL] = useState("");
+  const [username, setUsername] = useState("");
 
    useEffect(() => {
      const updatedURL = process.env.REACT_APP_API_DOMAIN + "/note/" + noteId + "/addSharedUser";
@@ -44,6 +45,12 @@ const copyText  = async () => {
           </button>
         </div>
         <hr />
+        <h3>Or share it with a user:</h3>
+
+        <div className="shareLinkContent">
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <button>Share</button>
+        </div>
         <div className="shareEmail">
           <h3>Or send it via email</h3>
           <button className="emailShareButton" onClick={sendEmail}>
