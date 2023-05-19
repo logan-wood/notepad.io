@@ -3,12 +3,17 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./SideNav";
 import Note from "./Note";
-import dataInData, { updateNoteData, updateClassData,getDatabaseData } from "./data";
+import dataInData, {
+  updateNoteData,
+  updateClassData,
+  getDatabaseData,
+} from "./data";
 import trashcan from "./trashcan.png";
 import ProgressGameBar from "./ProgressGameBar";
 import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
+import Loading from "./Loading.jsx";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -20,7 +25,6 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
- 
 
   //handler for delete buttons
   const handleDeleteButton = () => {
@@ -75,7 +79,7 @@ function Mainpage() {
   };
   useEffect(() => {
     const fetchData = async () => {
-     await getDatabaseData();
+      await getDatabaseData();
       console.log("get DB data in mainpage", dataInData);
       setData(dataInData);
     };
@@ -139,8 +143,8 @@ function Mainpage() {
 
   // handle for updating the
   const handleDatabaseUpdateClass = (data) => {
-     // constant url for testing purposes
-  const url = "http://localhost:8080/user/12345/updateClass";
+    // constant url for testing purposes
+    const url = "http://localhost:8080/user/12345/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -167,8 +171,12 @@ function Mainpage() {
   };
 
   // Handle for deleting a note from the database
-  const handleDatabaseDeleteNote = (data,selectedClassId,selectedNoteId) => {
-    const url = "http://localhost:8080/user/12345/removeNote?classId="+selectedClassId+"&&noteId="+selectedNoteId;
+  const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
+    const url =
+      "http://localhost:8080/user/12345/removeNote?classId=" +
+      selectedClassId +
+      "&&noteId=" +
+      selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -196,7 +204,8 @@ function Mainpage() {
   };
 
   const handleDatabaseDeleteClass = (data, selectedClassId) => {
-    const url = "http://localhost:8080/user/12345/removeClass?classId="+selectedClassId;
+    const url =
+      "http://localhost:8080/user/12345/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
       method: "DELETE",
@@ -224,8 +233,6 @@ function Mainpage() {
   };
 
   const handleDeleteClass = () => {
-    
-
     setData((prevData) => {
       // Create a copy of the previous data and save to new data
       const newData = { ...prevData };
@@ -276,11 +283,42 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
+  let buffer = 0;
+  //passed into Loading component to determine if it is loading or not.
+  const [connected, setConnected] = useState(false);
+  //timer that checks server status every 2000ms
+  const interval = 1000;
+  useEffect(() => {
+    const timer = setInterval(testConnection, interval);
+    return () => clearInterval(timer);
+  }, []);
+
+  async function testConnection() {
+    await fetch("http://localhost:8080/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((data) => {
+        if (data.status == 200) {
+          //if successfully connects then sets the buffer back to 0;
+          buffer = 0;
+          setConnected(buffer);
+        }
+      })
+      .catch((error) => {
+        setConnected(buffer++);
+      });
+  }
   return (
-   
     <div className="mainpage">
+      <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showSignOutButton={true} />
+      <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true}/>
 
       {/* viewport so that its responsive*/}
       <meta

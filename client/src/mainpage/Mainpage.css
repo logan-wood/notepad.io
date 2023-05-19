@@ -1,214 +1,210 @@
 body {
-    margin: 0;
-    font-family: 'Fjalla One', 'Nunito', sans-serif;
+  margin: 0;
+  font-family: "Fjalla One", "Nunito", sans-serif;
 }
 
 .mainpage_header {
-    position: fixed;
-    background: #FFFBF6;
-    display: grid;
-    align-items: center;
-    color: #BB4430;
-    width: 100vw;
-    padding: 4px;
-    font-size: 44px;
-    height: 50px;
-    display: flex;
+  position: fixed;
+  background: #fffbf6;
+  display: grid;
+  align-items: center;
+  color: #bb4430;
+  width: 100vw;
+  padding: 4px;
+  font-size: 44px;
+  height: 50px;
+  display: flex;
 }
 
-
 .sidenav {
-    position: absolute;
-    transition: all 0.3s ease-in-out;
-    height: calc(100vh - 100px);
-    background: #EFE6DD;
-    float: left;
-    width: 300px;
-    left: -250px;
-    overflow-y: auto;
-    border-top-right-radius: 20px;
-    padding: 20px;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  height: calc(100vh - 100px);
+  background: #efe6dd;
+  float: left;
+  width: 300px;
+  left: -250px;
+  overflow-y: auto;
+  border-top-right-radius: 20px;
+  padding: 20px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidenav h1,
 noteTitleStyle {
-    font-family: 'Nunito', sans-serif;
-    color: #4f4f4f;
-    size: 30px
+  font-family: "Nunito", sans-serif;
+  color: #4f4f4f;
+  size: 30px;
 }
 
 .noteClassStyle {
-    font-family: 'Nunito', sans-serif;
-    font-size: 30px;
-    border: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 30px;
+  border: none;
 }
 
 .noteTitleStyle {
-    font-family: 'Nunito', sans-serif;
-    font-size: 50px;
-    border: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 50px;
+  border: none;
 }
 
 .noteTitleStyle:focus,
 .noteClassStyle:focus {
-    outline: none;
+  outline: none;
 }
 
 .navButton {
-    position: absolute;
-    right: 0px;
-    display: block;
-    background: none;
-    border: none;
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    opacity: 70%;
+  position: absolute;
+  right: 0px;
+  display: block;
+  background: none;
+  border: none;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  opacity: 70%;
 }
 
 .navButton img {
-    height: 60px;
-    padding: 20px;
+  height: 60px;
+  padding: 20px;
 }
 
 .sidenav.open {
-    left: 0;
+  left: 0;
 }
 
 .sidenav.open .navButton {
-    -webkit-transform: scaleX(+1);
-    transform: scaleX(+1);
+  -webkit-transform: scaleX(+1);
+  transform: scaleX(+1);
 }
 
 .note {
-    background: #FFFFFF;
-    width: (100% - 300px);
-    height: calc(100vh - 25vh);
-    margin-left: 80px;
-    padding: 20px;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    flex-flow: column;
-
+  background: #ffffff;
+  width: (100% - 300px);
+  height: calc(100vh - 25vh);
+  margin-left: 80px;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-flow: column;
 }
 
 .tox {
-    border: none !important;
-    min-height: 100% !important;
-
-
+  border: none !important;
+  min-height: 100% !important;
 }
 
 .tox-tinymce {
-    min-height: 100% !important;
+  min-height: 100% !important;
 }
 
-.sidenav.open+.note {
-    /*width: 100%;*/
-    margin-left: 320px;
+.sidenav.open + .note {
+  /*width: 100%;*/
+  margin-left: 320px;
 }
-
 
 .deleteButton {
-    position: relative;
-    bottom: 50px;
-    right: 50px;
-    margin: 10px;
-    background-color: #bb4430;
-    border-radius: 20px;
-    border:none;
-    padding:10px;
-    color: #FFFBF6;
-
+  position: relative;
+  bottom: 50px;
+  right: 50px;
+  margin: 10px;
+  background-color: #bb4430;
+  border-radius: 20px;
+  border: none;
+  padding: 10px;
+  color: #fffbf6;
 }
 
-
-
-
-
 .trashcan {
-    height: 40px;
+  height: 40px;
 }
 
 .newClassButton {
-    background: #F3DFA2;
-    border-radius: 30px;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-size: 25px;
-    width: 250px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
+  background: #f3dfa2;
+  border-radius: 30px;
+  border: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 25px;
+  width: 250px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .newClassButton:hover {
-    background: #f8e7b4;
-    cursor: pointer;
+  background: #f8e7b4;
+  cursor: pointer;
 }
 
 .newNoteButton {
-    background: #F3DFA2;
-    border-radius: 30px;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    width: 230px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    margin: 5px;
-
+  background: #f3dfa2;
+  border-radius: 30px;
+  border: none;
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  width: 230px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin: 5px;
 }
 
 .newNoteButton:hover {
-    background: #f8e7b4;
-    cursor: pointer;
+  background: #f8e7b4;
+  cursor: pointer;
 }
 
 .sideNavButtonDiv {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .sidenav li {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .classButton {
-    color: #949292;
-    background: NONE;
-    BORDER: None;
+  color: #949292;
+  background: NONE;
+  border: None;
 }
 
 .classButton.active {
-    color: #2c2c2c;
-    background: NONE;
-    BORDER: None;
+  color: #2c2c2c;
+  background: NONE;
+  border: None;
 }
 
 .noteButton {
-    color: #949292;
-    background: NONE;
-    BORDER: None;
+  color: #949292;
+  background: NONE;
+  border: None;
 }
 
 .noteButton.active {
-    color: #2c2c2c;
-    background: NONE;
-    BORDER: None;
+  color: #2c2c2c;
+  background: NONE;
+  border: None;
 }
 
 .classDiv {
-    background: #FFFBF6;
-    border-radius: 10px;
-    padding: 10px;
-    font-family: 'Nunito', sans-serif;
-    color: #4f4f4f;
-    margin-top: 20px;
+  background: #fffbf6;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: "Nunito", sans-serif;
+  color: #4f4f4f;
+  margin-top: 20px;
+}
+
+.disconnected {
+  color: black !important;
+  padding-left: 2px;
+}
+.connected {
+  color: green !important;
+  padding-left: 2px;
 }
 
 .save-button {
@@ -229,4 +225,30 @@ noteTitleStyle {
 
     color: #694b2c !important;
 }
-  
+
+
+body.dark-mode .sidenav,
+body.dark-mode .sidenav h1
+{
+    background-color: #333 !important;
+    color: #FFFFFF;
+}
+
+body.dark-mode .noteTitleStyle{
+    background-color: #616161;
+    color: #ffffff;
+}
+
+body.dark-mode .noteClassStyle{
+    background-color: #616161 !important;
+}
+
+body.dark-mode .mainpage{
+    background-color: #616161;
+}
+
+body.dark-mode .note{
+    background-color: #616161 !important;
+    color: #FFFFFF;
+}
+
