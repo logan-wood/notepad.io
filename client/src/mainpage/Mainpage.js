@@ -122,32 +122,31 @@ function Mainpage() {
   //
   const handleUpdateNote = (updatedNote, updatedClass) => {
     // callback function that recieves the previous state
-    if(isShared){
+    if (isShared) {
       handleUpdateShareNote(updatedNote);
+    } else {
+      setData((prevData) => {
+        // Create a copy of the previous data and save to new data
+        const newData = { ...prevData };
+
+        // Find the index of the selected class in the classes array
+        const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
+
+        // Find the index of the note to be updated in the notes array of the selected class
+        const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === updatedNote.id);
+
+        // Update the content of the note in the notes array of the selected class
+        newData.classes[classIndex].notes[noteIndex].content = updatedNote.content;
+        //handle update title
+        newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
+        handleDatabaseUpdateClass(SelectedClass);
+
+        // Return the updated data object
+        return newData;
+      });
+      updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
+      SetSelectedNote(updatedNote);
     }
-    else{
-    setData((prevData) => {
-      // Create a copy of the previous data and save to new data
-      const newData = { ...prevData };
-
-      // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
-
-      // Find the index of the note to be updated in the notes array of the selected class
-      const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === updatedNote.id);
-
-      // Update the content of the note in the notes array of the selected class
-      newData.classes[classIndex].notes[noteIndex].content = updatedNote.content;
-      //handle update title
-      newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
-      handleDatabaseUpdateClass(SelectedClass);
-
-      // Return the updated data object
-      return newData;
-    });
-    updateNoteData(SelectedClass.id, updatedNote.id, updatedNote);
-    SetSelectedNote(updatedNote);
-  }
   };
 
   // Handle selection update of note content
@@ -160,8 +159,6 @@ function Mainpage() {
 
       // Find the index of the selected sharednote in the Shared Note array
       const shareNoteIndex = newData.sharedNotes.findIndex((sharedNote) => sharedNote.id === updatedShareNote.id);
-
-    
 
       // Update the content of the note in the notes array of the selected class
       newData.sharedNotes[shareNoteIndex].content = updatedShareNote.content;
@@ -364,24 +361,17 @@ function Mainpage() {
       <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
       <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true} />
-
       {/* viewport so that its responsive*/}
       <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-
       {/*style import from google fonts */}
       <style>@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');</style>
-
       {/*Side Nav component*/}
       <SideNav isOpen={isNavOpen} toggleNav={toggleNav} onSelectClass={handleSelectClass} onSelectNote={handleSelectNote} className="classmenu" data={data} onShareNote={handleIsShare} />
-
       {/*Note component*/}
       <Note selectedClass={SelectedClass} selectedNote={SelectedNote} updateNote={handleUpdateNote} updateClass={handleUpdateClass} updateProgress={updateNoteProgress} progress={progress} isReset={reset} isShareNote={isShared} />
-
       <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
-
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
-      {/*delete button component */}
+      {SelectedNote && <ShareModal isOpen={isShareOpen} onClose={handleShareClose} noteId={SelectedNote.id} />} {/*delete button component */}
       <DeleteButton handleDeleteButton={handleDeleteButton} handleDeleteClass={handleDeleteClass} handleDeleteNote={handleDeleteNote} isExpanded={isExpanded} SelectedNote={SelectedNote} SelectedClass={SelectedClass} />
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (

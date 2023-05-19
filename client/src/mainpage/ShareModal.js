@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ShareModal.css";
 
-const ShareModal = ({ onClose, isOpen }) => {
-  const [copyingText, setCopyText] = useState(
-    "https://notepad.io/sharelink/sdkfjhsdkjf"
-  );
-  
+const ShareModal = ({ onClose, isOpen, noteId}) => {
+    const [URL, setURL] = useState("");
+
+   useEffect(() => {
+     const updatedURL = process.env.REACT_APP_API_DOMAIN + "/note/" + noteId + "/addSharedUser";
+     setURL(updatedURL);
+   }, [noteId]);
+
 const sendEmail = () => {
   const subject = "I want to share a Note with you! Notepad.io";
-  const body = "Click on this link! https://notepad.io/sharelink/sdkfjhsdkjf";
+  const body = `Click on this link! ${URL}`;
   const recipient = "";
-  const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(body)}`;
   window.location.href = mailtoLink;
 }
 
 const copyText  = async () => {
   if ("clipboard" in navigator) {
-    await navigator.clipboard.writeText(copyingText);
+    await navigator.clipboard.writeText(URL);
   } else {
-    document.execCommand("copy", true, copyingText);
+    document.execCommand("copy", true, URL);
   }
 }
 
@@ -32,21 +35,20 @@ const copyText  = async () => {
         </div>
         <hr />
         <div className="shareLinkContent">
-          <input type="text" value={copyingText} readOnly  onClick={copyText}/>
+          <input type="text" value={URL} readOnly onClick={copyText} />
           <button
             className="copyButton"
             //https://stackoverflow.com/questions/72495838/copy-text-to-clipboard-using-reactjs
-            onClick={copyText}
-          >
+            onClick={copyText}>
             📃
           </button>
         </div>
         <hr />
         <div className="shareEmail">
           <h3>Or send it via email</h3>
-          <button
-            className="emailShareButton"
-            onClick={sendEmail}>✉</button>
+          <button className="emailShareButton" onClick={sendEmail}>
+            ✉
+          </button>
         </div>
       </div>
     </div>
