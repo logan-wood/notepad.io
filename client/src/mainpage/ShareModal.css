@@ -18,12 +18,19 @@
 
 .modalShareWrapper h1 {
     font-family: 'Nunito', sans-serif;
-    font-size: 20px;
+    font-size:15px;
+}
+
+.modalShareWrapper .error {
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    color:#bb4430;
 }
 
 .modalShareWrapper h3 {
     font-family: 'Nunito', sans-serif;
     font-size: 12px;
+    margin: none;
 }
 
 .shareHeader {
@@ -55,6 +62,19 @@
 
 }
 
+.redButton{
+margin: 10px;
+    background-color: #bb4430;
+    border-radius: 200px;
+    border: none;
+    padding: 5;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    color: #FFFBF6;
+    height:min-content;
+    font-size: 14px;
+}
+
 .emailShareButton:hover {
     background-color: #c75642;
 
@@ -83,6 +103,8 @@
     border-radius: 5px;
     background-color: #FFFBF6;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display:flex;
+    justify-content: space-between;
 
 }
 
