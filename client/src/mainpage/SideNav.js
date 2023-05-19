@@ -3,13 +3,13 @@ import arrow from "../assets/lefticon.png";
 import { addNewClass, addNewNote, updateClassData, updateNoteData } from "./data";
 import { v4 as uuidv4 } from "uuid";
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isSharedTrue,onShareNote }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isSharedTrue, onShareNote }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = useState(null);
   const [selectNote, setSelectNote] = useState(null);
-const [isShared, setIsShared] = useState(isSharedTrue);
+  const [isShared, setIsShared] = useState(isSharedTrue);
 
-    const [openClasses, setOpenClasses] = useState([]);
+  const [openClasses, setOpenClasses] = useState([]);
   const [isNoteEditing, setIsNoteEditing] = useState("");
   const [isClassEditing, setIsClassEditing] = useState("");
 
@@ -127,7 +127,7 @@ const [isShared, setIsShared] = useState(isSharedTrue);
   };
 
   const handleSelectShareNote = (id) => {
-        setIsShared(true);
+    setIsShared(true);
 
     const selectSharedNote = data.sharedNotes.find((shareNoteObj) => shareNoteObj.id === id);
     setEditingNoteTitle(selectSharedNote.title);
@@ -136,6 +136,7 @@ const [isShared, setIsShared] = useState(isSharedTrue);
     console.log("Select Shgared note", selectSharedNote);
     setSelectNote(selectSharedNote);
     onSelectNote(selectSharedNote);
+    setOpenClasses([]);
     setSelectClass(null);
     onSelectClass(null);
     onShareNote(true); //  callback function with the updated value
@@ -146,6 +147,9 @@ const [isShared, setIsShared] = useState(isSharedTrue);
     return selectClass && selectClass.id === classid;
   };
 
+  const isSelectNoteButtonActive = (noteId) => {
+    return selectNote && selectNote.id === noteId;
+  };
   //checks if a note button is active
   const isNoteButtonActive = (noteid, classid) => {
     //Check if the selected note has the selected note id and the selected class id is also selected
@@ -240,26 +244,29 @@ const [isShared, setIsShared] = useState(isSharedTrue);
             </div>
           ))}
         </div>
-        <div className="sharedNoteDiv">
-          <ul>
-            {data.sharedNotes.map((noteShare) => (
-              <li key={noteShare.id}>
-                <button
-                  className="Notebutton"
-                  onClick={() => {
-                    handleSelectShareNote(noteShare.id);
-                  }}
-                  onDoubleClick={() => {
-                    handleSelectShareNote(noteShare.id);
-                    setIsClassEditing(true);
-                  }}
-                  draggable>
-                  {noteShare.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {data.sharedNotes.length > 0 && (
+          <div className="sharedNoteDiv">
+            <h4>My Shared Notes</h4>
+            <ul>
+              {data.sharedNotes.map((noteShare) => (
+                <li key={noteShare.id}>
+                  <button
+                    className={`noteButton ${isSelectNoteButtonActive(noteShare.id) ? "active" : ""}`}
+                    onClick={() => {
+                      handleSelectShareNote(noteShare.id);
+                    }}
+                    onDoubleClick={() => {
+                      handleSelectShareNote(noteShare.id);
+                      setIsClassEditing(true);
+                    }}
+                    draggable>
+                    {noteShare.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="sideNavButtonDiv">
         <button className="newClassButton" onClick={handleNewClass}>
