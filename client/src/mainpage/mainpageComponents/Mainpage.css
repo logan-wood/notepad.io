@@ -205,6 +205,10 @@ noteTitleStyle {
   margin-top: 20px;
 }
 
+.classDiv ul{
+  margin-left:30px;
+}
+
 .sharedNoteDiv{
   background: #fffbf6;
     border-radius: 10px;
