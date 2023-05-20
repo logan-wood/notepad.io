@@ -16,6 +16,7 @@ const Header = ({
   showDarkModeButton,
   showDashBoardButtons,
   tasks,
+  uid,
 }) => {
   // state variable to hold value of darkMode setting
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -81,7 +82,7 @@ const Header = ({
             className="sign-out-icon"
             onClick={logoutUser}
           />
-          <TaskModal tasks={tasks} />
+          <TaskModal tasks={tasks} uid={uid} />
         </div>
       )}
     </header>
