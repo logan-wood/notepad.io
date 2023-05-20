@@ -1,0 +1,52 @@
+.taskOpen,
+.taskClose {
+  background-color: #bb4430;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.taskOpen {
+  height: 300%;
+}
+.taskClose {
+  height: 100%;
+}
+
+.modalContainer {
+  position: absolute;
+  left: 50vw;
+  width: 10vw;
+  height: 10vh;
+  align-items: center;
+}
+
+.taskClose:hover {
+  cursor: pointer;
+}
+.taskOpenAnimation {
+  animation: taskOpenAnimation 1s ease-in;
+  height: 300%;
+}
+.taskCloseAnimation {
+  animation: taskCloseAnimation 1s ease-in;
+  height: 100%;
+}
+
+@keyframes taskOpenAnimation {
+  from {
+    height: 100%;
+  }
+  to {
+    height: 300%;
+  }
+}
+@keyframes taskCloseAnimation {
+  from {
+    height: 300%;
+  }
+  to {
+    height: 100%;
+  }
+}
