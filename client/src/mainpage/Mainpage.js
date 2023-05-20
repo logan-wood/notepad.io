@@ -366,6 +366,7 @@ function Mainpage() {
         showDarkModeButton={true}
         showDashBoardButtons={true}
         tasks={dataInData.tasks}
+        uid={user.uid}
       />
 
       {/* viewport so that its responsive*/}
