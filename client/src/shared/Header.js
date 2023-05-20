@@ -15,6 +15,7 @@ const Header = ({
   pageName, // determines the page to link to from the logo and title
   showDarkModeButton,
   showDashBoardButtons,
+  tasks,
 }) => {
   // state variable to hold value of darkMode setting
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -23,6 +24,7 @@ const Header = ({
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("dark-mode");
+    console.log(tasks);
   };
 
   // user object
@@ -79,7 +81,7 @@ const Header = ({
             className="sign-out-icon"
             onClick={logoutUser}
           />
-          <TaskModal />
+          <TaskModal tasks={tasks} />
         </div>
       )}
     </header>
