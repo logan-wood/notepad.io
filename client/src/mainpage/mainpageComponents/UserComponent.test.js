@@ -23,6 +23,8 @@ describe("UserComponent", () => {
       screen.getByRole("button", { name: "Korilakuma" })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "bird" })).toBeInTheDocument();
+
+    //check if delete button is not rendered
   });
 
   it("handles delete user click", () => {
@@ -30,8 +32,17 @@ describe("UserComponent", () => {
 
     // Simulate click on a user button
     expect(screen.getByRole("button", { name: "bird" })).toBeInTheDocument();
+    fireEvent.click(screen.getByText("bird"));
 
     // Simulate click on delete button
-    fireEvent.click(screen.getByText("Delete User"));
+    expect(
+      screen.getByRole("button", { name: "Delete User" })
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Delete User" }));
+
+    //click on button again else to close the delete button
+    fireEvent.click(screen.getByRole("button", { name: "bird" }));
+       expect(screen.queryByText("Delete User")).not.toBeInTheDocument();
+
   });
 });
