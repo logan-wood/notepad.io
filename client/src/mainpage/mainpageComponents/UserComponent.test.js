@@ -27,7 +27,7 @@ describe("UserComponent", () => {
     //check if delete button is not rendered
   });
 
-  it("handles delete user click", () => {
+  it("handles user click", () => {
     render(<UserComponent noteData={fakeNoteData} />);
 
     // Simulate click on a user button
@@ -36,13 +36,34 @@ describe("UserComponent", () => {
 
     // Simulate click on delete button
     expect(
-      screen.getByRole("button", { name: "Delete User" })
+      screen.getByRole("button", { name: "Remove User" })
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Delete User" }));
 
     //click on button again else to close the delete button
-    fireEvent.click(screen.getByRole("button", { name: "bird" }));
-       expect(screen.queryByText("Delete User")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText("bird"));
 
+    expect(screen.queryByText("Remove User")).not.toBeInTheDocument();
+    //click on button again to check if remove user closes
+  });
+
+  it("handles Remove user click", () => {
+    render(<UserComponent noteData={fakeNoteData} />);
+  const mockConsoleLog = jest.spyOn(console, "log");
+
+    // Simulate click on a user button
+    expect(screen.getByRole("button", { name: "bird" })).toBeInTheDocument();
+    fireEvent.click(screen.getByText("bird"));
+
+    // Simulate click on delete button
+    expect(
+      screen.getByRole("button", { name: "Remove User" })
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Remove User" }));
+    //check if funciton calsled
+
+    //check if delete console is logged
+    expect(mockConsoleLog).toHaveBeenCalledWith("Deleting user:","67890");
+
+    expect(screen.queryByText("Remove User")).not.toBeInTheDocument();
   });
 });

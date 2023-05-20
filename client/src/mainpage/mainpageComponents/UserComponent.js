@@ -22,6 +22,8 @@ const UserComponent = ({ noteData }) => {
 
   const handleDeleteUser = () => {
     console.log("Deleting user:", selectedUser);
+        setIsOpen(!isOpen);
+
   };
 
   return (
