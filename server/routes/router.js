@@ -16,22 +16,22 @@ router.get("/", function (req, res) {
 });
 
 // use this route to get session info
-router.get('/getSession', function(req, res) {
+router.get("/getSession", function (req, res) {
   userController.getUserSession(req, res);
-})
+});
 
-router.post('/addNewUser', (req, res) => {
-  userController.addNewUser(req, res)
-})
+router.post("/addNewUser", (req, res) => {
+  userController.addNewUser(req, res);
+});
 
-router.get('/getUser', function(req, res) {
-  userController.getUser(req, res)
-})
+router.get("/getUser", function (req, res) {
+  userController.getUser(req, res);
+});
 
 // authenticates whether the email matches the password. Does not set a session or cookie in its current implementation
-router.post('/loginUser', function(req, res) {
-  userController.loginUser(req, res)
-})
+router.post("/loginUser", function (req, res) {
+  userController.loginUser(req, res);
+});
 
 // retrieves all user data based on uid
 // query params: uid
@@ -56,6 +56,22 @@ router.delete("/user/:id/removeNote", (req, res) => {
   const classId = req.query.classId;
   const noteId = req.query.noteId;
   userController.removeNote(req, res, id, classId, noteId);
+});
+
+router.post("/user/:id/addTask", (req, res) => {
+  const id = req.params.id;
+  userController.addTask(req, res, id);
+});
+
+router.get("/user/:id/getTasks", (req, res) => {
+  const id = req.params.id;
+  userController.getTasks(req, res, id);
+});
+
+router.post("/user/:id/saveTasks", (req, res) => {
+  const id = req.params.id;
+  const tasks = req.body;
+  userController.saveTasks(req, res, id, tasks);
 });
 
 module.exports = router;
