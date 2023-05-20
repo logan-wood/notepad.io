@@ -7,6 +7,7 @@ const UserComponent = ({ noteData }) => {
   const [owner, setOwner] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false); // For modal
+
   useEffect(() => {
     if (noteData) {
       setUsers(noteData.users);
@@ -25,7 +26,8 @@ const UserComponent = ({ noteData }) => {
 
   return (
     <div className="userComponent">
-      <button>{owner}</button>
+      <button  className="ownerButton">{owner}</button>
+      
       {noteData &&
         (() => {
           const buttons = [];
@@ -33,12 +35,16 @@ const UserComponent = ({ noteData }) => {
             if (userId === owner) continue; // Skip owner (already added
             const userName = users[userId][0];
             buttons.push(
-              <div key={userId}>
+              <div className="users" key={userId}>
                 <button onClick={() => handleUserClick(userId)}>
                   {userName}
                 </button>
                 {selectedUser === userId && isOpen && (
-                  <button onClick={handleDeleteUser}>Delete User</button>
+                  <button
+                    className="deleteUserButton"
+                    onClick={handleDeleteUser}>
+                    Remove User
+                  </button>
                 )}
               </div>
             );
