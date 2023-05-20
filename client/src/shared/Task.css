@@ -1,0 +1,27 @@
+.taskContents {
+  width: 80%;
+  text-align: start;
+  align-items: center;
+  display: flex;
+  margin-left: 5px;
+}
+
+.checkbox {
+  width: 20%;
+}
+
+.task {
+  display: flex;
+  background-color: #eee6dd;
+  height: fit-content;
+  border-bottom: 0.2px dotted #000;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.task:hover {
+  box-shadow: 0px 8px 10px -10px rgba(0, 0, 0, 0.5);
+}
+
+.ticked {
+  opacity: 0.5;
+}
