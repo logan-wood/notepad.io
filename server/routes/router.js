@@ -72,5 +72,8 @@ router.get("/user/:id/retrieveSharedNotes", (req, res) => {
   const id = req.params.id;
   userController.retrieveSharedNotes(req, res, id);
 });
+router.post("/user/getUserFromEmail", (req, res) => {
+  userController.getUserFromEmail(req, res)
+})
 
 module.exports = router;

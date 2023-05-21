@@ -89,19 +89,17 @@ module.exports = {
     }
   },
 
-  getUserFromEmail: async function (email) {
-    const ref = db.ref("/users/");
-    const snapshot = await ref.once("value");
+  getUserFromEmail: async function (req, res) {
+    const email = req.body.email
 
-    let userData = null;
-    snapshot.forEach((userSnapshot) => {
-      const user = userSnapshot.val();
-      if (user.email === email) {
-        userData = user;
-      }
-    });
+    const userData = database.getUserFromEmail(email)
 
-    return userData;
+    if (userData != null) {
+      res.status(200).json(userData)
+    } else {
+      res.status(404).send('user not found')
+    }
+
   },
 
   updateClass: function (req, res, uid) {

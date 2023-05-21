@@ -33,7 +33,7 @@ const ShareModal = ({ onClose, isOpen, noteId }) => {
   const getUserByEmail = (userEmail) => {
     setError("User not found");
 
-    fetch(process.env.REACT_APP_API_DOMAIN + "/users/getUserFromEmail", {
+    fetch(process.env.REACT_APP_API_DOMAIN + "/user/getUserFromEmail", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
