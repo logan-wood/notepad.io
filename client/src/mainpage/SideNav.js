@@ -7,6 +7,7 @@ import {
   updateNoteData,
 } from "./data";
 import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
@@ -18,6 +19,15 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
 
   const [editingClassName, setEditingClassName] = useState(false);
   const [editingNoteTitle, setEditingNoteTitle] = useState(false);
+
+  // search results
+  const searchResults = useSelector(state => state.note.searchResults);
+
+  // 
+  const filteredClasses = searchResults.length > 0
+    ? data.classes.filter(classItem =>
+        classItem.notes.some(note => searchResults.includes(note)))
+    : data.classes;
 
   //Handle for creating a new class
   const handleNewClass = () => {
@@ -131,17 +141,20 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       selectClass.id === classid
     );
   };
-
   return (
     <div className={`sidenav ${isOpen ? "open" : ""}`}>
       <button onClick={toggleNav} className="navButton">
-        <img src={arrow}></img>
+        <img src={arrow} alt="Toggle Navigation"></img>
       </button>
       <div>
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
-          {data.classes.map((classItem) => (
+        {filteredClasses.map((classItem) => {
+          const filteredNotes = searchResults.length > 0
+            ? classItem.notes.filter(note => searchResults.includes(note))
+            : classItem.notes;
+          return(
             <div key={classItem.id}>
               {isClassEditing && selectClass.id === classItem.id ? (
                 <input
@@ -182,9 +195,9 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                     + new Note
                   </button>
 
-                  {classItem.notes && (
+                  {filteredNotes && (
                     <ul>
-                      {classItem.notes.map((note) => (
+                      {filteredNotes.map((note) => (
                         <li key={note.id}>
                           {isNoteEditing && selectNote.id === note.id ? (
                             <input
@@ -232,8 +245,11 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                 </>
               )}
             </div>
-          ))}
+          )
+          })}
+        
         </div>
+        
       </div>
       <div className="sideNavButtonDiv">
         <button className="newClassButton" onClick={handleNewClass}>

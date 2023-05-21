@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 
+
 // Note reducer
 const notesInitialState = {
   notes: [],
@@ -51,7 +52,7 @@ const userReducer = (state = userInitialState, action) => {
 };
 
 // Combine reducers
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   user: userReducer,
   note: noteReducer,
 });
@@ -65,3 +66,4 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(persistedReducer);
 export const persistor = persistStore(store);
+

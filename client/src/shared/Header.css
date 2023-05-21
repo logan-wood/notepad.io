@@ -109,11 +109,6 @@
   vertical-align: middle;
 }
 
-.profile-icon {
-  width: 40px;
-  height: 50px;
-  vertical-align: middle;
-}
 
 .settings-icon {
   width: 39px;
@@ -159,3 +154,36 @@
   filter: invert(100%);
   -webkit-filter: invert(100%);
 }
+
+.search-button{
+  width: 28px;
+  height: 30px;
+  vertical-align: middle;
+  background-color: transparent !important;
+  border: none !important; 
+  padding: 0;
+}
+
+.dark-toggles{
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  background-color: transparent !important;
+  border: none; 
+  padding: 0 !important; 
+}
+
+.header.dark-mode .dark-mode-toggle {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+  border: none; 
+  padding: 0; 
+}
+
+.dark-mode-toggle {
+  background-color: transparent !important;
+  border: none !important; 
+  padding: 0; 
+}
+

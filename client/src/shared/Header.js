@@ -8,17 +8,21 @@ import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
+import darkIcon from "./dark.png";
+import lightIcon from "./light.png";
+import searchIcon from "./search.png";
+import SearchModal from "../mainpage/SearchModal";
+import removeSearchIcon from "./close.png";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
-  showDarkModeButton,
   showDashBoardButtons,
 }) => {
   // state variable to hold value of darkMode setting
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // handles the toggle of the dark mode button 
+  // handles the toggle of the dark mode button
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("dark-mode");
@@ -32,9 +36,23 @@ const Header = ({
   const navigate = useNavigate();
 
   const logoutUser = () => {
-    dispatch({ type: 'CLEAR_USER' })
-    navigate('/')
-  }
+    dispatch({ type: "CLEAR_USER" });
+    navigate("/");
+  };
+
+  // handles searchModal opening
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const searchResults = useSelector((state) => state.note.searchResults);
+
+  // toggles search modal
+  const handleSearchToggle = () => {
+    setIsSearchModalOpen(!isSearchModalOpen);
+  };
+
+  //
+  const handleRemoveSearch = () => {
+    dispatch({ type: "SET_NOTES", payload: [] });
+  };
 
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
@@ -62,17 +80,35 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
+          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
+            <img
+              src={isDarkMode ? lightIcon : darkIcon}
+              alt="Dark Mode Toggle"
+              className="dark-toggles"
+            />
           </Button>
+          <img
+            src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
+            onClick={
+              searchResults.length > 0 ? handleRemoveSearch : handleSearchToggle
+            }
+            alt="Search icon"
+            className="search-button"
+          />
+          <SearchModal
+            isOpen={isSearchModalOpen}
+            onRequestClose={handleSearchToggle}
+          />
           <Link to="/settings" className="settings-button">
             <img src={settingsIcon} alt="Settings" className="settings-icon" />
           </Link>
-          <Link to="/profile" className="profile-button">
-            <img src={profileIcon} alt="Profile" className="profile-icon" />
-          </Link>
-            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
+          <img
+            src={signOutIcon}
+            alt="Sign Out"
+            className="sign-out-icon"
+            onClick={logoutUser}
+          />
         </div>
       )}
     </header>
