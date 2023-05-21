@@ -103,23 +103,6 @@ function Mainpage() {
     console.log("note", selectedNote);
     SetSelectedNote(selectedNote);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      await getDatabaseData(user.uid);
-      console.log("get DB data in mainpage", dataInData);
-      setData(dataInData);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      await getDatabaseTasks(user.uid);
-      setData(dataInData);
-      console.log("get DB data in mainpage", dataInData.tasks);
-    };
-    fetchTasks();
-  }, []);
 
   // Handle selection update of note content
   //
@@ -357,6 +340,25 @@ function Mainpage() {
         setConnected(buffer++);
       });
   }
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      await getDatabaseTasks(user.uid);
+      setData(dataInData);
+      console.log("get DB data in mainpage", dataInData.tasks);
+    };
+    fetchTasks();
+  }, connected);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getDatabaseData(user.uid);
+      console.log("get DB data in mainpage", dataInData);
+      setData(dataInData);
+    };
+    fetchData();
+  }, connected);
+
   return (
     <div className="mainpage">
       <Loading buffer={connected} />
