@@ -342,21 +342,13 @@ function Mainpage() {
   }
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchTasksAndData = async () => {
       await getDatabaseTasks(user.uid);
+      await getDatabaseData(user.uid);
       setData(dataInData);
       console.log("get DB data in mainpage", dataInData.tasks);
     };
-    fetchTasks();
-  }, connected);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getDatabaseData(user.uid);
-      console.log("get DB data in mainpage", dataInData);
-      setData(dataInData);
-    };
-    fetchData();
+    fetchTasksAndData();
   }, connected);
 
   return (
