@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ShareModal.css";
 
-const ShareModal = ({ onClose, isOpen, noteId }) => {
+const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
   const [URL, setURL] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [userUID, setUserUID] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {
-    const updatedURL = process.env.REACT_APP_API_DOMAIN + "/note/" + noteId + "/addSharedUser";
+    const updatedURL =
+      process.env.REACT_APP_API_DOMAIN + "/note/" + noteId + "/addSharedUser";
     setURL(updatedURL);
   }, [noteId]);
 
@@ -18,7 +19,9 @@ const ShareModal = ({ onClose, isOpen, noteId }) => {
     const subject = "I want to share a Note with you! Notepad.io";
     const body = `Click on this link! ${URL}`;
     const recipient = "";
-    const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(body)}`;
+    const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(
+      body
+    )}`;
     window.location.href = mailtoLink;
   };
 
@@ -30,24 +33,68 @@ const ShareModal = ({ onClose, isOpen, noteId }) => {
     }
   };
 
-  const getUserByEmail = (userEmail) => {
-    setError("User not found");
+  const setNoteAsShared = (uid, classId, noteId) => {
+    if(classId !== undefined){
+      const url =
+        process.env.REACT_APP_API_DOMAIN +
+        "/user/" +
+        uid +
+        "/setSharedNote?classId=" +
+        classId +
+        "&noteId=" +
+        noteId;
 
-    fetch(process.env.REACT_APP_API_DOMAIN + "/user/getUserFromEmail", {
-      method: "post",
+      fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          "Accept-Encoding": "gzip, deflate, br",
+          Connection: "keep-alive",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            // Handle success if needed
+            console.log("Note set as shared");
+          } else {
+            // Handle failure if needed
+            console.error("Failed to set note as shared");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  // handle for updating the
+  const handleAddSharedUser = (noteId, newUid) => {
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/note/" +
+      noteId +
+      "/addSharedUser?newUid=" +
+      newUid;
+    fetch(url, {
+      method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
       },
       body: JSON.stringify({
-        email: userEmail,
+        noteId: noteId,
+        uid: newUid,
       }),
     })
-      .then(async (response) => {
+      .then((response) => {
         if (response.status === 200) {
-          const userData = await response.json();
-          // Use the userData as needed
+          // Handle success if needed
+          setError("User added");
         } else {
-          setError("Failed to retrieve user information");
+          setError("Failed to add the shared user");
         }
       })
       .catch((error) => {
@@ -75,11 +122,20 @@ const ShareModal = ({ onClose, isOpen, noteId }) => {
           </button>
         </div>
         <hr />
-        <h3>Or share it with a user via their email:</h3>
+        <h3>Or share it with a user via their UID:</h3>
 
         <div className="shareLinkContent">
-          <input type="text" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
-          <button class="redButton" onClick={() => getUserByEmail(userEmail)}>
+          <input
+            type="text"
+            value={userUID}
+            onChange={(e) => setUserUID(e.target.value)}
+          />
+          <button
+            class="redButton"
+            onClick={() => {
+              handleAddSharedUser(noteId, userUID);
+              setNoteAsShared(uid, classId, noteId);
+            }}>
             Share
           </button>
         </div>

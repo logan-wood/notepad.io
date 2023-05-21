@@ -360,23 +360,70 @@ function Mainpage() {
     <div className="mainpage">
       <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
-      <Header showButtons={false} showDarkModeButton={true} showDashBoardButtons={true} />
+      <Header
+        showButtons={false}
+        showDarkModeButton={true}
+        showDashBoardButtons={true}
+      />
       {/* viewport so that its responsive*/}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"></meta>
       {/*style import from google fonts */}
-      <style>@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');</style>
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');
+      </style>
       {/*Side Nav component*/}
-      <SideNav isOpen={isNavOpen} toggleNav={toggleNav} onSelectClass={handleSelectClass} onSelectNote={handleSelectNote} className="classmenu" data={data} onShareNote={handleIsShare} />
+      <SideNav
+        isOpen={isNavOpen}
+        toggleNav={toggleNav}
+        onSelectClass={handleSelectClass}
+        onSelectNote={handleSelectNote}
+        className="classmenu"
+        data={data}
+        onShareNote={handleIsShare}
+      />
       {/*Note component*/}
-      <Note selectedClass={SelectedClass} selectedNote={SelectedNote} updateNote={handleUpdateNote} updateClass={handleUpdateClass} updateProgress={updateNoteProgress} progress={progress} isReset={reset} isShareNote={isShared} />
-      <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
+      <Note
+        selectedClass={SelectedClass}
+        selectedNote={SelectedNote}
+        updateNote={handleUpdateNote}
+        updateClass={handleUpdateClass}
+        updateProgress={updateNoteProgress}
+        progress={progress}
+        isReset={reset}
+        isShareNote={isShared}
+      />
+      <ProgressGameBar
+        progress={progress}
+        onButtonClick={handleGameButtonClick}
+      />
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      {SelectedNote && <ShareModal isOpen={isShareOpen} onClose={handleShareClose} noteId={SelectedNote.id} />} {/*delete button component */}
-      <DeleteButton handleDeleteButton={handleDeleteButton} handleDeleteClass={handleDeleteClass} handleDeleteNote={handleDeleteNote} isExpanded={isExpanded} SelectedNote={SelectedNote} SelectedClass={SelectedClass} />
+      {SelectedNote && (
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={handleShareClose}
+          noteId={SelectedNote.id}
+          {...(SelectedClass !== null && { classId: SelectedClass.id })}
+          uid={user.uid}
+        />
+      )}{" "}
+      {/*delete button component */}
+      <DeleteButton
+        handleDeleteButton={handleDeleteButton}
+        handleDeleteClass={handleDeleteClass}
+        handleDeleteNote={handleDeleteNote}
+        isExpanded={isExpanded}
+        SelectedNote={SelectedNote}
+        SelectedClass={SelectedClass}
+      />
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (
         <div className="button-div">
-          <Button onClick={handleDatabaseUpdateClass(SelectedClass)} className="saveshare-button">
+          <Button
+            onClick={handleDatabaseUpdateClass(SelectedClass)}
+            className="saveshare-button">
             Save Note
           </Button>
 

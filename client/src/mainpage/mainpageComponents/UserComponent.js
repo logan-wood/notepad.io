@@ -22,14 +22,13 @@ const UserComponent = ({ noteData }) => {
 
   const handleDeleteUser = () => {
     console.log("Deleting user:", selectedUser);
-        setIsOpen(!isOpen);
-
+    setIsOpen(!isOpen);
   };
 
   return (
     <div className="userComponent">
-      <button  className="ownerButton">{owner}</button>
-      
+      <button className="ownerButton">{owner}</button>
+
       {noteData &&
         (() => {
           const buttons = [];

@@ -9,18 +9,23 @@
 }
 
 .users {
-    max-width: 200px;
+    max-width: 30px;
+    margin: 10px;
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+
 }
 
 .users button {
-    margin: 5px;
     background-color: #bb4430;
     border-radius: 20px;
     padding: 5px;
     border: none;
     color: #FFFBF6;
     font-size: 15px;
-    width: 30px;
+    width: 50px;
+
 }
 
 .users button:hover {
@@ -30,10 +35,11 @@
 
 .deleteUserButton {
     position: relative;
-    right: 50%;
-    top: -80%;
-    width: 80px !important;
+    right: 100%;
+    top: -90%;
+    width: 90px !important;
     font-size: 10px !important;
+    z-index: 10;
 }
 
 .ownerButton {
@@ -45,9 +51,9 @@
     border: none;
     color: #694b2c !important;
     font-size: 15px;
-   
+    height: 40px
 }
 
 .ownerButton:hover::before {
-   content:"owner: ";
+    content: "owner: ";
 }

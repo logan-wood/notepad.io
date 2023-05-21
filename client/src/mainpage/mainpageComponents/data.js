@@ -106,7 +106,7 @@ export const getDatabaseData = (userUID) => {
 };
 
 export const getSharedNoteData = (userUID) => {
-  const url = "http://localhost:8080/user/12345/retrieveSharedNotes ";
+  const url = "http://localhost:8080/user/" + userUID + "/retrieveSharedNotes";
   fetch(url, {
     method: "GET",
     headers: {
