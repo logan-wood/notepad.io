@@ -4,10 +4,11 @@
   "description": "notepad.io github repository",
   "main": "index.js",
   "scripts": {
-    "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
+    "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\" \"npm install --prefix game\"",
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "game": "npm run dev --prefix game",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run game\""
   },
   "author": "",
   "license": "ISC",

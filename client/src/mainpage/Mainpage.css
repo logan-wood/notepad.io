@@ -90,14 +90,15 @@ noteTitleStyle {
 }
 
 .note {
-  background: #ffffff;
-  width: (100% - 300px);
-  height: calc(100vh - 25vh);
-  margin-left: 80px;
-  padding: 20px;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  flex-flow: column;
+    background: #FFFFFF;
+    width: 75vw;
+    height: calc(100vh - 25vh);
+    margin-left: 80px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-flow: column;
+    position: fixed;
 }
 
 .tox {
