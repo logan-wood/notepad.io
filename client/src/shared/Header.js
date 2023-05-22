@@ -8,7 +8,7 @@ import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
-
+import dashboardIcon from "./notelo_red.png"
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
@@ -66,8 +66,8 @@ const Header = ({
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </Button>
-          <Link to="/settings" className="settings-button">
-            <img src={settingsIcon} alt="Settings" className="settings-icon" />
+          <Link to="/dashboard" className="settings-button">
+            <img src={dashboardIcon} alt="Settings" className="settings-icon" />
           </Link>
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
