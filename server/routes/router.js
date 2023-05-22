@@ -16,22 +16,22 @@ router.get("/", function (req, res) {
 });
 
 // use this route to get session info
-router.get('/getSession', function(req, res) {
+router.get("/getSession", function (req, res) {
   userController.getUserSession(req, res);
-})
+});
 
-router.post('/addNewUser', (req, res) => {
-  userController.addNewUser(req, res)
-})
+router.post("/addNewUser", (req, res) => {
+  userController.addNewUser(req, res);
+});
 
-router.get('/getUser', function(req, res) {
-  userController.getUser(req, res)
-})
+router.get("/getUser", function (req, res) {
+  userController.getUser(req, res);
+});
 
 // authenticates whether the email matches the password. Does not set a session or cookie in its current implementation
-router.post('/loginUser', function(req, res) {
-  userController.loginUser(req, res)
-})
+router.post("/loginUser", function (req, res) {
+  userController.loginUser(req, res);
+});
 
 // retrieves all user data based on uid
 // query params: uid
@@ -57,5 +57,23 @@ router.delete("/user/:id/removeNote", (req, res) => {
   const noteId = req.query.noteId;
   userController.removeNote(req, res, id, classId, noteId);
 });
+router.put("/user/:id/setSharedNote", (req, res) => {
+  const id = req.params.id;
+  const classId = req.query.classId;
+  const noteId = req.query.noteId;
+  userController.setSharedNote(req, res, id, classId, noteId);
+});
+router.put("/note/:noteId/addSharedUser", (req, res) => {
+  const newUid = req.query.newUid;
+  const noteId = req.params.noteId;
+  userController.addSharedUser(req, res, noteId, newUid);
+});
+router.get("/user/:id/retrieveSharedNotes", (req, res) => {
+  const id = req.params.id;
+  userController.retrieveSharedNotes(req, res, id);
+});
+router.post("/user/getUserFromEmail", (req, res) => {
+  userController.getUserFromEmail(req, res)
+})
 
 module.exports = router;
