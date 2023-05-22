@@ -8,6 +8,7 @@ import Mainpage from "./mainpage/Mainpage";
 import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./redux/userStore";
+import ProtectedRoute from './protectedRoute/protectedroute';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -20,7 +21,7 @@ function AnimatedRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Mainpage />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Mainpage /></ProtectedRoute>} />
           </Routes>
         </div>
       </CSSTransition>
