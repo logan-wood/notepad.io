@@ -74,4 +74,10 @@ router.post("/user/:id/saveTasks", (req, res) => {
   userController.saveTasks(req, res, id, tasks);
 });
 
+router.delete("/user/:id/deleteTask", (req, res) => {
+  const id = req.params.id;
+  const taskId = req.query.taskId;
+  userController.deleteTask(req, res, id, taskId);
+});
+
 module.exports = router;

@@ -76,6 +76,11 @@ export default function TaskModal(tasks, uid) {
     handleSaveTasks(false);
   };
 
+  const handleDeleteTask = (taskId, isDeleted) => {
+    handleDeleteChange(taskId);
+    handleUpdateTasks();
+  };
+
   const handleSaveTasks = (update) => {
     fetch("http://localhost:8080/user/" + tasks.uid + "/saveTasks", {
       method: "POST",
@@ -171,6 +176,37 @@ export default function TaskModal(tasks, uid) {
       });
   };
 
+  const handleDeleteChange = (id) => {
+    const url =
+      "http://localhost:8080/user/" +
+      tasks.uid +
+      "/deleteTask" +
+      "?taskId=" +
+      id;
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((response) => {
+        console.log(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log("TASKS:", data);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
+
   const addTaskButtons = (
     <div className={containerClass}>
       <KeyboardArrowUpIcon
@@ -179,18 +215,26 @@ export default function TaskModal(tasks, uid) {
         fontSize="large"
       ></KeyboardArrowUpIcon>
       <div className="tasksContainer">
-        {Object.entries(newTasks).map(([taskId, taskData]) => (
-          <Task
-            key={taskId}
-            content={taskData.content}
-            isChecked={taskData.ticked}
-            date={taskData.date}
-            onCheckboxChange={(isChecked) =>
-              handleCheckboxChange(taskId, isChecked)
-            }
-            isFirst={false}
-          />
-        ))}
+        {newTasks.length != null ? (
+          Object.entries(newTasks).map(([taskId, taskData]) => (
+            <Task
+              key={taskId}
+              content={taskData.content}
+              isChecked={taskData.ticked}
+              date={taskData.date}
+              onCheckboxChange={(isChecked) =>
+                handleCheckboxChange(taskId, isChecked)
+              }
+              isFirst={false}
+              uid={uid}
+              onDeleteChange={(isDeleted) => {
+                handleDeleteTask(taskId, isDeleted);
+              }}
+            />
+          ))
+        ) : (
+          <div></div>
+        )}
         Add task:
         <div className="submitTaskContainer">
           <TextField
@@ -241,7 +285,7 @@ export default function TaskModal(tasks, uid) {
         <Button className="addATask" onClick={handleOpen}>
           Add a task here!
         </Button>
-      ) : (
+      ) : newTasks.length != null ? (
         <Task
           className="firstTask"
           content={firstTaskName}
@@ -249,6 +293,8 @@ export default function TaskModal(tasks, uid) {
           date={firstTaskDate}
           isFirst={true}
         />
+      ) : (
+        <div></div>
       )}
     </div>
   );
