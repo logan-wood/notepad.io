@@ -1,14 +1,17 @@
-import React, { useRef, useState, useEffect } from "react";
-import arrow from "../../assets/lefticon.png";
-import { addNewClass, addNewNote, updateClassData, updateNoteData } from "./data";
+import React, { useRef, useState,useEffect } from "react";
+import arrow from "../assets/lefticon.png";
+import {
+  addNewClass,
+  addNewNote,
+  updateClassData,
+  updateNoteData,
+} from "./data";
 import { v4 as uuidv4 } from "uuid";
 
-const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isSharedTrue, onShareNote }) => {
+const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = useState(null);
   const [selectNote, setSelectNote] = useState(null);
-  const [isShared, setIsShared] = useState(isSharedTrue);
-
   const [openClasses, setOpenClasses] = useState([]);
   const [isNoteEditing, setIsNoteEditing] = useState("");
   const [isClassEditing, setIsClassEditing] = useState("");
@@ -33,7 +36,9 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
 
   //Handles selecting a class
   const handleSelectClass = (classId) => {
-    const selectClass = data.classes.find((classObj) => classObj.id === classId);
+    const selectClass = data.classes.find(
+      (classObj) => classObj.id === classId
+    );
     setEditingClassName(selectClass.name);
 
     setSelectClass(selectClass);
@@ -49,7 +54,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
       setOpenClasses([classId]);
     }
   };
-
+  
   //handle for changing class name on change
   const handleClassNameChange = (e, id) => {
     const classObj = data.classes.find((classObj) => classObj.id === id);
@@ -70,26 +75,26 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
   //handle for changing class name on change
   const handleNoteTitleChange = (e, id) => {
     if (selectClass) {
-      const selectNote = selectClass.notes.find((note) => note.id === id);
-      selectNote.title = e.target.value;
-      setSelectNote(selectNote);
-      setEditingNoteTitle(e.target.value);
-      onSelectNote(selectNote);
+    const selectNote = selectClass.notes.find((note) => note.id === id);
+    selectNote.title = e.target.value;
+    setSelectNote(selectNote);
+    setEditingNoteTitle(e.target.value);
+    onSelectNote(selectNote);
     }
   };
   const handleFinishNoteTitleChange = (ClassObjId, id) => {
     if (selectClass) {
-      const noteObj = selectClass.notes.find((note) => note.id === id);
-      setIsNoteEditing(false);
-      updateNoteData(ClassObjId, noteObj.id, noteObj);
-      onSelectNote(selectNote);
+    const noteObj = selectClass.notes.find((note) => note.id === id);
+    setIsNoteEditing(false);
+    updateNoteData(ClassObjId, noteObj.id, noteObj);
+    onSelectNote(selectNote);
+
     }
   };
-  //effect hook that updates note title and content when selected note prop is passed through
+ //effect hook that updates note title and content when selected note prop is passed through
 
   // handler for creating a new note
   const handleNewNote = (id) => {
-    setIsShared(false);
     const classObj = data.classes.find((classObj) => classObj.id === id);
     if (classObj) {
       const newNote = {
@@ -103,7 +108,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
     } else {
       console.log("error with handle note");
     }
-    onShareNote(false); //  callback function with the updated value
   };
 
   //checks if a class is open
@@ -113,8 +117,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
 
   // handler for selecting a note\
   const handleSelectNote = (id) => {
-    setIsShared(false);
-
     if (selectClass) {
       const selectNote = selectClass.notes.find((note) => note.id === id);
       setEditingNoteTitle(selectNote.title);
@@ -124,23 +126,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
         onSelectNote(selectNote);
       }
     }
-    onShareNote(false); //  callback function with the updated value
-  };
-
-  const handleSelectShareNote = (id) => {
-    setIsShared(true);
-
-    const selectSharedNote = data.sharedNotes.find((shareNoteObj) => shareNoteObj.id === id);
-    setEditingNoteTitle(selectSharedNote.title);
-
-    setSelectNote(selectSharedNote);
-    console.log("Select Shgared note", selectSharedNote);
-    setSelectNote(selectSharedNote);
-    onSelectNote(selectSharedNote);
-    setOpenClasses([]);
-    setSelectClass(null);
-    onSelectClass(null);
-    onShareNote(true); //  callback function with the updated value
   };
 
   //checks if a class button is active
@@ -148,13 +133,15 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
     return selectClass && selectClass.id === classid;
   };
 
-  const isSelectNoteButtonActive = (noteId) => {
-    return selectNote && selectNote.id === noteId;
-  };
   //checks if a note button is active
   const isNoteButtonActive = (noteid, classid) => {
     //Check if the selected note has the selected note id and the selected class id is also selected
-    return selectNote && selectNote.id === noteid && selectClass && selectClass.id === classid;
+    return (
+      selectNote &&
+      selectNote.id === noteid &&
+      selectClass &&
+      selectClass.id === classid
+    );
   };
 
   return (
@@ -170,7 +157,7 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
             <div key={classItem.id}>
               {isClassEditing && selectClass && selectClass.id === classItem.id ? (
                 <input
-                  className="sideNavEditing"
+                className="sideNavEditing"
                   type="text"
                   value={isClassEditing ? editingClassName : classItem.name}
                   onChange={(e) => handleClassNameChange(e, classItem.id)}
@@ -192,14 +179,20 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
                     handleSelectClass(classItem.id);
                     setIsClassEditing(true);
                   }}
-                  className={`classButton ${isClassButtonActive(classItem.id) ? "active" : ""}`}
-                  draggable>
+                  className={`classButton ${
+                    isClassButtonActive(classItem.id) ? "active" : ""
+                  }`}
+                  draggable
+                >
                   {classItem.name}
                 </button>
               )}
               {isClassOpen(classItem.id) && (
                 <>
-                  <button className="newNoteButton" onClick={() => handleNewNote(classItem.id)}>
+                  <button
+                    className="newNoteButton"
+                    onClick={() => handleNewNote(classItem.id)}
+                  >
                     + new Note
                   </button>
 
@@ -207,19 +200,30 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
                     <ul>
                       {classItem.notes.map((note) => (
                         <li key={note.id}>
-                          {isNoteEditing && selectNote && selectNote.id === note.id ? (
+                          {isNoteEditing &&selectNote && selectNote.id === note.id ? (
                             <input
-                              className="sideNavEditing"
+                            className="sideNavEditing"
+
                               type="text"
-                              value={isNoteEditing ? editingNoteTitle : note.title}
-                              onChange={(e) => handleNoteTitleChange(e, note.id)}
+                              value={
+                                isNoteEditing ? editingNoteTitle : note.title
+                              }
+                              onChange={(e) =>
+                                handleNoteTitleChange(e, note.id)
+                              }
                               onKeyUp={(e) => {
                                 if (e.key === "Enter") {
-                                  handleFinishNoteTitleChange(classItem.id, note.id);
+                                  handleFinishNoteTitleChange(
+                                    classItem.id,
+                                    note.id
+                                  );
                                 }
                               }}
                               onBlur={() => {
-                                handleFinishNoteTitleChange(classItem.id, note.id);
+                                handleFinishNoteTitleChange(
+                                  classItem.id,
+                                  note.id
+                                );
                                 setIsNoteEditing(false);
                               }}
                             />
@@ -231,8 +235,13 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
                               onDoubleClick={() => {
                                 setIsNoteEditing(true);
                               }}
-                              className={`noteButton ${isNoteButtonActive(note.id, classItem.id) ? "active" : ""}`}
-                              draggable>
+                              className={`noteButton ${
+                                isNoteButtonActive(note.id, classItem.id)
+                                  ? "active"
+                                  : ""
+                              }`}
+                              draggable
+                            >
                               {note.title}
                             </button>
                           )}
@@ -245,31 +254,6 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data, isShare
             </div>
           ))}
         </div>
-        {data.sharedNotes.length > 0 && (
-          <>
-            <h4>My Shared Notes</h4>
-            <div className="sharedNoteDiv">
-              <ul>
-                {data.sharedNotes.map((noteShare) => (
-                  <li key={noteShare.id}>
-                    <button
-                      className={`noteButton ${isSelectNoteButtonActive(noteShare.id) ? "active" : ""}`}
-                      onClick={() => {
-                        handleSelectShareNote(noteShare.id);
-                      }}
-                      onDoubleClick={() => {
-                        handleSelectShareNote(noteShare.id);
-                        setIsClassEditing(true);
-                      }}
-                      draggable>
-                      {noteShare.title}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
       </div>
       <div className="sideNavButtonDiv">
         <button className="newClassButton" onClick={handleNewClass}>

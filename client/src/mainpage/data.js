@@ -158,8 +158,8 @@ export const getSharedNoteData = (userUID) => {
         .filter((obj) => obj !== null); // filter out the null/undefined values
 
       console.log("uisarray", JSON.stringify(updatedClasses));
-      dataInData.sharedNotes = updatedClasses;
-      console.log("called state", dataInData.sharedNotes);
+      dataInData.classes = updatedClasses;
+      console.log("called state", dataInData.classes);
     })
     .catch((error) => {
       console.error("There was an error sending the request:", error);
