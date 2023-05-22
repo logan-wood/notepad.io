@@ -11,7 +11,7 @@ const GameModal = ({ onClose, isOpen }) => {
   return (
     <div className={`modalWrapper ${isOpen ? "open" : ""}`}>
     <div className="gameModal">
-      <iframe src="../../index.html" title="Game"  />
+      <iframe src="http://localhost:1234" title="Game" />
       <div className="modalContent">
         <button onClick={handleExit}>Exit Game</button>
       </div>
