@@ -34,7 +34,7 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
   };
 
   const setNoteAsShared = (uid, classId, noteId) => {
-    if(classId !== undefined){
+    if (classId !== undefined) {
       const url =
         process.env.REACT_APP_API_DOMAIN +
         "/user/" +
@@ -133,8 +133,9 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
           <button
             class="redButton"
             onClick={() => {
-              handleAddSharedUser(noteId, userUID);
               setNoteAsShared(uid, classId, noteId);
+              handleAddSharedUser(noteId, userUID);
+
             }}>
             Share
           </button>

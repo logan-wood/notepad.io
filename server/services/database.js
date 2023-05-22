@@ -42,6 +42,8 @@ module.exports = {
 
   getUserFromEmail: async function (email) {
     const ref = db.ref("/users/");
+    console.log(ref);
+
     const snapshot = await ref.once("value");
 
     let userData = null;
@@ -116,11 +118,11 @@ module.exports = {
           if (value.id == noteId) {
             //remove note
             noteFound = note.val();
-            // db.ref("/users/" + uid)
-            //   .child(classId)
-            //   .child("notes")
-            //   .child(key)
-            //   .remove();
+            db.ref("/users/" + uid)
+              .child(classId)
+              .child("notes")
+              .child(key)
+              .remove();
             return noteFound;
           }
         });
