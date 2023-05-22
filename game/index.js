@@ -17,28 +17,32 @@ for(let i = 0; i < battleFoxData.length; i += 64) {
     battleFoxMap.push(battleFoxData.slice(i, i + 64))
 }
 
+const entranceMap = []
+for(let i = 0; i < entrance.length; i += 64) {
+    entranceMap.push(entrance.slice(i, i + 64))
+}
+
 // set boundary coordinates
-const boundaries = []
 const offset = {
     x: -1550,
     y: -1000
 }
-
 const minX = offset.x;
-const minY = offset.y;
 
+const minY = offset.y;
 // set collisions onto map
+
+const boundaries = []
 collisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
         if(symbol === 551)
-        boundaries.push(
-            new Boundary({
-            position: {
-            x: j * Boundary.width + offset.x,
-            y: i * Boundary.height + offset.y
-            }
-        })
-        )
+            boundaries.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                }))
     })
 })
 
@@ -53,8 +57,22 @@ battleFoxMap.forEach((row, i) => {
                         x: j * Boundary.width + offset.x,
                         y: i * Boundary.height + offset.y
                     }
-                })
-            )
+                }))
+    })
+})
+
+const entrances = []
+entranceMap.forEach((row, i) => {
+    row.forEach((symbol, j)  => {
+        if(symbol === 2165) {
+            entrances.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                }))
+        }
     })
 })
 
@@ -110,7 +128,7 @@ const player = new Sprite({
 const background = new Sprite({
     position: {
         x: -1550,
-        y: -1000,
+        y: -1000
     },
     image: image,
     framesHeight: 1,
@@ -161,7 +179,8 @@ const keys ={
 }
 
 // movable objects
-const movables = [background, ...boundaries, foreground, npc, ...battleZones]
+let movables = [background, ...boundaries, foreground, npc, ...battleZones, ...entrances]
+// movables.push(background)
 
 // collision bounds set
 function rectangularCollision({rectangle1, rectangle2}) {
@@ -177,6 +196,8 @@ const battle = {
     initiated: false
 }
 
+let coolDown = false
+
 // animation loop that controls movement of the sprite and map
 function animate() {
     // infinite loop
@@ -189,15 +210,17 @@ function animate() {
         const menu = document.querySelector('#menuDiv').style.display = 'none'
     }
 
-
-
     // draw map and character here cause of infinite loop
     background.draw()
     boundaries.forEach(boundary => {
-            boundary.draw()
+        boundary.draw()
     })
     battleZones.forEach(battleZone => {
-         battleZone.draw()
+        battleZone.draw()
+    })
+    // draw entrance collision
+    entrances.forEach(entranceCollision => {
+        entranceCollision.draw()
     })
 
     npc.draw()
@@ -217,16 +240,42 @@ function animate() {
     if(battle.initiated) return
 
     // activate battle
-    if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed )) {
+    if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed)) {
+        for (let i = 0; i < entrances.length; i++) {
+            const entranceCollisions = entrances[i]
+
+            if (coolDown) {
+                console.log("Cooldown active");
+                continue; // Skip collision check
+            }
+
+            if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})) {
+                coolDown = true
+                setTimeout(() => {
+                    coolDown = false;
+                }, 5000);
+
+                window.cancelAnimationFrame(animationId)
+
+                gsap.to('#insideMap', {
+                    opacity: 1,
+                    yoyo: true,
+                    onComplete() {
+                        gsap.to('#insideMap', {
+                            opacity: 0,
+                            onComplete() {
+                                initInsideHouse()
+                            }
+
+                        })
+                    }
+                })
+            }
+        }
         // check for battle zone collision
         for (let i = 0; i < battleZones.length; i++) {
             const battleZone = battleZones[i]
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: battleZone
-                }) && Math.random() < 0.01
-            ) {
+            if (rectangularCollision({ rectangle1: player, rectangle2: battleZone}) && Math.random() < 0.01) {
                 console.log("activate battle")
 
                 // deactivate current animation loop
@@ -258,7 +307,16 @@ function animate() {
             }
         }
     }
+    movement(moving, boundaries)
+}
+// animate()
 
+addEventListener('click', () => {
+    // console.log('clicked')
+})
+
+function movement(moving, boundaries) {
+    console.log("moving")
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
         player.animate = true
@@ -267,18 +325,7 @@ function animate() {
         // check for boundary collisions
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary,
-                        position: {
-                            x: boundary.position.x,
-                            y: boundary.position.y + 3
-                        }
-                    }
-                })
-            ) {
+            if (rectangularCollision({rectangle1: player, rectangle2: {...boundary, position: {x: boundary.position.x, y: boundary.position.y + 3}}})) {
                 moving = false
                 break
             }
@@ -304,18 +351,7 @@ function animate() {
         // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
-            if(
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary,
-                        position: {
-                            x: boundary.position.x + 3,
-                            y: boundary.position.y
-                        }
-                    }
-                })
-            ){
+            if(rectangularCollision({rectangle1: player, rectangle2: {...boundary, position: {x: boundary.position.x + 3, y: boundary.position.y}}})){
                 moving = false
                 break
             }
@@ -337,18 +373,7 @@ function animate() {
         // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
-            if(
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary,
-                        position: {
-                            x: boundary.position.x,
-                            y: boundary.position.y - 3
-                        }
-                    }
-                })
-            ){
+            if(rectangularCollision({ rectangle1: player, rectangle2: { ...boundary, position: {x: boundary.position.x, y: boundary.position.y - 3}}})){
                 moving = false
                 break
             }
@@ -369,18 +394,7 @@ function animate() {
         // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
-            if(
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...boundary,
-                        position: {
-                            x: boundary.position.x - 3,
-                            y: boundary.position.y
-                        }
-                    }
-                })
-            ){
+            if(rectangularCollision({rectangle1: player, rectangle2: {...boundary, position: {x: boundary.position.x - 3, y: boundary.position.y}}})){
                 moving = false
                 break
             }
@@ -396,12 +410,6 @@ function animate() {
         }
     }
 }
-// animate()
-
-addEventListener('click', () => {
-    // console.log('clicked')
-})
-
 // key down event listener
 let lastKey = ''
 window.addEventListener('keydown', (e) => {
