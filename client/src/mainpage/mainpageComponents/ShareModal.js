@@ -98,6 +98,8 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
         }
       })
       .catch((error) => {
+        setError("Failed to add the shared user, check that it exists");
+
         console.error(error);
       });
   };
@@ -122,7 +124,7 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
           </button>
         </div>
         <hr />
-        <h3>Or share it with a user via their UID:</h3>
+        <h3>Or share it with a user via their email!:</h3>
 
         <div className="shareLinkContent">
           <input
