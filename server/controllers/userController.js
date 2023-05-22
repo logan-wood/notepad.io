@@ -48,7 +48,6 @@ module.exports = {
       };
 
       // Save new user to database
-      console.log("calling write function...");
       database
         .writeUserData(user)
         .then((result) => {
@@ -103,7 +102,6 @@ module.exports = {
   },
 
   updateClass: function (req, res, uid) {
-    console.log("calling database");
     const classToUpdate = req.body;
     if (uid && classToUpdate) {
       try {
@@ -218,13 +216,11 @@ module.exports = {
       try {
         var uid;
 
+        // get uid from email
         await database.getUserFromEmail(newEmail)
         .then((user) => {
-          console.log(user)
           uid = user.uid
         })
-
-        console.log(uid)
 
         database.addSharedUser(noteId, uid);
         res.status(200).send("Request successfully sent!");
