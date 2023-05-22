@@ -215,26 +215,22 @@ export default function TaskModal(tasks, uid) {
         fontSize="large"
       ></KeyboardArrowUpIcon>
       <div className="tasksContainer">
-        {newTasks.length != null ? (
-          Object.entries(newTasks).map(([taskId, taskData]) => (
-            <Task
-              key={taskId}
-              content={taskData.content}
-              isChecked={taskData.ticked}
-              date={taskData.date}
-              onCheckboxChange={(isChecked) =>
-                handleCheckboxChange(taskId, isChecked)
-              }
-              isFirst={false}
-              uid={uid}
-              onDeleteChange={(isDeleted) => {
-                handleDeleteTask(taskId, isDeleted);
-              }}
-            />
-          ))
-        ) : (
-          <div></div>
-        )}
+        {Object.entries(newTasks).map(([taskId, taskData]) => (
+          <Task
+            key={taskId}
+            content={taskData.content}
+            isChecked={taskData.ticked}
+            date={taskData.date}
+            onCheckboxChange={(isChecked) =>
+              handleCheckboxChange(taskId, isChecked)
+            }
+            isFirst={false}
+            uid={uid}
+            onDeleteChange={(isDeleted) => {
+              handleDeleteTask(taskId, isDeleted);
+            }}
+          />
+        ))}
         Add task:
         <div className="submitTaskContainer">
           <TextField
@@ -285,7 +281,7 @@ export default function TaskModal(tasks, uid) {
         <Button className="addATask" onClick={handleOpen}>
           Add a task here!
         </Button>
-      ) : newTasks.length != null ? (
+      ) : (
         <Task
           className="firstTask"
           content={firstTaskName}
@@ -293,8 +289,6 @@ export default function TaskModal(tasks, uid) {
           date={firstTaskDate}
           isFirst={true}
         />
-      ) : (
-        <div></div>
       )}
     </div>
   );
