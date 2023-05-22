@@ -213,10 +213,20 @@ module.exports = {
     }
   },
 
-  addSharedUser: function (req, res, noteId, newUid) {
-    if ((noteId, newUid)) {
+  addSharedUser: async function (req, res, noteId, newEmail) {
+    if ((noteId, newEmail)) {
       try {
-        database.addSharedUser(noteId, newUid);
+        var uid;
+
+        await database.getUserFromEmail(newEmail)
+        .then((user) => {
+          console.log(user)
+          uid = user.uid
+        })
+
+        console.log(uid)
+
+        database.addSharedUser(noteId, uid);
         res.status(200).send("Request successfully sent!");
       } catch (error) {
         console.log(error);
@@ -225,7 +235,7 @@ module.exports = {
           .send("Error adding shared user to note: " + error.message);
       }
     } else {
-      if (!noteId && !newUid) {
+      if (!noteId && !newEmail) {
         res
           .status(400)
           .send(
@@ -235,11 +245,11 @@ module.exports = {
       if (!noteId) {
         res.status(404).send("Bad Request: noteId not found.");
       }
-      if (!newUid) {
+      if (!newEmail) {
         res
           .status(400)
           .send(
-            "Bad Request: newUid parameter is missing. The uid of the user you wish to share the note with is required."
+            "Bad Request: newEmail parameter is missing. The uid of the user you wish to share the note with is required."
           );
       }
     }

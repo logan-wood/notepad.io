@@ -69,13 +69,13 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
   };
 
   // handle for updating the
-  const handleAddSharedUser = (noteId, newUid) => {
+  const handleAddSharedUser = (noteId, newEmail) => {
     const url =
       process.env.REACT_APP_API_DOMAIN +
       "/note/" +
       noteId +
-      "/addSharedUser?newUid=" +
-      newUid;
+      "/addSharedUser?newEmail=" +
+      newEmail;
     fetch(url, {
       method: "PUT",
       headers: {
@@ -86,7 +86,7 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
       },
       body: JSON.stringify({
         noteId: noteId,
-        uid: newUid,
+        email: newEmail,
       }),
     })
       .then((response) => {
