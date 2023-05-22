@@ -408,7 +408,8 @@ function Mainpage() {
           {...(SelectedClass !== null && { classId: SelectedClass.id })}
           uid={user.uid}
         />
-      )}{" "}
+      )}{" "}      {/* <GameFrame /> */}
+
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}

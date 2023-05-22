@@ -10,5 +10,9 @@
     display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+}
+
+iframe {
+  width: 1024px;
+  height: 576px;
 }
