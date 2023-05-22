@@ -6,7 +6,6 @@ import logo from "./notey.png";
 import { Link, useNavigate } from "react-router-dom";
 import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
-import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import darkIcon from "./dark.png";
 import lightIcon from "./light.png";
@@ -88,14 +87,18 @@ const Header = ({
               className="dark-toggles"
             />
           </Button>
-          <img
-            src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
-            onClick={
-              searchResults.length > 0 ? handleRemoveSearch : handleSearchToggle
-            }
-            alt="Search icon"
-            className="search-button"
-          />
+          <Button>
+            <img
+              src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
+              onClick={
+                searchResults.length > 0
+                  ? handleRemoveSearch
+                  : handleSearchToggle
+              }
+              alt="Search icon"
+              className="search-button"
+            />
+          </Button>
           <SearchModal
             isOpen={isSearchModalOpen}
             onRequestClose={handleSearchToggle}

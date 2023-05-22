@@ -22,6 +22,11 @@
   text-decoration: none !important;
   color: #bb4430;
 }
+.header.dark-mode .app-title{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  color: #44bbcf;
+}
 
 .app-title.link-class:hover {
   text-decoration: none !important;
@@ -77,8 +82,7 @@
 }
 
 .sign-out-button,
-.settings-button,
-.profile-button {
+.settings-button {
   border-top-left-radius: 15px !important;
   border-bottom-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
@@ -96,30 +100,40 @@
 .sign-out-button:hover,
 .sign-out-button:focus,
 .settings-button:hover,
-.settings-button:focus,
-.profile-button:hover,
-.profile-button:focus {
+.settings-button:focus {
   border-color: #bb4430 !important;
   color: #bb4430!important;
 }
 
 .sign-out-icon {
-  width: 35px;
-  height: 40px;
+  width: 25px;
+  height: 27px;
   vertical-align: middle;
 }
 
+.header.dark-mode .sign-out-icon {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+}
 
 .settings-icon {
-  width: 39px;
-  height: 49px;
+  width: 30px;
+  height: 30px;
   vertical-align: middle;
+}
+
+.header.dark-mode .settings-icon {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
 }
 
 .dashboard-buttons-container {
   display: flex;
-  gap: 5px;
+  gap: 10px !important;
   align-items: center;
+  justify-content: space-between !important;
 }
 
 .header.dark-mode {
@@ -135,8 +149,6 @@
   background-color: #bb4430 !important;
   border-color: #bb4430 !important;
   font-family: "Nunito", sans-serif;
-  padding-left: 3.5rem !important;
-  padding-right: 3.5rem !important;
   font-size: 18px !important;
 }
 
@@ -156,12 +168,16 @@
 }
 
 .search-button{
-  width: 28px;
-  height: 30px;
+  width: 26px;
+  height: 29px;
   vertical-align: middle;
-  background-color: transparent !important;
   border: none !important; 
-  padding: 0;
+}
+
+.header.dark-mode .search-button{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
 }
 
 .dark-toggles{
@@ -171,6 +187,8 @@
   background-color: transparent !important;
   border: none; 
   padding: 0 !important; 
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .header.dark-mode .dark-mode-toggle {
@@ -184,6 +202,7 @@
 .dark-mode-toggle {
   background-color: transparent !important;
   border: none !important; 
-  padding: 0; 
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
