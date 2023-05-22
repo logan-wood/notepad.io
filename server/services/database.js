@@ -139,4 +139,9 @@ module.exports = {
     const ref = db.ref("/users/" + uid);
     await ref.update(tasks);
   },
+  deleteTask: async function (uid, taskId) {
+    const ref = db.ref("/users/" + uid + "/tasks/").child(taskId);
+    ref.remove();
+    return "Success";
+  },
 };

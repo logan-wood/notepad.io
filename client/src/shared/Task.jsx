@@ -1,15 +1,14 @@
 import Checkbox from "@mui/material/Checkbox";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./Task.css";
 import { useState, useEffect } from "react";
 
-export default function Task({
-  content,
-  date,
-  isChecked,
-  onCheckboxChange,
-  isFirst,
-}) {
+export default function Task(
+  { key, content, date, isChecked, onCheckboxChange, isFirst, onDeleteChange },
+  uid
+) {
   const [isTicked, setIsTicked] = useState(isChecked);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const handleCheckboxChange = (event) => {
     const checked = event.target.checked;
@@ -22,6 +21,11 @@ export default function Task({
     console.log(isTicked);
   }, [isChecked]);
 
+  const handleDeleteChange = () => {
+    setIsDeleted(true);
+    onDeleteChange(isDeleted);
+  };
+
   const checkboxClassName = isTicked ? "task ticked" : "task";
 
   return (
@@ -31,11 +35,14 @@ export default function Task({
       {isFirst ? (
         <div></div>
       ) : (
-        <Checkbox
-          className="checkbox"
-          checked={isTicked}
-          onChange={handleCheckboxChange}
-        />
+        <div>
+          <Checkbox
+            className="checkbox"
+            checked={isTicked}
+            onChange={handleCheckboxChange}
+          />
+          <DeleteIcon onClick={handleDeleteChange} className="deleteIcon" />
+        </div>
       )}
     </div>
   );
