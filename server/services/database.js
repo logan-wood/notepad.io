@@ -4,33 +4,33 @@ const db = firebase.db();
 module.exports = {
   writeUserData: async function (user) {
     // check UID is not being used
-    var randNum
+    var randNum;
     do {
-      var matchFound = false
+      var matchFound = false;
       randNum = Math.floor(Math.random() * 9000000000) + 1000000000;
       await this.getInfo(randNum)
-      .then((res) => {
-        console.log(res)
-        if (res != null) {
-          matchFound = true
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        return
-      })
-    } while (matchFound)
-    
+        .then((res) => {
+          console.log(res);
+          if (res != null) {
+            matchFound = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          return;
+        });
+    } while (matchFound);
+
     // insert into DB
-    const uid = randNum
-    console.log(uid)
-    console.log(user)
+    const uid = randNum;
+    console.log(uid);
+    console.log(user);
     db.ref("users/" + uid).set({
       uid: uid,
       username: user.username,
       email: user.email,
       password: user.password,
-      classes: '',
+      classes: "",
     });
   },
 
@@ -52,7 +52,7 @@ module.exports = {
       }
     });
 
-  return userData;
+    return userData;
   },
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
   updateClass: async function (uid, classToUpdate) {
@@ -69,11 +69,12 @@ module.exports = {
     }
   },
   removeClass: async function (uid, classId) {
-    const ref = (await db
-      .ref("/users/" + uid)
-      .child(classId)
-      .once("value")
-      ).exists();
+    const ref = (
+      await db
+        .ref("/users/" + uid)
+        .child(classId)
+        .once("value")
+    ).exists();
     if (!ref) {
       //class doesnt exist; do nothing
       return ref;
@@ -123,5 +124,24 @@ module.exports = {
       }
       return ref;
     }
+  },
+  addTask: async function (uid, task) {
+    const ref = db.ref("/users/" + uid).child("tasks");
+    await ref.update(task);
+  },
+  getTasks: async function (uid) {
+    const ref = db.ref("/users/" + uid + "/tasks");
+    const snapshot = await ref.once("value");
+    return snapshot.val();
+  },
+  saveTasks: async function (uid, tasks) {
+    console.log(tasks);
+    const ref = db.ref("/users/" + uid);
+    await ref.update(tasks);
+  },
+  deleteTask: async function (uid, taskId) {
+    const ref = db.ref("/users/" + uid + "/tasks/").child(taskId);
+    ref.remove();
+    return "Success";
   },
 };

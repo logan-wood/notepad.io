@@ -20,3 +20,16 @@
     background-color: #c75642;
 
 }
+
+.deleteButton {
+    position: relative;
+    bottom: 50px;
+    right: 50px;
+    margin: 10px;
+    background-color: #bb4430;
+    border-radius: 20px;
+    border:none;
+    padding:10px;
+    color: #FFFBF6;
+
+}
