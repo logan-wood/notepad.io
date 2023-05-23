@@ -1,4 +1,4 @@
-.modalWrapper {
+.modalGameWrapper {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -6,10 +6,11 @@
     display:none;
 }
 
-.modalWrapper.open {
+.modalGameWrapper.open {
     display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 iframe {
