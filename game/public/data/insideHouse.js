@@ -21,16 +21,34 @@ for(let i = 0; i < indoorCollisions.length; i += 70) {
     insideCollisionMap.push(indoorCollisions.slice(i, i + 70))
 }
 
+const exitMap = []
+for(let i = 0; i < exit.length; i += 70) {
+    exitMap.push(exit.slice(i, i + 70))
+}
+
 const insideBoundaries = []
 insideCollisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
         if(symbol === 1887)
             insideBoundaries.push( new Boundary({
-                    position: {
-                        x: j * Boundary.width - 1730,
-                        y: i * Boundary.height - 1840
-                    }
-                }))
+                position: {
+                    x: j * Boundary.width - 1730,
+                    y: i * Boundary.height - 1840
+                }
+            }))
+    })
+})
+
+const exits = []
+exitMap.forEach((row, i) => {
+    row.forEach((symbol, j)  => {
+        if(symbol === 1887)
+            exits.push( new Boundary({
+                position: {
+                    x: j * Boundary.width - 1730,
+                    y: i * Boundary.height - 1840
+                }
+            }))
     })
 })
 
@@ -63,7 +81,12 @@ function initInsideHouse() {
     }
 
     if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed)) {
-
+        for (let i = 0; i < exits.length; i++) {
+            const exitCollisions = exits[i]
+            if(rectangularCollision({rectangle1: player, rectangle2: exitCollisions})) {
+                // transition back to original map
+            }
+        }
     }
 
     movement(moving, insideBoundaries, false)

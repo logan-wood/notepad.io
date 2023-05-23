@@ -263,8 +263,9 @@ function animate() {
                 console.log("Cooldown active");
                 continue; // Skip collision check
             }
-
-            if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})) {
+            console.log(keys.w.pressed)
+            if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})
+                && keys.w.pressed) {
                 coolDown = true
                 setTimeout(() => {
                     coolDown = false;
