@@ -13,8 +13,24 @@ const Profile = () => {
 
   //save the edits
   const handleSave = () => {
+    //check if email is valid
+    if (!validEmail(editEmail)) {
+      alert("Please enter a valid email");
+      setEditMode(false);
+
+      return;
+    }
     //close editmode
     setEditMode(false);
+  };
+
+  //function to check regex of email
+  const validEmail = (email) => {
+    //regex for valid email
+    const emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+
+    //check if email matches the pattern
+    return emailPattern.test(email);
   };
   //render
   return (
@@ -41,17 +57,16 @@ const Profile = () => {
                       <span className="userInfoTitle">UID:</span> {user.uid}
                     </span>
                     <span className="userInfoItems">
-                      <span className="userInfoTitle">Email:</span> {user.email}
+                      <span className="userInfoTitle">Email:</span> {editEmail}
                     </span>
                     <span className="userInfoItems">
                       <span className="userInfoTitle">Username:</span>{" "}
-                      {user.username}
+                      {editUsername}
                     </span>
                   </>
                 )}
-                                <span className="profile-buttons">
-
-                <button onClick={() => setEditMode(true)}>Edit</button>
+                <span className="profile-buttons">
+                  <button onClick={() => setEditMode(true)}>Edit</button>
                 </span>
               </>
             ) : (
@@ -77,7 +92,7 @@ const Profile = () => {
                 </span>
                 <span className="profile-buttons">
                   <button onClick={handleSave}>Save</button>
-                  <button  onClick={() => setEditMode(false)}>Cancel</button>
+                  <button onClick={() => setEditMode(false)}>Cancel</button>
                 </span>
               </>
             )}
