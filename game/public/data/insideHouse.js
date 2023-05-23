@@ -4,12 +4,17 @@ insideMapImage.src = './gameAssets/indoorMap1.png'
 const insideMapBackground = new Sprite({
     position: {
         x: -2300,
-        y: -3000
+        y: -2800
     },
     image: insideMapImage,
     npcScale: 1,
     framesHeight: 1
 })
+
+const insideOffset = {
+    x: -1550,
+    y: -1000
+}
 
 const insideCollisionMap = []
 for(let i = 0; i < indoorCollisions.length; i += 70) {
@@ -22,14 +27,14 @@ insideCollisionMap.forEach((row, i) => {
         if(symbol === 1887)
             insideBoundaries.push( new Boundary({
                     position: {
-                        x: j * Boundary.width - 2300,
-                        y: i * Boundary.height - 3000
+                        x: j * Boundary.width - 1730,
+                        y: i * Boundary.height - 1840
                     }
                 }))
     })
 })
 
-movables = [...movables, insideMapBackground, ...insideBoundaries]
+movables = [...movables, insideMapBackground]
 
 function initInsideHouse() {
 
@@ -37,9 +42,11 @@ function initInsideHouse() {
 
     insideMapBackground.draw()
 
-    insideBoundaries.forEach(insideCollision => {
+/*    insideBoundaries.forEach(insideCollision => {
         insideCollision.draw()
-    })
+    })*/
+
+    drawCollisions(insideCollisionMap, insideBoundaries)
 
     player.draw()
     player.position.x = 480
@@ -59,5 +66,5 @@ function initInsideHouse() {
 
     }
 
-    movement(moving, insideBoundaries)
+    movement(moving, insideBoundaries, false)
 }
