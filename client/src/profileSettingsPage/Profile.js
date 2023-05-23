@@ -3,9 +3,8 @@ import "./Components/Profile.css";
 import Header from "../shared/Header";
 import { useSelector } from "react-redux";
 import profilePic from "./Components/notelo-profile.png";
-const Profile = () => {
-  //constants
-  const user = useSelector((state) => state.user);
+const Profile = ({user}) => {
+  
   // state variables for edit mode and edit values
   const [editMode, setEditMode] = React.useState(false);
   const [editEmail, setEditEmail] = React.useState(user.email);
@@ -35,15 +34,7 @@ const Profile = () => {
   //render
   return (
     <>
-      <Header
-        showButtons={false}
-        showDarkModeButton={true}
-        showDashBoardButtons={true}
-      />
-      <div className="profile-setting">
-        <div className="side-bar">test</div>
-
-        <div className="profile">
+     
           <img src={profilePic} alt="Logo" className="profile-pic" />
 
           <div className="profile-info">
@@ -97,8 +88,8 @@ const Profile = () => {
               </>
             )}
           </div>
-        </div>
-      </div>
+       
+    
     </>
   );
 };
