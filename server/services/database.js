@@ -42,8 +42,6 @@ module.exports = {
 
   getUserFromEmail: async function (email) {
     const ref = db.ref("/users/");
-    console.log(ref);
-
     const snapshot = await ref.once("value");
 
     let userData = null;
@@ -118,11 +116,11 @@ module.exports = {
           if (value.id == noteId) {
             //remove note
             noteFound = note.val();
-            db.ref("/users/" + uid)
-              .child(classId)
-              .child("notes")
-              .child(key)
-              .remove();
+            // db.ref("/users/" + uid)
+            //   .child(classId)
+            //   .child("notes")
+            //   .child(key)
+            //   .remove();
             return noteFound;
           }
         });
@@ -147,20 +145,15 @@ module.exports = {
     await ref.update(noteMap);
   },
 
-  addSharedUser: async function (noteId, newUid) {
+  addSharedUser: async function (noteId, newUid,newUsername) {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
-    console.log('logging ref:')
-    console.log(ref)
-    console.log("noteID: " + noteId)
     let note = (await ref.once("value")).val();
-    console.log('logging note:')
-    console.log(note)
-    if (note && note.users && note.users[newUid] == null) {
-      note.users[newUid] = newUid;
-      ref.update(note);
+    if (note.users[newUid] == null) {
+      note.users[newUid] = newUsername;
     }
-
+    console.log(note);
+    ref.update(note);
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);
@@ -196,5 +189,7 @@ module.exports = {
       });
     });
     return finalNotes;
+
+    // console.log(notes);
   },
-}
+};

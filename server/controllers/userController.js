@@ -216,14 +216,14 @@ module.exports = {
   addSharedUser: async function (req, res, noteId, newEmail) {
     if ((noteId, newEmail)) {
       try {
-        var uid;
-
+        var uid,username;
         // get uid from email
         await database.getUserFromEmail(newEmail).then((user) => {
-          uid = user.uid;
+          uid = user.uid
+          username = user.username;
         });
 
-        database.addSharedUser(noteId, uid);
+        database.addSharedUser(noteId, uid,username);
         res.status(200).send("Request successfully sent!");
       } catch (error) {
         console.log(error);

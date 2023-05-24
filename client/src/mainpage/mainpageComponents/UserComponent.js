@@ -38,7 +38,7 @@ const UserComponent = ({ noteData }) => {
             buttons.push(
               <div className="users" key={userId}>
                 <button onClick={() => handleUserClick(userId)}>
-                  {userName}
+                  <span title={users[userId]}>{userName}</span>
                 </button>
                 {selectedUser === userId && isOpen && (
                   <button
