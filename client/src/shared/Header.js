@@ -66,7 +66,7 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
+          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </Button>
@@ -76,12 +76,7 @@ const Header = ({
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-          <img
-            src={signOutIcon}
-            alt="Sign Out"
-            className="sign-out-icon"
-            onClick={logoutUser}
-          />
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
           <TaskModal tasks={tasks} uid={uid} />
         </div>
       )}
