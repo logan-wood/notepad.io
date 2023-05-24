@@ -3,7 +3,7 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./mainpageComponents/SideNav";
 import Note from "./mainpageComponents/Note";
-import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData } from "./mainpageComponents/data";
+import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData, getDatabaseTasks } from "./mainpageComponents/data";
 import trashcan from "./mainpageComponents/trashcan.png";
 import ProgressGameBar from "./mainpageComponents/ProgressGameBar";
 import GameModal from "./mainpageComponents/GameModal";
@@ -21,7 +21,7 @@ function Mainpage() {
   const [progress, setProgress] = useState(0);
   const [reset, setReset] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const [data, setData] = useState({ classes: [], sharedNotes: [] });
+  const [data, setData] = useState({ classes: [], sharedNotes: [], tasks: [] });
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [SelectedShareNote, SetSelectedShareNote] = useState(null);
@@ -38,7 +38,8 @@ function Mainpage() {
       }
     }
     document.addEventListener("mousedown", handleClickShareOutside);
-    return () => document.removeEventListener("mousedown", handleClickShareOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickShareOutside);
   }, [isShareOpen]);
 
   //handler for delete buttons
@@ -180,7 +181,9 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex((cls) => cls.id === updatedClass.id);
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === updatedClass.id
+      );
 
       //handle update title
       newData.classes[classIndex].name = updatedClass.name;
@@ -195,7 +198,7 @@ function Mainpage() {
   };
 
   // handle for updating the
-  const handleDatabaseUpdateClass = (data) => {
+  const handleDatabaseUpdateClass = async (data) => {
     // constant url for testing purposes
     const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/updateClass";
     fetch(url, {
@@ -224,7 +227,7 @@ function Mainpage() {
   };
 
   // Handle for deleting a note from the database
-  const handleDatabaseDeleteNote = (data, selectedClassId, selectedNoteId) => {
+  const handleDatabaseDeleteNote = async (data, selectedClassId, selectedNoteId) => {
     const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
 
     fetch(url, {
@@ -252,7 +255,7 @@ function Mainpage() {
       });
   };
 
-  const handleDatabaseDeleteClass = (data, selectedClassId) => {
+  const handleDatabaseDeleteClass = async (data, selectedClassId) => {
     const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
 
     fetch(url, {
@@ -286,7 +289,9 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === SelectedClass.id
+      );
 
       if (classIndex !== -1) {
         //remove class from array
@@ -308,10 +313,14 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected class in the classes array
-      const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
+      const classIndex = newData.classes.findIndex(
+        (cls) => cls.id === SelectedClass.id
+      );
 
       // Find the index of the note to be deleted in the notes array of the selected class
-      const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === SelectedNote.id);
+      const noteIndex = newData.classes[classIndex].notes.findIndex(
+        (note) => note.id === SelectedNote.id
+      );
       if (noteIndex !== -1) {
         //remove class from array
         newData.classes[classIndex].notes.splice(noteIndex, 1);
@@ -356,6 +365,17 @@ function Mainpage() {
         setConnected(buffer++);
       });
   }
+
+  useEffect(() => {
+    const fetchTasksAndData = async () => {
+      await getDatabaseTasks(user.uid);
+      await getDatabaseData(user.uid);
+      setData(dataInData);
+      console.log("get DB data in mainpage", dataInData.tasks);
+    };
+    fetchTasksAndData();
+  }, connected);
+
   return (
     <div className="mainpage">
       <Loading buffer={connected} />
@@ -364,11 +384,16 @@ function Mainpage() {
         showButtons={false}
         showDarkModeButton={true}
         showDashBoardButtons={true}
+        tasks={dataInData.tasks}
+        uid={user.uid}
       />
+
       {/* viewport so that its responsive*/}
       <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"></meta>
+        content="width=device-width, initial-scale=1.0"
+      ></meta>
+
       {/*style import from google fonts */}
       <style>
         @import
@@ -399,17 +424,9 @@ function Mainpage() {
         progress={progress}
         onButtonClick={handleGameButtonClick}
       />
-      <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      {SelectedNote && (
-        <ShareModal
-          isOpen={isShareOpen}
-          onClose={handleShareClose}
-          noteId={SelectedNote.id}
-          {...(SelectedClass !== null && { classId: SelectedClass.id })}
-          uid={user.uid}
-        />
-      )}{" "}      {/* <GameFrame /> */}
 
+      <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
+      <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}

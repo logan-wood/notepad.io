@@ -8,20 +8,24 @@ import signOutIcon from "./signout_icon.png";
 import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
+import TaskModal from "./TaskModal.jsx";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
   showDarkModeButton,
   showDashBoardButtons,
+  tasks,
+  uid,
 }) => {
   // state variable to hold value of darkMode setting
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // handles the toggle of the dark mode button 
+  // handles the toggle of the dark mode button
   const handleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.body.classList.toggle("dark-mode");
+    console.log(tasks);
   };
 
   // user object
@@ -32,9 +36,9 @@ const Header = ({
   const navigate = useNavigate();
 
   const logoutUser = () => {
-    dispatch({ type: 'CLEAR_USER' })
-    navigate('/')
-  }
+    dispatch({ type: "CLEAR_USER" });
+    navigate("/");
+  };
 
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
@@ -62,7 +66,7 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
+          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </Button>
@@ -72,7 +76,13 @@ const Header = ({
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
+          <img
+            src={signOutIcon}
+            alt="Sign Out"
+            className="sign-out-icon"
+            onClick={logoutUser}
+          />
+          <TaskModal tasks={tasks} uid={uid} />
         </div>
       )}
     </header>

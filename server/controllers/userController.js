@@ -98,7 +98,6 @@ module.exports = {
     } else {
       res.status(404).send('user not found')
     }
-
   },
 
   updateClass: function (req, res, uid) {
@@ -265,6 +264,110 @@ module.exports = {
     } else {
       if (!uid) {
         res.status(400).send("Bad Request: uid is missing from request.");
+      }
+    }
+  },  
+  addTask: function (req, res, uid) {
+    const task = req.body;
+    if (uid && task) {
+      try {
+        database.addTask(uid, task);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !task) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task is missing from request body"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!task) {
+        res.status(400).send("Bad Request: task is missing from request body.");
+      }
+    }
+  },
+  getTasks: function (req, res, uid) {
+    if (uid) {
+      try {
+        database
+          .getTasks(uid)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((error) => {
+            console.error("Error retrieving data from database:", error);
+          });
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
+  },
+  saveTasks: function (req, res, uid, tasks) {
+    if (uid && tasks) {
+      try {
+        database.saveTasks(uid, tasks);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !tasks) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task is missing from request body"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!tasks) {
+        res.status(400).send("Bad Request: task is missing from request body.");
+      }
+    }
+  },
+
+  deleteTask: function (req, res, uid, taskId) {
+    if (uid && taskId) {
+      try {
+        database.deleteTask(uid, taskId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !taskId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!taskId) {
+        res.status(400).send("Bad Request: taskId parameter is missing.");
       }
     }
   },
