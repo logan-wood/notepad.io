@@ -5,10 +5,7 @@ import Home from "./homepage/Home";
 import Login from "./loginpage/Login";
 import Signup from "./sign-up/Signup";
 import Mainpage from "./mainpage/Mainpage";
-<<<<<<< HEAD
-=======
 import Profile from "./profileSettingsPage/Profile";
->>>>>>> parent of 7956323 (creating cohesive profilesetting page and passing user as props)
 import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./redux/userStore";
@@ -30,7 +27,6 @@ function AnimatedRoutes() {
 =======
             <Route path="/dashboard" element={<Mainpage />} />
             <Route path="/profile" element={<Profile />} />
->>>>>>> parent of 7956323 (creating cohesive profilesetting page and passing user as props)
           </Routes>
         </div>
       </CSSTransition>
