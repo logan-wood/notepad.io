@@ -11,11 +11,6 @@ const insideMapBackground = new Sprite({
     framesHeight: 1
 })
 
-const insideOffset = {
-    x: -1550,
-    y: -1000
-}
-
 const insideCollisionMap = []
 for(let i = 0; i < indoorCollisions.length; i += 70) {
     insideCollisionMap.push(indoorCollisions.slice(i, i + 70))
@@ -75,9 +70,9 @@ function insideHouse() {
 
     if(keys.esc.pressed) {
         console.log(keys.esc.pressed)
-        const menu = document.querySelector('#menuDiv').style.display = 'block'
+        document.querySelector('#menuDiv').style.display = 'block'
     } else if(!keys.esc.pressed) {
-        const menu = document.querySelector('#menuDiv').style.display = 'none'
+        document.querySelector('#menuDiv').style.display = 'none'
     }
 
     if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed)) {
@@ -90,12 +85,10 @@ function insideHouse() {
                     onComplete:() => {
                         console.log(insideID)
                         cancelAnimationFrame(insideID)
-                        animate();
 
                         gsap.to('#insideMap', {
                             opacity: 0
                         })
-
                         inside.initiated = false
                     }
                 })
@@ -105,16 +98,3 @@ function insideHouse() {
 
     movement(moving, insideBoundaries, false)
 }
-
-/*function initInsideHouse() {
-    insideID = window.requestAnimationFrame(initInsideHouse)
-    insideMapBackground.draw()
-
-    insideBoundariesAdded = drawCollisions(insideCollisionMap, insideBoundaries, insideBoundariesAdded)
-    exitAdded = drawCollisions(exitMap, exits, exitAdded)
-
-
-    player.draw()
-    player.position.x = 480
-    player.position.y = 250
-}*/

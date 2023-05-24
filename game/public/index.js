@@ -220,22 +220,28 @@ function drawCollisions(collisionMap, boundaries, containsBoundaries) {
     return containsBoundaries
 }
 
+let animationId = null
+
 // animation loop that controls movement of the sprite and map
 function animate() {
-    console.log('back in animate')
+    console.log(movables)
     // infinite loop
-    const animationId = window.requestAnimationFrame(animate)
+    window.requestAnimationFrame(animate)
+
+    if (inside.initiated || battle.initiated) {
+        window.cancelAnimationFrame(animationId);
+        return;
+    }
 
     if(keys.esc.pressed) {
         console.log(keys.esc.pressed)
-        const menu = document.querySelector('#menuDiv').style.display = 'block'
+        document.querySelector('#menuDiv').style.display = 'block'
     } else if(!keys.esc.pressed) {
-        const menu = document.querySelector('#menuDiv').style.display = 'none'
+        document.querySelector('#menuDiv').style.display = 'none'
     }
 
     // draw map and character here cause of infinite loop
     background.draw();
-    // console.log(movables)
 
     outsideBoundaries = drawCollisions(collisionMap, boundaries, outsideBoundaries);
     outsideBattleZones = drawCollisions(battleFoxMap, battleZones, outsideBattleZones);
@@ -322,7 +328,7 @@ function animate() {
     }
     movement(moving, boundaries, notInside)
 }
-// animate()
+animate()
 
 addEventListener('click', () => {
     // console.log('clicked')

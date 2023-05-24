@@ -121,7 +121,7 @@ function animateBattle() {
         sprite.draw()
     })
 }
-animate()
+// animate()
 
 document.querySelector('#dialogueBox').addEventListener('click', (e) => {
     if(queue.length > 0) {
