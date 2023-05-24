@@ -159,7 +159,7 @@ module.exports = {
     if (note && note.users && note.users[newUid] == null) {
       try {
         //setting username as value;
-        const usernameRef = await db.ref("/users/" + 2736218924 + "/username");
+        const usernameRef = await db.ref("/users/" + newUid + "/username");
         const username = await usernameRef.once("value");
         note.users[newUid] = username.val();
       } catch (error) {
@@ -209,4 +209,4 @@ module.exports = {
     });
     return finalNotes;
   },
-}
+};
