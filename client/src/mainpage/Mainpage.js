@@ -391,8 +391,7 @@ function Mainpage() {
       {/* viewport so that its responsive*/}
       <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-      ></meta>
+        content="width=device-width, initial-scale=1.0"></meta>
 
       {/*style import from google fonts */}
       <style>
@@ -426,7 +425,13 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      <ShareModal isOpen={isShareOpen} onClose={handleShareClose} />
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={handleShareClose}
+        noteId={SelectedNote !== null ? SelectedNote.id : null}
+        classId={SelectedClass !== null ? SelectedClass.id : null}
+        uid={user.uid}
+      />
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}

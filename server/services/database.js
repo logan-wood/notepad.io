@@ -156,10 +156,11 @@ module.exports = {
     let note = (await ref.once("value")).val();
     console.log('logging note:')
     console.log(note)
-    if (note.users[newUid] == null) {
+    if (note && note.users && note.users[newUid] == null) {
       note.users[newUid] = newUid;
+      ref.update(note);
     }
-    ref.update(note);
+
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);

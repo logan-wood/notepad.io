@@ -3,7 +3,7 @@ import "./ShareModal.css";
 
 const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
   const [URL, setURL] = useState("");
-  const [userUID, setUserUID] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {
     const updatedURL =
@@ -33,12 +33,12 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
     }
   };
 
-  const setNoteAsShared = (uid, classId, noteId) => {
-    if (classId !== undefined) {
+  const setNoteAsShared = (addUid, classId, noteId) => {
+    if (classId !== null) {
       const url =
         process.env.REACT_APP_API_DOMAIN +
         "/user/" +
-        uid +
+        addUid +
         "/setSharedNote?classId=" +
         classId +
         "&noteId=" +
@@ -129,15 +129,17 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
         <div className="shareLinkContent">
           <input
             type="text"
-            value={userUID}
-            onChange={(e) => setUserUID(e.target.value)}
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
           />
           <button
             class="redButton"
             onClick={() => {
-              setNoteAsShared(uid, classId, noteId);
-              handleAddSharedUser(noteId, userUID);
+                  if (classId !== null) {
 
+              setNoteAsShared(uid, classId, noteId);
+                  }
+              handleAddSharedUser(noteId, userEmail);
             }}>
             Share
           </button>
