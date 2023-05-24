@@ -272,14 +272,9 @@ export default function TaskModal(tasks, uid) {
 
   const closedContainer = (
     <div className="closedContainer">
-      <KeyboardArrowDownIcon
-        className="openicon"
-        onClick={handleOpen}
-        fontSize="large"
-      ></KeyboardArrowDownIcon>
       {firstTaskName == "" ? (
         <Button className="addATask" onClick={handleOpen}>
-          Add a task here!
+         + Add a task here!
         </Button>
       ) : (
         <Task
