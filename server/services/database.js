@@ -150,17 +150,29 @@ module.exports = {
   addSharedUser: async function (noteId, newUid) {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
-    console.log('logging ref:')
-    console.log(ref)
-    console.log("noteID: " + noteId)
+    console.log("logging ref:");
+    console.log(ref);
+    console.log("noteID: " + noteId);
     let note = (await ref.once("value")).val();
-    console.log('logging note:')
-    console.log(note)
+    console.log("logging note:");
+    console.log(note);
     if (note && note.users && note.users[newUid] == null) {
-      note.users[newUid] = newUid;
+      try {
+        //setting username as value;
+        const usernameRef = await db.ref("/users/" + 2736218924 + "/username");
+        const username = await usernameRef.once("value");
+        note.users[newUid] = username.val();
+      } catch (error) {
+        console.log(
+          "Error retrieving username, seting value as uid instead",
+          error
+        );
+        //set uid if username doesnt exist
+        note.users[newUid] = newUid;
+      }
+
       ref.update(note);
     }
-
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);
