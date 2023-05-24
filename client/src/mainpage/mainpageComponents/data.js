@@ -1,6 +1,7 @@
 export const dataInData = {
   classes: [],
   sharedNotes: [], //notes that are shared with otherusers
+  tasks: []
 };
 export default dataInData;
 
@@ -21,7 +22,9 @@ export const setClassesData = (updatedClasses) => {
   dataInData.classes = updatedClasses;
 };
 export const addNewNote = (classID, Note) => {
-  const classObj = dataInData.classes.find((classObj) => classObj.id === classID);
+  const classObj = dataInData.classes.find(
+    (classObj) => classObj.id === classID
+  );
   if (classObj) {
     classObj.notes.push(Note);
     classObj.noteSize++;
@@ -52,7 +55,7 @@ export const updateClassData = (classId, updatedClass) => {
 
 //call databaseuser.uid
 //also get data from where user is a shared note
-export const getDatabaseData = (userUID) => {
+export const getDatabaseData = async (userUID) => {
   const url = "http://localhost:8080/user/" + userUID + "/getInfo";
   fetch(url, {
     method: "GET",
@@ -105,7 +108,7 @@ export const getDatabaseData = (userUID) => {
     });
 };
 
-export const getSharedNoteData = (userUID) => {
+export const getSharedNoteData = async (userUID) => {
   const url = "http://localhost:8080/user/" + userUID + "/retrieveSharedNotes";
   fetch(url, {
     method: "GET",
@@ -124,7 +127,6 @@ export const getSharedNoteData = (userUID) => {
       return response.json(); // Parse the response body as JSON
     })
     .then((data) => {
-
       const initialArray = Object.values(data);
       const updatedSharedNote = initialArray
         .map((initClass) => {
@@ -137,6 +139,33 @@ export const getSharedNoteData = (userUID) => {
       console.log("uisarray", JSON.stringify(updatedSharedNote));
       dataInData.sharedNotes = updatedSharedNote;
       console.log("called state", dataInData.sharedNotes);
+    })
+    .catch((error) => {
+      console.error("There was an error sending the request:", error);
+    });
+};
+
+export const getDatabaseTasks = async (userUID) => {
+  const url = "http://localhost:8080/user/" + userUID + "/getTasks";
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json", // Make sure to set the content type of the request body
+      Accept: "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      Connection: "keep-alive",
+    },
+  })
+    .then((response) => {
+      console.log("response", response);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json(); // Parse the response body as JSON
+    })
+    .then((data) => {
+      console.log("TASKS:", data);
+      dataInData.tasks = data;
     })
     .catch((error) => {
       console.error("There was an error sending the request:", error);

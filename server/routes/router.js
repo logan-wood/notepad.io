@@ -76,4 +76,26 @@ router.post("/user/getUserFromEmail", (req, res) => {
   userController.getUserFromEmail(req, res)
 })
 
+router.post("/user/:id/addTask", (req, res) => {
+  const id = req.params.id;
+  userController.addTask(req, res, id);
+});
+
+router.get("/user/:id/getTasks", (req, res) => {
+  const id = req.params.id;
+  userController.getTasks(req, res, id);
+});
+
+router.post("/user/:id/saveTasks", (req, res) => {
+  const id = req.params.id;
+  const tasks = req.body;
+  userController.saveTasks(req, res, id, tasks);
+});
+
+router.delete("/user/:id/deleteTask", (req, res) => {
+  const id = req.params.id;
+  const taskId = req.query.taskId;
+  userController.deleteTask(req, res, id, taskId);
+});
+
 module.exports = router;
