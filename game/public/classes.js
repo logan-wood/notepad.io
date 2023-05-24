@@ -66,7 +66,6 @@ class Sprite {
             this.frames.elapsed++
         }
 
-        console.log(this.frames.hold)
         if(this.frames.elapsed % this.frames.hold === 0) {
             if(this.frames.val < this.frames.max - 1) this.frames.val++
             else this.frames.val = 0

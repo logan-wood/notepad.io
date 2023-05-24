@@ -60,10 +60,12 @@ function insideHouse() {
     insideBoundariesAdded = drawCollisions(insideCollisionMap, insideBoundaries, insideBoundariesAdded)
     exitAdded = drawCollisions(exitMap, exits, exitAdded)
 
-
     player.draw()
     player.position.x = 480
     player.position.y = 250
+    // console.log(player.position.x)
+    // console.log(player.position.y)
+
 
     let moving = true
     player.animate = false
@@ -76,9 +78,11 @@ function insideHouse() {
     }
 
     if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed)) {
+        console.log('entered')
         for (let i = 0; i < exits.length; i++) {
             const exitCollisions = exits[i]
-            if(rectangularCollision({rectangle1: player, rectangle2: exitCollisions})) {
+            if(rectangularCollision({rectangle1: player, rectangle2: exitCollisions})
+                && keys.s.pressed) {
                 // transition back to original map
                 gsap.to('#insideMap', {
                     opacity: 1,

@@ -181,8 +181,6 @@ const keys ={
 // movable objects
 let movables = [background, foreground, npc]
 
-let notInside = true
-
 // collision bounds set
 function rectangularCollision({rectangle1, rectangle2}) {
     return (
@@ -211,7 +209,6 @@ function drawCollisions(collisionMap, boundaries, containsBoundaries) {
     })
 
     if(!containsBoundaries) {
-        console.log("boundaries")
         movables.push(...boundaries)
 
         containsBoundaries = true
@@ -221,20 +218,19 @@ function drawCollisions(collisionMap, boundaries, containsBoundaries) {
 }
 
 let animationId = null
+let playerStartPosition = { x: 0, y: 0 };
 
 // animation loop that controls movement of the sprite and map
 function animate() {
-    console.log(movables)
     // infinite loop
     window.requestAnimationFrame(animate)
 
-    if (inside.initiated || battle.initiated) {
-        window.cancelAnimationFrame(animationId);
-        return;
-    }
+    // if (inside.initiated || battle.initiated) {
+    //     window.cancelAnimationFrame(animationId);
+    //     return;
+    // }
 
     if(keys.esc.pressed) {
-        console.log(keys.esc.pressed)
         document.querySelector('#menuDiv').style.display = 'block'
     } else if(!keys.esc.pressed) {
         document.querySelector('#menuDiv').style.display = 'none'
@@ -283,6 +279,8 @@ function animate() {
                             opacity: 0,
                             onComplete() {
                                 insideHouse();
+                                playerStartPosition = { x: player.position.x, y: player.position.y };
+
 
                                 inside.initiated = true
                             }
@@ -295,7 +293,6 @@ function animate() {
         for (let i = 0; i < battleZones.length; i++) {
             const battleZone = battleZones[i]
             if (rectangularCollision({ rectangle1: player, rectangle2: battleZone}) && Math.random() < 0.01) {
-                console.log("activate battle")
 
                 // deactivate current animation loop
                 window.cancelAnimationFrame(animationId)
@@ -326,7 +323,7 @@ function animate() {
             }
         }
     }
-    movement(moving, boundaries, notInside)
+    movement(moving, boundaries, !inside.initiated)
 }
 animate()
 
@@ -392,7 +389,6 @@ function movement(moving, boundaries, notInside) {
         } else {
             if(moving) player.position.x -= 3
         }
-
     } else if (keys.s.pressed && lastKey === 's') {
         player.animate = true
         player.image = player.sprites.down
