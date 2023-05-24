@@ -32,8 +32,8 @@ insideCollisionMap.forEach((row, i) => {
         if(symbol === 1887)
             insideBoundaries.push( new Boundary({
                 position: {
-                    x: j * Boundary.width - 1730,
-                    y: i * Boundary.height - 1840
+                    x: j * Boundary.width - 1702,
+                    y: i * Boundary.height - 1797
                 }
             }))
     })
@@ -45,26 +45,26 @@ exitMap.forEach((row, i) => {
         if(symbol === 1887)
             exits.push( new Boundary({
                 position: {
-                    x: j * Boundary.width - 1730,
-                    y: i * Boundary.height - 1840
+                    x: j * Boundary.width - 1702,
+                    y: i * Boundary.height - 1797
                 }
             }))
     })
 })
 
-movables = [...movables, insideMapBackground]
+movables = [...movables, insideMapBackground] // exits needs to be added to movables
+let exitAdded = false
+let insideBoundariesAdded = false
+let insideID
 
-function initInsideHouse() {
 
-    const insideID = window.requestAnimationFrame(initInsideHouse)
-
+function insideHouse() {
+    insideID = window.requestAnimationFrame(insideHouse)
     insideMapBackground.draw()
 
-/*    insideBoundaries.forEach(insideCollision => {
-        insideCollision.draw()
-    })*/
+    insideBoundariesAdded = drawCollisions(insideCollisionMap, insideBoundaries, insideBoundariesAdded)
+    exitAdded = drawCollisions(exitMap, exits, exitAdded)
 
-    drawCollisions(insideCollisionMap, insideBoundaries)
 
     player.draw()
     player.position.x = 480
@@ -85,9 +85,36 @@ function initInsideHouse() {
             const exitCollisions = exits[i]
             if(rectangularCollision({rectangle1: player, rectangle2: exitCollisions})) {
                 // transition back to original map
+                gsap.to('#insideMap', {
+                    opacity: 1,
+                    onComplete:() => {
+                        console.log(insideID)
+                        cancelAnimationFrame(insideID)
+                        animate();
+
+                        gsap.to('#insideMap', {
+                            opacity: 0
+                        })
+
+                        inside.initiated = false
+                    }
+                })
             }
         }
     }
 
     movement(moving, insideBoundaries, false)
 }
+
+/*function initInsideHouse() {
+    insideID = window.requestAnimationFrame(initInsideHouse)
+    insideMapBackground.draw()
+
+    insideBoundariesAdded = drawCollisions(insideCollisionMap, insideBoundaries, insideBoundariesAdded)
+    exitAdded = drawCollisions(exitMap, exits, exitAdded)
+
+
+    player.draw()
+    player.position.x = 480
+    player.position.y = 250
+}*/

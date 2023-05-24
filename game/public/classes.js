@@ -133,7 +133,6 @@ class Monster extends Sprite {
                 const fireballImage = new Image()
                 fireballImage.src = './gameAssets/fireball.png'
                 const fireball = new Sprite({
-
                     position: {
                         x: this.position.x,
                         y: this.position.y
@@ -223,7 +222,7 @@ class Boundary {
     }
 
     draw() {
-        c.fillStyle = 'rgba(255, 0, 0, 0)'
+        c.fillStyle = 'rgba(255, 0, 0, 1)'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }

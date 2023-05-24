@@ -179,7 +179,7 @@ const keys ={
 }
 
 // movable objects
-let movables = [background, foreground, npc, ...battleZones, ...entrances]
+let movables = [background, foreground, npc]
 
 let notInside = true
 
@@ -197,8 +197,15 @@ const battle = {
     initiated: false
 }
 
-let containsBoundaries = false
-function drawCollisions(collisionMap, boundaries) {
+const inside = {
+    initiated: false
+}
+
+let outsideBoundaries = false
+let outsideBattleZones = false
+let outsideEntrance = false
+// returns whether function was added to movable
+function drawCollisions(collisionMap, boundaries, containsBoundaries) {
     boundaries.forEach(boundary => {
         boundary.draw()
     })
@@ -206,14 +213,16 @@ function drawCollisions(collisionMap, boundaries) {
     if(!containsBoundaries) {
         console.log("boundaries")
         movables.push(...boundaries)
-        containsBoundaries = true
-    }
-}
 
-let coolDown = false
+        containsBoundaries = true
+        return containsBoundaries
+    }
+    return containsBoundaries
+}
 
 // animation loop that controls movement of the sprite and map
 function animate() {
+    console.log('back in animate')
     // infinite loop
     const animationId = window.requestAnimationFrame(animate)
 
@@ -226,17 +235,11 @@ function animate() {
 
     // draw map and character here cause of infinite loop
     background.draw();
+    // console.log(movables)
 
-    drawCollisions(collisionMap, boundaries);
-
-    battleZones.forEach(battleZone => {
-        battleZone.draw();
-    })
-
-    // draw entrance collision
-    entrances.forEach(entranceCollision => {
-        entranceCollision.draw();
-    })
+    outsideBoundaries = drawCollisions(collisionMap, boundaries, outsideBoundaries);
+    outsideBattleZones = drawCollisions(battleFoxMap, battleZones, outsideBattleZones);
+    outsideEntrance = drawCollisions(entranceMap, entrances, outsideEntrance);
 
     npc.draw();
 
@@ -252,6 +255,7 @@ function animate() {
     let moving = true;
     player.animate = false;
 
+    if(inside.initiated) return;
     if(battle.initiated) return;
 
     // activate battle
@@ -259,20 +263,12 @@ function animate() {
         for (let i = 0; i < entrances.length; i++) {
             const entranceCollisions = entrances[i];
 
-            if (coolDown) {
-                console.log("Cooldown active");
-                continue; // Skip collision check
-            }
-            console.log(keys.w.pressed)
             if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})
                 && keys.w.pressed) {
-                coolDown = true
-                setTimeout(() => {
-                    coolDown = false;
-                }, 5000);
 
                 window.cancelAnimationFrame(animationId)
 
+                inside.initiated = true
                 gsap.to('#insideMap', {
                     opacity: 1,
                     yoyo: true,
@@ -280,15 +276,10 @@ function animate() {
                         gsap.to('#insideMap', {
                             opacity: 0,
                             onComplete() {
-                                initInsideHouse();
-                                const arrayToRemove = boundaries;
-                                const updatedMovables = movables.filter(arr => arr !== arrayToRemove);
-                                containsBoundaries = false;
-                                movables[0].position.x = -1550
-                                movables[0].position.y = -4000
+                                insideHouse();
 
+                                inside.initiated = true
                             }
-
                         })
                     }
                 })
@@ -354,7 +345,6 @@ function movement(moving, boundaries, notInside) {
 
         // checks whether camera has reached border of map
         if (movables[0].position.y <= 0 && notInside)  {
-            // console.log(movables[0].position.y)
             // moves the background, barriers and foreground if player is moving
             if (moving)
                 movables.forEach((movable) => {
@@ -384,7 +374,6 @@ function movement(moving, boundaries, notInside) {
         }
 
         if (movables[0].position.x <= 0 && notInside)  {
-            console.log(movables[0].position.x)
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.x += 3
@@ -401,7 +390,6 @@ function movement(moving, boundaries, notInside) {
     } else if (keys.s.pressed && lastKey === 's') {
         player.animate = true
         player.image = player.sprites.down
-        // console.log(movables[0].position.y)
 
         // check for boundary collisions
         for(let i = 0; i < boundaries.length; i++) {
@@ -413,7 +401,6 @@ function movement(moving, boundaries, notInside) {
         }
 
         if (movables[0].position.y >= -1700 && notInside)  {
-            console.log(movables[0].position.y)
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.y -= 3
