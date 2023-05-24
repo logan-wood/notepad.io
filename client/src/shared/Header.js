@@ -9,6 +9,7 @@ import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "./TaskModal.jsx";
+import noteyIcon from "./notey.png";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
@@ -66,22 +67,17 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
+          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
             {isDarkMode ? "Light Mode" : "Dark Mode"}
           </Button>
-          <Link to="/settings" className="settings-button">
-            <img src={settingsIcon} alt="Settings" className="settings-icon" />
+          <Link to="/dashboard" className="settings-button">
+            <img src={noteyIcon} alt="Settings" className="settings-icon" />
           </Link>
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-          <img
-            src={signOutIcon}
-            alt="Sign Out"
-            className="sign-out-icon"
-            onClick={logoutUser}
-          />
+            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
           <TaskModal tasks={tasks} uid={uid} />
         </div>
       )}
