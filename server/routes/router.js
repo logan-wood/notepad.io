@@ -73,8 +73,8 @@ router.get("/user/:id/retrieveSharedNotes", (req, res) => {
   userController.retrieveSharedNotes(req, res, id);
 });
 router.post("/user/getUserFromEmail", (req, res) => {
-  userController.getUserFromEmail(req, res)
-})
+  userController.getUserFromEmail(req, res);
+});
 
 router.post("/user/:id/addTask", (req, res) => {
   const id = req.params.id;
