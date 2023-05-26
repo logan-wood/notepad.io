@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Components/Profile.css";
-import Header from "../shared/Header";
 import profilePic from "./Components/notelo-profile.png";
 const Profile = ({ user }) => {
   //constants

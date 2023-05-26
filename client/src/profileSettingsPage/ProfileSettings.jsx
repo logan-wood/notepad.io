@@ -1,13 +1,19 @@
-import React from "react";
+import React ,{useState} from "react";
 import "./Components/Profile.css";
 import Header from "../shared/Header";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import Profile from "./Profile";
 import dataInData from "../mainpage/mainpageComponents/data";
-
+import Settings from "./Settings";
 const ProfileSettings = () => {
+   const [activeComponent, setActiveComponent] = useState("profile");
+
+   const handleComponentChange = (component) => {
+     setActiveComponent(component);
+   };
   //constants
   const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
   //render
   return (
     <>
@@ -19,10 +25,26 @@ const ProfileSettings = () => {
         uid={user.uid}
       />
       <div className="profile-setting">
-        <div className="side-bar">test</div>
+        <div className="side-bar">
+          {" "}
+          <button
+            className={activeComponent === "profile" ? "active" : ""}
+            onClick={() => handleComponentChange("profile")}>
+            Profile
+          </button>
+          <button
+            className={activeComponent === "settings" ? "active" : ""}
+            onClick={() => handleComponentChange("settings")}>
+            Settings
+          </button>
+        </div>
 
-        <div className="profile">
-          <Profile user={user} />
+        <div className="profile-setting-content">
+          {activeComponent === "profile" ? (
+            <Profile user={user} />
+          ) : (
+            <Settings user={user} dispatch={dispatch} />
+          )}
         </div>
       </div>
     </>
