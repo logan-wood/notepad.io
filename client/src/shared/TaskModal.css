@@ -8,37 +8,47 @@
 }
 
 .modalContainer {
-  position: absolute;
-  top: 4vh;
-  left: 50vw;
-  width: 20vw;
-  min-height: 6vh;
-  max-height: fit-content;
-  align-items: center;
-  z-index: 999;
-  overflow-y: scroll;
+
+}
+.modalContainer button{
+  border-radius: 15px !important;
+   color:#eee6dd;
+    background-color: #bb4430 !important;
+    border-color: #bb4430 !important;
+    font-family: "Nunito", sans-serif;
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+    font-size: 10px !important;
+}
+.openContainer{
+  width: 200px;
+    min-height: 20px;
+    max-height: fit-content;
+    width:300px;
+    background-color: #eee6dd;
+    align-items: center;
+    z-index: 999;
+    border-radius: 15px;
+    top:10px;
+    position: absolute;
+  
 }
 
 .openicon {
   top: 0;
   cursor: pointer;
   color: black;
-  left: 46%;
-  position: absolute;
   z-index: 999;
 }
 .closeicon {
   cursor: pointer;
   color: black;
-  left: 49%;
   z-index: 999;
 }
 
 .closedContainer,
 .openContainer {
-  min-height: 6vh;
   text-align: center;
-  width: 100%;
   transition: 0.1s ease-in-out;
 }
 .closedContainer {
@@ -49,6 +59,10 @@
 .tasksContainer {
   overflow-y: scroll;
   max-height: 50vh;
+}
+.tasksContainer::-webkit-scrollbar-track{
+  width:0.1em !important;
+  background: transparent;
 }
 
 .submitTaskContainer {

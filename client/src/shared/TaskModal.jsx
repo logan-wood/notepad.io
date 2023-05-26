@@ -212,8 +212,7 @@ export default function TaskModal(tasks, uid) {
       <KeyboardArrowUpIcon
         className="closeicon"
         onClick={handleClose}
-        fontSize="large"
-      ></KeyboardArrowUpIcon>
+        fontSize="large"></KeyboardArrowUpIcon>
       <div className="tasksContainer">
         {Object.entries(newTasks).map(([taskId, taskData]) => (
           <Task
@@ -253,8 +252,7 @@ export default function TaskModal(tasks, uid) {
             className="submitTaskButton"
             variant="contained"
             endIcon={<SendIcon />}
-            onClick={handleAddTask}
-          ></Button>
+            onClick={handleAddTask}></Button>
         </div>
       </div>
     </div>
@@ -272,24 +270,12 @@ export default function TaskModal(tasks, uid) {
 
   const closedContainer = (
     <div className="closedContainer">
-      <KeyboardArrowDownIcon
-        className="openicon"
-        onClick={handleOpen}
-        fontSize="large"
-      ></KeyboardArrowDownIcon>
-      {firstTaskName == "" ? (
+      
         <Button className="addATask" onClick={handleOpen}>
-          Add a task here!
+         + Add a task here!
         </Button>
-      ) : (
-        <Task
-          className="firstTask"
-          content={firstTaskName}
-          isChecked={firstTaskValue === true}
-          date={firstTaskDate}
-          isFirst={true}
-        />
-      )}
+      
+      
     </div>
   );
 

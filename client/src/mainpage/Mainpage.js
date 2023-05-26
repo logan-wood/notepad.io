@@ -369,7 +369,6 @@ function Mainpage() {
   useEffect(() => {
     const fetchTasksAndData = async () => {
       await getDatabaseTasks(user.uid);
-      await getDatabaseData(user.uid);
       setData(dataInData);
       console.log("get DB data in mainpage", dataInData.tasks);
     };
@@ -425,13 +424,15 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      <ShareModal
-        isOpen={isShareOpen}
-        onClose={handleShareClose}
-        noteId={SelectedNote !== null ? SelectedNote.id : null}
-        classId={SelectedClass !== null ? SelectedClass.id : null}
-        uid={user.uid}
-      />
+      {SelectedClass && SelectedNote && (
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={handleShareClose}
+          noteId={SelectedNote.id}
+          classId={SelectedClass.id}
+          uid={user.uid}
+        />
+      )}
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
