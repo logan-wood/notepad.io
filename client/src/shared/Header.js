@@ -87,7 +87,7 @@ const Header = ({
               className="dark-toggles"
             />
           </Button>
-          <Button>
+        
             <img
               src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
               onClick={
@@ -98,7 +98,6 @@ const Header = ({
               alt="Search icon"
               className="search-button"
             />
-          </Button>
           <SearchModal
             isOpen={isSearchModalOpen}
             onRequestClose={handleSearchToggle}

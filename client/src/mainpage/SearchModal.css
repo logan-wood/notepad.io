@@ -1,0 +1,91 @@
+.search-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    background-color: #efe6dd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-modal-title {
+    text-align: center;
+    color: #bb4430;
+    font-family: "Fjalla One", sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  .search-modal-content {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 10px;
+}
+
+  
+  .search-modal-content input[type="text"],
+  .search-modal-content input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: "Nunito", sans-serif;
+  }
+  
+  .search-modal-toggle-group {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+  
+  .search-modal-toggle-group label {
+    margin-right: 1rem;
+  }
+  
+  .search-modal-toggle-group label:last-child {
+    margin-right: 0;
+  }
+  
+  .search-modal-date-input {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: 10px;
+}
+  .search-modal-date-label {
+    margin-right: 10px;
+    font-family: "Nunito", sans-serif;
+  }
+  
+  .search-modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .search-modal-button {
+    border-radius: 25px !important;
+    background-color: #7EBDC2 !important;
+    border-color: #7EBDC2 !important;
+    font-family: "Nunito", sans-serif;
+    padding: 0.5rem 1rem !important;
+    font-size: 18px !important;
+    color: white;
+  }
+  
+  .search-modal-button:focus {
+    background-color: #fffbf6 !important;
+    border-color: #bb4430 !important;
+    color: #bb4430 !important;
+  }
+  
+  .search-modal-button:active {
+    background-color: #7ebdc2 !important;
+    border-color: #7ebdc2 !important;
+    color: #bb4430 !important;
+  }
+  
+  
