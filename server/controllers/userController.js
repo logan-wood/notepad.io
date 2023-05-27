@@ -402,4 +402,24 @@ module.exports = {
       }
     }
   },
+
+  deleteUserAccount: function (req, res, uid) {
+    if (uid) {
+      try {
+        database.deleteUser(uid);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing User from database: " + error.message);
+      }
+    } else {
+      
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      
+    }
+  },
 };

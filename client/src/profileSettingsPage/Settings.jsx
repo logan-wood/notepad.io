@@ -28,10 +28,37 @@ const Settings = ({ user, dispatch }) => {
 
       return;
     } else {
+        handleDeleteFromDB(user.uid);
       //delete acocunt and redirect login page
       dispatch({ type: "CLEAR_USER" });
       navigate("/");
     }
+  };
+
+  const handleDeleteFromDB = (id) => {
+    const url = "http://localhost:8080/user/" + id + "/deleteUserAccount";
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((response) => {
+        console.log(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log("TASKS:", id);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
   };
 
   const handleCancel = () => {
