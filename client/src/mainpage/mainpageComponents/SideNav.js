@@ -5,6 +5,7 @@ import {
   addNewNote,
   updateClassData,
   updateNoteData,
+  
 } from "./data";
 import { v4 as uuidv4 } from "uuid";
 
@@ -16,6 +17,8 @@ const SideNav = ({
   data,
   isSharedTrue,
   onShareNote,
+  updateNote,
+  updateClass,
 }) => {
   // set states for classes, notes and open class using the useState hook from react
   const [selectClass, setSelectClass] = useState(null);
@@ -88,14 +91,21 @@ const SideNav = ({
       selectNote.title = e.target.value;
       setSelectNote(selectNote);
       setEditingNoteTitle(e.target.value);
+      updateNote({
+        ...selectNote,
+        title: selectNote.title,
+      });
       onSelectNote(selectNote);
+      
     }
   };
   const handleFinishNoteTitleChange = (ClassObjId, id) => {
     if (selectClass) {
       const noteObj = selectClass.notes.find((note) => note.id === id);
       setIsNoteEditing(false);
+      
       updateNoteData(ClassObjId, noteObj.id, noteObj);
+      
       onSelectNote(selectNote);
     }
   };
@@ -235,10 +245,9 @@ const SideNav = ({
                       {classItem.notes.map((note) => (
                         <li key={note.id}>
                           {isNoteEditing &&
-                          note.id&&
+                          note.id &&
                           selectNote &&
-                          selectNote.id === note.id ?
-                         (
+                          selectNote.id === note.id ? (
                             <input
                               className="sideNavEditing"
                               type="text"

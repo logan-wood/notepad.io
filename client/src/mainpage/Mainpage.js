@@ -411,9 +411,7 @@ function Mainpage() {
         newData.sharedNotes.splice(noteIndex, 1);
         // Return the updated data object
       }
-      handleDatabaseDeleteSharedNote(
-        SelectedNote
-      );
+      handleDatabaseDeleteSharedNote(SelectedNote);
 
       return newData;
     });
@@ -493,6 +491,8 @@ function Mainpage() {
         className="classmenu"
         data={data}
         onShareNote={handleIsShare}
+        updateNote={handleUpdateNote}
+        updateClass={handleUpdateClass}
       />
       {/*Note component*/}
       <Note
