@@ -295,6 +295,61 @@ module.exports = {
       }
     }
   },
+  removeSharedUser: function (req, res, uid, noteId) {
+    if (uid && noteId) {
+      try {
+        database.removeSharedUser(uid, noteId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !noteId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!noteId) {
+        res.status(400).send("Bad Request: noteId parameter is missing.");
+      }
+    }
+  },
+
+  deleteTask: function (req, res, uid, taskId) {
+    if (uid && taskId) {
+      try {
+        database.deleteTask(uid, taskId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !taskId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!taskId) {
+        res.status(400).send("Bad Request: taskId parameter is missing.");
+      }
+    }
+  },
 
   addTask: function (req, res, uid) {
     const task = req.body;
@@ -399,6 +454,24 @@ module.exports = {
       }
       if (!taskId) {
         res.status(400).send("Bad Request: taskId parameter is missing.");
+      }
+    }
+  },
+
+  deleteUserAccount: function (req, res, uid) {
+    if (uid) {
+      try {
+        database.deleteUser(uid);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing User from database: " + error.message);
+      }
+    } else {
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
       }
     }
   },

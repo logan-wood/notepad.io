@@ -239,7 +239,7 @@ module.exports = {
           const key = user.key;
           const value = user.val();
           //correct note is found.
-          if (value.uid == uid) {
+          if (key == uid) {
             //remove note
             userFound = user.val();
             db.ref("/sharedNotes/" + noteId)
@@ -252,6 +252,6 @@ module.exports = {
       }
       return userFound;
     }
-  },
+  }, 
   //----
 };
