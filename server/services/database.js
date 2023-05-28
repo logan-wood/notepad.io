@@ -195,6 +195,24 @@ module.exports = {
     });
     return finalNotes;
   },
+
+  removeSharedNote: async function ( noteId) {
+    const ref = (
+      await db
+      .ref("/sharedNotes/")
+      .child(noteId)
+      .once("value")
+    ).exists();
+    if (!ref) {
+      //sharedNote doesnt exist; do nothing
+      return ref;
+    } else {
+      //remove sharedNote
+      await db.ref("/sharedNotes/").child(noteId).remove();
+      return ref;
+    }
+  },
+
   addTask: async function (uid, task) {
     const ref = db.ref("/users/" + uid).child("tasks");
     await ref.update(task);
@@ -218,11 +236,7 @@ module.exports = {
   //remove User from sharednote
   removeSharedUser: async function (uid, noteId) {
     let userFound = null;
-    const ref = (
-      await db
-        .ref("/sharedNotes/" + noteId)
-        .once("value")
-    ).exists();
+    const ref = (await db.ref("/sharedNotes/" + noteId).once("value")).exists();
     if (!ref) {
       //note doesnt exist; do nothing
       return ref;
@@ -252,6 +266,6 @@ module.exports = {
       }
       return userFound;
     }
-  }, 
+  },
   //----
 };

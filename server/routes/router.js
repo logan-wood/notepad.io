@@ -104,5 +104,9 @@ router.delete("/user/:id/deleteTask", (req, res) => {
   userController.removeSharedUser(req, res, id, noteId);
 });
 
+ router.delete("/note/:noteId/removeSharedNote", (req, res) => {
+   const noteId = req.params.noteId;
+   userController.removeSharedNote(req, res, noteId);
+ });
 
 module.exports = router;

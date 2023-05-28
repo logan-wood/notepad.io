@@ -184,6 +184,26 @@ module.exports = {
       }
     }
   },
+  removeSharedNote: function (req, res, noteId) {
+    if (noteId) {
+      try {
+        database.removeSharedNote(noteId);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing sharedNote from database: " + error.message);
+      }
+    } else {
+      if (!noteId) {
+        res
+          .status(400)
+          .send("Bad Request: noteid parameter is missing; noteID not found.");
+      }
+    }
+  },
+  
   setSharedNote: function (req, res, uid, classId, noteId) {
     if (uid && classId && noteId) {
       try {

@@ -254,6 +254,34 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
+// Handle for deleting a shared note from the database
+  const handleDatabaseDeleteSharedNote = async (data) => {
+    const url = process.env.REACT_APP_API_DOMAIN + "/note/"+SelectedNote.id+"+/removeSharedNote";
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+      body: JSON.stringify(data), // Pass the data you want to send in the request body as a JSON string
+    })
+      .then((response) => {
+        console.log(JSON.stringify(data));
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log(data); // Do something with the response data
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
 
   const handleDatabaseDeleteClass = async (data, selectedClassId) => {
     const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
@@ -438,9 +466,11 @@ function Mainpage() {
         handleDeleteButton={handleDeleteButton}
         handleDeleteClass={handleDeleteClass}
         handleDeleteNote={handleDeleteNote}
+        handleDeleteSharedNote={handleDatabaseDeleteSharedNote}
         isExpanded={isExpanded}
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
+        isShareNote={isShared}
       />
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (
