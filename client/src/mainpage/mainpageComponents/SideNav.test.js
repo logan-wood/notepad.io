@@ -1,61 +1,85 @@
+import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import SideNav from './SideNav';
+import SideNav from './SideNav'; 
 
-describe('SideNav', () => {
+describe('Search Functionality', () => {
+  let component;
   const mockData = {
-    filteredClasses: [
+    classes: [
       {
-        id: 1,
+        id: '1',
         name: 'Class 1',
         notes: [
           {
-            id: 101,
+            id: '1',
             title: 'Note 1',
-            content: 'This is Note 1'
-          }
-        ]
-      }
+            content: 'Content 1',
+          },
+          {
+            id: '2',
+            title: 'Note 2',
+            content: 'Content 2',
+          },
+        ],
+        noteSize: 2,
+      },
+      {
+        id: '2',
+        name: 'Class 2',
+        notes: [],
+        noteSize: 0,
+      },
     ],
-    data: {
-      sharedNotes: []
-    },
-    handleNewClass: jest.fn(),
-    handleSearch: jest.fn(),
-    handleNewNote: jest.fn(),
-    handleSelectClass: jest.fn(),
-    handleSelectShareNote: jest.fn(),
-    handleClassNameChange: jest.fn(),
-    handleFinishClassNameChange: jest.fn(),
-    handleNoteTitleChange: jest.fn(),
-    handleFinishNoteTitleChange: jest.fn(),
-    isClassButtonActive: jest.fn(),
-    isNoteButtonActive: jest.fn(),
-    isSelectNoteButtonActive: jest.fn(),
-    isClassOpen: jest.fn(),
+    sharedNotes: [
+      {
+        id: '1',
+        title: 'Shared Note 1',
+        content: 'Shared Content 1',
+      },
+      {
+        id: '2',
+        title: 'Shared Note 2',
+        content: 'Shared Content 2',
+      },
+    ],
   };
 
-  it('renders without crashing', () => {
-    render(<SideNav {...mockData} />);
+  const mockFunctions = {
+    toggleNav: jest.fn(),
+    onSelectClass: jest.fn(),
+    onSelectNote: jest.fn(),
+    onShareNote: jest.fn(),
+  };
+
+  beforeEach(() => {
+    component = render(<SideNav data={mockData} {...mockFunctions} />);
   });
 
-  it('renders the correct number of classes and notes', () => {
-    const { getAllByRole } = render(<SideNav {...mockData} />);
-    const buttons = getAllByRole('button');
-    expect(buttons.length).toBe(3); // Depends on the number of buttons in your component
+  it('should display the classes and shared notes when no search term is entered', () => {
+    expect(component.getByText('Class 1')).toBeTruthy();
+    expect(component.getByText('Class 2')).toBeTruthy();
+    expect(component.getByText('Shared Note 1')).toBeTruthy();
+    expect(component.getByText('Shared Note 2')).toBeTruthy();
   });
 
-  it('triggers correct function when class button is clicked', () => {
-    const { getByText } = render(<SideNav {...mockData} />);
-    const button = getByText('Class 1');
-    fireEvent.click(button);
-    expect(mockData.handleSelectClass).toHaveBeenCalledWith(1);
+  it('should filter the classes and shared notes based on the search term', () => {
+    fireEvent.change(component.getByPlaceholderText('Search...'), {
+      target: { value: 'Class 2' },
+    });
+    expect(component.queryByText('Class 1')).toBeNull();
+    expect(component.getByText('Class 2')).toBeTruthy();
+    expect(component.queryByText('Shared Note 1')).toBeNull();
+    expect(component.queryByText('Shared Note 2')).toBeNull();
   });
 
-  it('triggers correct function when new note button is clicked', () => {
-    const { getByText } = render(<SideNav {...mockData} />);
-    const button = getByText('+ new Note');
-    fireEvent.click(button);
-    expect(mockData.handleNewNote).toHaveBeenCalledWith(1);
+  it('should display "No results found." when the search term does not match any classes or shared notes', () => {
+    fireEvent.change(component.getByPlaceholderText('Search...'), {
+      target: { value: 'Class 3' },
+    });
+    expect(component.queryByText('Class 1')).toBeNull();
+    expect(component.queryByText('Class 2')).toBeNull();
+    expect(component.queryByText('Shared Note 1')).toBeNull();
+    expect(component.queryByText('Shared Note 2')).toBeNull();
+    expect(component.getByText('No results found.')).toBeTruthy();
   });
-  
 });
