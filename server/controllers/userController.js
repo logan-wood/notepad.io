@@ -364,4 +364,20 @@ module.exports = {
       }
     }
   },
+
+  //get points function
+  getPoints: function (req, res, id) {
+    if(id) {
+      database
+          .getUserPoints(id);
+          .then((points) => {
+            res.send(points);
+          })
+          .catch((error) => {
+            console.error("Error retrieving points from database");
+          });
+    } else {
+      res.status(400).send("id parameter is missing");
+    }
+  }
 };

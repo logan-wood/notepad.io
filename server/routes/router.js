@@ -98,5 +98,9 @@ router.delete("/user/:id/deleteTask", (req, res) => {
   userController.deleteTask(req, res, id, taskId);
 });
 
+router.get("/user/:id/points", (req, res) => {
+  const id = req.params.id;
+  userController.getPoints(req, res, id);
+});
 
 module.exports = router;

@@ -197,4 +197,9 @@ module.exports = {
     });
     return finalNotes;
   },
+
+  getUserPoints: async function(id){
+    let userPoints = await this.getInfo(id);
+    return userPoints;
+  }
 }
