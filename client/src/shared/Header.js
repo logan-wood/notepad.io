@@ -9,12 +9,15 @@ import settingsIcon from "./settings_icon.png";
 import profileIcon from "./profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "./TaskModal.jsx";
-import noteyIcon from "./notey.png";
+import noteyIcon from "./assets/notey.png";
+import darkIcon from "./assets/dark.png";
+import lightIcon from "./assets/light.png";
+import searchIcon from "./assets/search.png";
+import SearchModal from "./SearchModal";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
-  showDarkModeButton,
   showDashBoardButtons,
   tasks,
   uid,
@@ -39,6 +42,18 @@ const Header = ({
   const logoutUser = () => {
     dispatch({ type: "CLEAR_USER" });
     navigate("/");
+  };
+
+  // search modal
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleOpenSearchModal = () => {
+    setShowSearchModal(true);
+  };
+
+  const handleCloseSearchModal = () => {
+    setShowSearchModal(false);
   };
 
   return (
@@ -67,17 +82,34 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? (<p>{user.username}</p>) : (<p>no user signed in...</p>)}
+          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
           <Button className="dark-mode-toggle" onClick={handleDarkMode}>
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
+            <img
+              src={isDarkMode ? lightIcon : darkIcon}
+              alt="Dark Mode Toggle"
+              className="dark-toggles"
+            />
           </Button>
+          <Button className="search-button" onClick={handleOpenSearchModal}>
+            <img src={searchIcon} alt="Search" className="search-icon" />
+          </Button>
+          <SearchModal
+            show={showSearchModal}
+            onClose={handleCloseSearchModal}
+            setSearchTerm={setSearchTerm}
+          />
           <Link to="/dashboard" className="settings-button">
             <img src={noteyIcon} alt="Settings" className="settings-icon" />
           </Link>
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
-            <img src={signOutIcon} alt="Sign Out" className="sign-out-icon" onClick={logoutUser}/>
+          <img
+            src={signOutIcon}
+            alt="Sign Out"
+            className="sign-out-icon"
+            onClick={logoutUser}
+          />
           <TaskModal tasks={tasks} uid={uid} />
         </div>
       )}
