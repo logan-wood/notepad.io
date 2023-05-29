@@ -20,17 +20,17 @@ module.exports = {
 
   /**
    * Adds a new user to the database, includes password hashing.
-   * 
+   *
    */
   addNewUser: async function (req, res) {
-    const displayName = req.body.displayName
-    const email = req.body.email
-    const password = req.body.password
+    const displayName = req.body.displayName;
+    const email = req.body.email;
+    const password = req.body.password;
 
     // check if user exists
-    if (await database.getUserFromEmail(email) != null) {
+    if ((await database.getUserFromEmail(email)) != null) {
       res.status(409).json({ message: "Email already in use" });
-      return
+      return;
     }
 
     // hash password
@@ -46,32 +46,33 @@ module.exports = {
         email: email,
         password: hash,
       };
-      
+
       // Save new user to database
-      console.log('calling write function...')
-      database.writeUserData(user)
-      .then((result) => {
-        console.log(result)
-        res.status(201).send('user added to database')
-      })
-      .catch((error) => {
-        console.log(error)
-        res.status(400).send('Could not write user to database')
-      })
+      console.log("calling write function...");
+      database
+        .writeUserData(user)
+        .then((result) => {
+          console.log(result);
+          res.status(201).send("user added to database");
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(400).send("Could not write user to database");
+        });
     });
   },
 
   loginUser: async function (req, res) {
     var user;
-    const email = req.body.email
-    const password = req.body.password
+    const email = req.body.email;
+    const password = req.body.password;
 
     // get uid from email
     try {
-      user = await database.getUserFromEmail(email)
+      user = await database.getUserFromEmail(email);
     } catch (e) {
-      res.status(400).send('No user found')
-      return
+      res.status(400).send("No user found");
+      return;
     }
 
     if (user) {
@@ -79,32 +80,30 @@ module.exports = {
         // add user data to req.session object
 
         // send response
-        res.status(200).json(user)
+        res.status(200).json(user);
       } else {
-        res.status(401).send('Invalid password')
+        res.status(401).send("Invalid password");
       }
     } else {
-      res.status(404).send('No user found')
+      res.status(404).send("No user found");
     }
   },
 
-  getUserFromEmail: async function (email) {
-    const ref = db.ref("/users/");
-    const snapshot = await ref.once("value");
+  getUserFromEmail: async function (req, res) {
+    const email = req.body.email;
 
-    let userData = null;
-    snapshot.forEach((userSnapshot) => {
-      const user = userSnapshot.val();
-      if (user.email === email) {
-        userData = user;
-      }
-    });
+    const userData = database.getUserFromEmail(email);
 
-  return userData;
+    if (userData != null) {
+      res.status(200).json(userData);
+    } else {
+      res.status(404).send("user not found");
+    }
+
+    return userData;
   },
 
   updateClass: function (req, res, uid) {
-    console.log("calling database");
     const classToUpdate = req.body;
     if (uid && classToUpdate) {
       try {
@@ -182,6 +181,185 @@ module.exports = {
       }
       if (!uid) {
         res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
+  setSharedNote: function (req, res, uid, classId, noteId) {
+    if (uid && classId && noteId) {
+      try {
+        database.setSharedNote(uid, classId, noteId);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Error setting note as shared: " + error.message);
+      }
+    } else {
+      if (!classId && !uid && !noteId) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: uid parameter is missing; classId & noteId both not found."
+          );
+      }
+      if (!classId) {
+        res.status(404).send("Bad Request: classId not found.");
+      }
+      if (!noteId) {
+        res.status(404).send("Bad Request: noteId not found.");
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+    }
+  },
+
+  addSharedUser: async function (req, res, noteId, newEmail) {
+    if ((noteId, newEmail)) {
+      try {
+        var uid;
+
+        // get uid from email
+        await database.getUserFromEmail(newEmail).then((user) => {
+          uid = user.uid;
+        });
+
+        database.addSharedUser(noteId, uid);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error adding shared user to note: " + error.message);
+      }
+    } else {
+      if (!noteId && !newEmail) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: uid parameter is missing; classId & noteId both not found."
+          );
+      }
+      if (!noteId) {
+        res.status(404).send("Bad Request: noteId not found.");
+      }
+      if (!newEmail) {
+        res
+          .status(400)
+          .send(
+            "Bad Request: newEmail parameter is missing. The uid of the user you wish to share the note with is required."
+          );
+      }
+    }
+  },
+  retrieveSharedNotes: function (req, res, uid) {
+    if (uid) {
+      try {
+        database.retrieveSharedNotes(uid).then((data) => {
+          res.status(200).send(data);
+        });
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid) {
+        res.status(400).send("Bad Request: uid is missing from request.");
+      }
+    }
+  },
+
+  addTask: function (req, res, uid) {
+    const task = req.body;
+    if (!uid && !task) {
+      res
+        .status(400)
+        .send(
+          "Bad request: uid parameter is missing and task is missing from request body"
+        );
+    }
+    if (!uid) {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
+    if (!task) {
+      res.status(400).send("Bad Request: task is missing from request body.");
+    }
+  },
+
+  getTasks: function (req, res, uid) {
+    if (uid) {
+      try {
+        database
+          .getTasks(uid)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((error) => {
+            console.error("Error retrieving data from database:", error);
+          });
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      res.status(400).send("Bad Request: uid parameter is missing.");
+    }
+  },
+  saveTasks: function (req, res, uid, tasks) {
+    if (uid && tasks) {
+      try {
+        database.saveTasks(uid, tasks);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !tasks) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task is missing from request body"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!tasks) {
+        res.status(400).send("Bad Request: task is missing from request body.");
+      }
+    }
+  },
+
+  deleteTask: function (req, res, uid, taskId) {
+    if (uid && taskId) {
+      try {
+        database.deleteTask(uid, taskId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !taskId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!taskId) {
+        res.status(400).send("Bad Request: taskId parameter is missing.");
       }
     }
   },

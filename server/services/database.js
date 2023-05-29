@@ -4,33 +4,33 @@ const db = firebase.db();
 module.exports = {
   writeUserData: async function (user) {
     // check UID is not being used
-    var randNum
+    var randNum;
     do {
-      var matchFound = false
+      var matchFound = false;
       randNum = Math.floor(Math.random() * 9000000000) + 1000000000;
       await this.getInfo(randNum)
-      .then((res) => {
-        console.log(res)
-        if (res != null) {
-          matchFound = true
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        return
-      })
-    } while (matchFound)
-    
+        .then((res) => {
+          console.log(res);
+          if (res != null) {
+            matchFound = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          return;
+        });
+    } while (matchFound);
+
     // insert into DB
-    const uid = randNum
-    console.log(uid)
-    console.log(user)
+    const uid = randNum;
+    console.log(uid);
+    console.log(user);
     db.ref("users/" + uid).set({
       uid: uid,
       username: user.username,
       email: user.email,
       password: user.password,
-      classes: '',
+      classes: "",
     });
   },
 
@@ -42,6 +42,8 @@ module.exports = {
 
   getUserFromEmail: async function (email) {
     const ref = db.ref("/users/");
+    console.log(ref);
+
     const snapshot = await ref.once("value");
 
     let userData = null;
@@ -52,7 +54,7 @@ module.exports = {
       }
     });
 
-  return userData;
+    return userData;
   },
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
   updateClass: async function (uid, classToUpdate) {
@@ -69,11 +71,12 @@ module.exports = {
     }
   },
   removeClass: async function (uid, classId) {
-    const ref = (await db
-      .ref("/users/" + uid)
-      .child(classId)
-      .once("value")
-      ).exists();
+    const ref = (
+      await db
+        .ref("/users/" + uid)
+        .child(classId)
+        .once("value")
+    ).exists();
     if (!ref) {
       //class doesnt exist; do nothing
       return ref;
@@ -88,6 +91,7 @@ module.exports = {
   },
 
   removeNote: async function (uid, classId, noteId) {
+    let noteFound = null;
     const ref = (
       await db
         .ref("/users/" + uid)
@@ -113,15 +117,84 @@ module.exports = {
           //correct note is found.
           if (value.id == noteId) {
             //remove note
+            noteFound = note.val();
             db.ref("/users/" + uid)
               .child(classId)
               .child("notes")
               .child(key)
               .remove();
+            return noteFound;
           }
         });
       }
-      return ref;
+      return noteFound;
     }
   },
-};
+  setSharedNote: async function (uid, classId, noteId) {
+    //retrieves oldNote and removes it from users private notes
+    let oldNote = await this.removeNote(uid, classId, noteId);
+    //adds old owner as owner
+    oldNote.owner = uid;
+    let noteMap = {};
+    let userMap = {};
+    userMap[uid] = uid;
+    oldNote.users = userMap;
+    noteMap[noteId] = oldNote;
+    console.log(noteMap);
+
+    //adds to shared notes database:
+    const ref = db.ref("sharedNotes");
+    await ref.update(noteMap);
+  },
+
+  addSharedUser: async function (noteId, newUid) {
+    //updates note under /sharedNotes database with newUid.
+    const ref = db.ref("/sharedNotes/" + noteId);
+    console.log('logging ref:')
+    console.log(ref)
+    console.log("noteID: " + noteId)
+    let note = (await ref.once("value")).val();
+    console.log('logging note:')
+    console.log(note)
+    if (note && note.users && note.users[newUid] == null) {
+      note.users[newUid] = newUid;
+      ref.update(note);
+    }
+
+
+    //updates the user under /users database with a reference to the noteId that was shared with them.
+    let newUser = await this.getInfo(newUid);
+    let notes = newUser.sharedNotes;
+    if (notes == null) {
+      let notesMap = {};
+      notesMap[noteId] = noteId;
+      newUser.sharedNotes = notesMap;
+    } else {
+      notes[noteId] = noteId;
+    }
+    db.ref("/users/" + newUid).update(newUser);
+  },
+
+  retrieveSharedNotes: async function (uid) {
+    let finalNotes = new Array();
+    //updates note under /sharedNotes database with newUid.
+    const ref = db.ref("/sharedNotes/");
+    let notes = (await ref.once("value")).val();
+    // console.log(notes);
+    Object.keys(notes).forEach((noteKey) => {
+      const note = notes[noteKey];
+      const users = note.users;
+
+      // Iterate through the inner object using Object.keys()
+      Object.keys(users).forEach((userKey) => {
+        const user = users[userKey];
+        if (user == uid) {
+          finalNotes.push(note);
+          // console.log(note);
+          console.log(finalNotes);
+        }
+      });
+    });
+    return finalNotes;
+  },
+}
