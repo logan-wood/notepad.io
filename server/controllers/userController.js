@@ -369,7 +369,7 @@ module.exports = {
   getPoints: function (req, res, id) {
     if(id) {
       database
-          .getUserPoints(id);
+          .getUserPoints(id)
           .then((points) => {
             res.send(points);
           })
