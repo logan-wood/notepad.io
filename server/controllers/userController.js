@@ -374,7 +374,7 @@ module.exports = {
             res.send(points);
           })
           .catch((error) => {
-            console.error("Error retrieving points from database");
+            console.error("Error retrieving points from database", error);
           });
     } else {
       res.status(400).send("id parameter is missing");

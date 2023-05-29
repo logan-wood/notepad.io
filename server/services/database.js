@@ -161,7 +161,6 @@ module.exports = {
       ref.update(note);
     }
 
-
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);
     let notes = newUser.sharedNotes;
@@ -198,8 +197,9 @@ module.exports = {
     return finalNotes;
   },
 
-  getUserPoints: async function(id){
-    let userPoints = await this.getInfo(id);
+  getUserPoints: async function(uid){
+    let ref = db.ref("users/" + uid + "/points");
+    let userPoints = (await ref.once("points")).val();
     return userPoints;
   }
 }
