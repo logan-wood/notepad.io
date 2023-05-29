@@ -1,35 +1,48 @@
-import { createStore } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { combineReducers } from 'redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
 
+const UPDATE_SEARCH_TERM = "UPDATE_SEARCH_TERM";
 
-// Note reducer
-const notesInitialState = {
-  notes: [],
-  searchResults: [],
+export const setSearchTerm = (searchTerm) => ({
+  type: 'SET_SEARCH_TERM',
+  payload: searchTerm,
+});
+
+export const setSearchResults = (searchResults) => ({
+  type: 'SET_SEARCH_RESULTS',
+  payload: searchResults,
+});
+
+export const cancelSearch = () => ({
+  type: 'CANCEL_SEARCH',
+});
+
+const searchInitialState = {
+  search: {
+    searchTerm: '',
+    searchResults: [],
+  },
 };
 
-const noteReducer = (state = notesInitialState, action) => {
+const searchReducer = (state = searchInitialState.search, action) => {
   switch (action.type) {
-    case 'SET_NOTES':
-      return { ...state, notes: action.payload };
-    case 'SEARCH_NOTES':
-      const results = state.notes.filter(note => {
-        const { title, content, date } = note;
-        const { searchTerm, searchBy, searchDate, isBefore } = action.payload;
-        
-        const isMatchTerm = searchBy === 'title'
-          ? title.includes(searchTerm)
-          : content.includes(searchTerm);
-
-        const isMatchDate = isBefore
-          ? new Date(date) <= new Date(searchDate)
-          : new Date(date) >= new Date(searchDate);
-        
-        return isMatchTerm && isMatchDate;
-      });
-      return { ...state, searchResults: results };
+    case 'SET_SEARCH_TERM':
+      return {
+        ...state,
+        searchTerm: action.payload,
+      };
+    case 'SET_SEARCH_RESULTS':
+      return {
+        ...state,
+        searchResults: action.payload,
+      };
+    case 'CANCEL_SEARCH':
+      return {
+        ...state,
+        searchResults: [],
+      };
     default:
       return state;
   }
@@ -42,9 +55,9 @@ const userInitialState = {
 
 const userReducer = (state = userInitialState, action) => {
   switch (action.type) {
-    case 'SET_USER':
+    case "SET_USER":
       return { ...state, user: action.payload };
-    case 'CLEAR_USER':
+    case "CLEAR_USER":
       return { ...state, user: null };
     default:
       return state;
@@ -52,18 +65,24 @@ const userReducer = (state = userInitialState, action) => {
 };
 
 // Combine reducers
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
   user: userReducer,
-  note: noteReducer,
+  search: searchReducer,
 });
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistedReducer);
-export const persistor = persistStore(store);
+// Create the Redux store
+const store = configureStore({
+  reducer: persistedReducer,
+});
 
+// Create the persisted store
+const persistor = persistStore(store);
+
+export { store, persistor };

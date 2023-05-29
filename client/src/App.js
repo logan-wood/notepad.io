@@ -8,6 +8,9 @@ import Mainpage from "./mainpage/Mainpage";
 import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./redux/userStore";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function AnimatedRoutes() {
   const location = useLocation();

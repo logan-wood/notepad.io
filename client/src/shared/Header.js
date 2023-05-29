@@ -50,7 +50,7 @@ const Header = ({
 
   //
   const handleRemoveSearch = () => {
-    dispatch({ type: "SET_NOTES", payload: [] });
+    dispatch({ type: "CANCEL_SEARCH" });
   };
 
   return (
@@ -87,18 +87,16 @@ const Header = ({
               className="dark-toggles"
             />
           </Button>
-        
-            <img
-              src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
-              onClick={
-                searchResults.length > 0
-                  ? handleRemoveSearch
-                  : handleSearchToggle
-              }
-              alt="Search icon"
-              className="search-button"
-            />
+          <img
+            src={searchResults.length > 0 ? removeSearchIcon : searchIcon}
+            onClick={
+              searchResults.length > 0 ? handleRemoveSearch : handleSearchToggle
+            }
+            alt="Search icon"
+            className="search-button"
+          />
           <SearchModal
+            style={{ zIndex: 2002 }}
             isOpen={isSearchModalOpen}
             onRequestClose={handleSearchToggle}
           />

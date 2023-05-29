@@ -5,9 +5,9 @@ export const dataInData = {
 };
 export default dataInData;
 
-export const findNoteIndex = (note, id) => {
-  for (let i = 0; i < note.length; i++) {
-    if (note[i].id === i) {
+export const findNoteIndex = (notes, id) => {
+  for (let i = 0; i < notes.length; i++) {
+    if (notes[i].id === id) {
       return i;
     }
   }

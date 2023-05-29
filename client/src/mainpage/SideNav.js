@@ -7,7 +7,12 @@ import {
   updateNoteData,
 } from "./data";
 import { v4 as uuidv4 } from "uuid";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setSearchTerm,
+  setSearchResults,
+  cancelSearch,
+} from "../redux/userStore";
 
 const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
   // set states for classes, notes and open class using the useState hook from react
@@ -19,16 +24,33 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
 
   const [editingClassName, setEditingClassName] = useState(false);
   const [editingNoteTitle, setEditingNoteTitle] = useState(false);
+  const searchTerm = useSelector((state) => state.search.searchTerm);
+  const searchResults = useSelector((state) => state.search.searchResults);
+  
+  const dispatch = useDispatch();
 
-  // search results
-  const searchResults = useSelector(state => state.note.searchResults);
+  const handleSearchTermChange = (e) => {
+    const term = e.target.value;
+    dispatch(setSearchTerm(term));
+  };
 
-  // 
-  const filteredClasses = searchResults.length > 0
-    ? data.classes.filter(classItem =>
-        classItem.notes.some(note => searchResults.includes(note)))
-    : data.classes;
+  const handleSearch = () => {
+    const filteredNotes = data.classes.filter((classItem) => {
+      const matchingNotes = classItem.notes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      return matchingNotes.length > 0;
+    });
 
+    dispatch(setSearchResults(filteredNotes));
+  };
+
+  const handleCancelSearch = () => {
+    dispatch(cancelSearch());
+  };
+  
   //Handle for creating a new class
   const handleNewClass = () => {
     const newClass = {
@@ -141,6 +163,9 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
       selectClass.id === classid
     );
   };
+
+  const filteredClasses = searchResults.length > 0 ? searchResults : data.classes;
+
   return (
     <div className={`sidenav ${isOpen ? "open" : ""}`}>
       <button onClick={toggleNav} className="navButton">
@@ -150,54 +175,49 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
         <h1>My Classes</h1>
         <hr></hr>
         <div className="classDiv">
-        {filteredClasses.map((classItem) => {
-          const filteredNotes = searchResults.length > 0
-            ? classItem.notes.filter(note => searchResults.includes(note))
-            : classItem.notes;
-          return(
-            <div key={classItem.id}>
-              {isClassEditing && selectClass.id === classItem.id ? (
-                <input
-                  type="text"
-                  value={isClassEditing ? editingClassName : classItem.name}
-                  onChange={(e) => handleClassNameChange(e, classItem.id)}
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") {
-                      handleFinishClassNameChange(classItem.id);
-                    }
-                  }}
-                  onBlur={() => {
-                    setIsClassEditing(false);
-                  }}
-                />
-              ) : (
-                <button
-                  onClick={() => {
-                    handleSelectClass(classItem.id);
-                  }}
-                  onDoubleClick={() => {
-                    setIsClassEditing(true);
-                  }}
-                  className={`classButton ${
-                    isClassButtonActive(classItem.id) ? "active" : ""
-                  }`}
-                  draggable
-                >
-                  {classItem.name}
-                </button>
-              )}
-              {isClassOpen(classItem.id) && (
-                <>
+          {filteredClasses.map((classItem) => {
+            return (
+              <div key={classItem.id}>
+                {isClassEditing && selectClass.id === classItem.id ? (
+                  <input
+                    type="text"
+                    value={isClassEditing ? editingClassName : classItem.name}
+                    onChange={(e) => handleClassNameChange(e, classItem.id)}
+                    onKeyUp={(e) => {
+                      if (e.key === "Enter") {
+                        handleFinishClassNameChange(classItem.id);
+                      }
+                    }}
+                    onBlur={() => {
+                      setIsClassEditing(false);
+                    }}
+                  />
+                ) : (
                   <button
-                    className="newNoteButton"
-                    onClick={() => handleNewNote(classItem.id)}
+                    onClick={() => {
+                      handleSelectClass(classItem.id);
+                    }}
+                    onDoubleClick={() => {
+                      setIsClassEditing(true);
+                    }}
+                    className={`classButton ${
+                      isClassButtonActive(classItem.id) ? "active" : ""
+                    }`}
+                    draggable
                   >
-                    + new Note
+                    {classItem.name}
                   </button>
-
-                  {filteredNotes && (
+                )}
+                {isClassOpen(classItem.id) && (
+                  <>
+                    <button
+                      className="newNoteButton"
+                      onClick={() => handleNewNote(classItem.id)}
+                    >
+                      + new Note
+                    </button>
                     <ul>
-                      {filteredNotes.map((note) => (
+                      {classItem.notes.map((note) => (
                         <li key={note.id}>
                           {isNoteEditing && selectNote.id === note.id ? (
                             <input
@@ -241,20 +261,31 @@ const SideNav = ({ isOpen, toggleNav, onSelectClass, onSelectNote, data }) => {
                         </li>
                       ))}
                     </ul>
-                  )}
-                </>
-              )}
-            </div>
-          )
+                  </>
+                )}
+              </div>
+            );
           })}
-        
         </div>
-        
-      </div>
-      <div className="sideNavButtonDiv">
-        <button className="newClassButton" onClick={handleNewClass}>
-          + new class
-        </button>
+        <div className="sideNavButtonDiv">
+          {searchResults.length > 0 && (
+            <button className="cancelSearchButton" onClick={handleCancelSearch}>
+              Cancel Search
+            </button>
+          )}
+          <button className="newClassButton" onClick={handleNewClass}>
+            + new class
+          </button>
+          <div>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              placeholder="Search notes..."
+            />
+            <button onClick={handleSearch}>Search</button>
+          </div>
+        </div>
       </div>
     </div>
   );

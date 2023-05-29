@@ -14,6 +14,7 @@ import GameModal from "./GameModal";
 import DeleteButton from "./DeleteButton";
 import { Button } from "react-bootstrap";
 import Loading from "./Loading.jsx";
+import { useSelector } from 'react-redux';
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -25,6 +26,19 @@ function Mainpage() {
   const [SelectedClass, SetSelectedClass] = useState(null);
   const [SelectedNote, SetSelectedNote] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const searchTerm = useSelector((state) => state.user.searchTerm);
+
+  const filteredClasses = data.classes.map((classItem) => {
+    return {
+      ...classItem,
+      notes: classItem.notes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          classItem.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    };
+  });
 
   //handler for delete buttons
   const handleDeleteButton = () => {
@@ -339,7 +353,7 @@ function Mainpage() {
         onSelectClass={handleSelectClass}
         onSelectNote={handleSelectNote}
         className="classmenu"
-        data={data}
+        data={filteredClasses}
       />
 
       {/*Note component*/}
