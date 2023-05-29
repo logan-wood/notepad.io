@@ -260,6 +260,11 @@ module.exports = {
               .child("users")
               .child(key)
               .remove();
+            //remove shared note from user info
+            db.ref("/users/" + uid)
+              .child("sharedNotes")
+              .child(noteId)
+              .remove();
             return userFound;
           }
         });
