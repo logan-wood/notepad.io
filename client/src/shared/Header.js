@@ -2,18 +2,16 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
-import logo from "./notey.png";
+import logo from "./assets/notey.png";
 import { Link, useNavigate } from "react-router-dom";
-import signOutIcon from "./signout_icon.png";
-import settingsIcon from "./settings_icon.png";
-import profileIcon from "./profile_icon.png";
+import signOutIcon from "./assets/signout_icon.png";
+import settingsIcon from "./assets/settings_icon.png";
+import profileIcon from "./assets/profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "./TaskModal.jsx";
 import noteyIcon from "./assets/notey.png";
 import darkIcon from "./assets/dark.png";
 import lightIcon from "./assets/light.png";
-import searchIcon from "./assets/search.png";
-import SearchModal from "./SearchModal";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
@@ -44,17 +42,6 @@ const Header = ({
     navigate("/");
   };
 
-  // search modal
-  const [showSearchModal, setShowSearchModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleOpenSearchModal = () => {
-    setShowSearchModal(true);
-  };
-
-  const handleCloseSearchModal = () => {
-    setShowSearchModal(false);
-  };
 
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
@@ -90,17 +77,6 @@ const Header = ({
               className="dark-toggles"
             />
           </Button>
-          <Button className="search-button" onClick={handleOpenSearchModal}>
-            <img src={searchIcon} alt="Search" className="search-icon" />
-          </Button>
-          <SearchModal
-            show={showSearchModal}
-            onClose={handleCloseSearchModal}
-            setSearchTerm={setSearchTerm}
-          />
-          <Link to="/dashboard" className="settings-button">
-            <img src={noteyIcon} alt="Settings" className="settings-icon" />
-          </Link>
           <Link to="/profile" className="profile-button">
             <img src={profileIcon} alt="Profile" className="profile-icon" />
           </Link>
