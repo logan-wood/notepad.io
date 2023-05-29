@@ -104,16 +104,9 @@
 }
 
 .sign-out-icon {
-  width: 35px;
-  height: 40px;
-  vertical-align: middle;
-}
-
-.search-icon {
-  width: 30px;
+  width: 25px;
   height: 30px;
   vertical-align: middle;
-  background-color: transparent !important;
 }
 
 .profile-icon {
@@ -130,9 +123,15 @@
 
 .dashboard-buttons-container {
   display: flex;
-  gap: 5px;
   align-items: center;
+  justify-content: space-between;
 }
+
+.dashboard-buttons-container > * {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 
 .header.dark-mode {
   background-color: #1f1f1f;
@@ -205,4 +204,12 @@
   border: none !important; 
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.header.dark-mode .logo,
+.header.dark-mode .profile-icon,
+.header.dark-mode .sign-out-icon{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
 }

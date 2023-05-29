@@ -5,11 +5,9 @@ import "./Header.css";
 import logo from "./assets/notey.png";
 import { Link, useNavigate } from "react-router-dom";
 import signOutIcon from "./assets/signout_icon.png";
-import settingsIcon from "./assets/settings_icon.png";
 import profileIcon from "./assets/profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "./TaskModal.jsx";
-import noteyIcon from "./assets/notey.png";
 import darkIcon from "./assets/dark.png";
 import lightIcon from "./assets/light.png";
 
@@ -42,7 +40,6 @@ const Header = ({
     navigate("/");
   };
 
-
   return (
     <header className={`header ${isDarkMode ? "dark-mode" : ""}`}>
       <div className="logo-title d-flex align-items-center">
@@ -69,24 +66,34 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
-          <Button className="dark-mode-toggle" onClick={handleDarkMode}>
+          <div className="dashboard-item">
+            {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
+          </div>
+          <div className="dashboard-item">
+            <Button className="dark-mode-toggle" onClick={handleDarkMode}>
+              <img
+                src={isDarkMode ? lightIcon : darkIcon}
+                alt="Dark Mode Toggle"
+                className="dark-toggles"
+              />
+            </Button>
+          </div>
+          <div className="dashboard-item">
+            <Link to="/profile" className="profile-button">
+              <img src={profileIcon} alt="Profile" className="profile-icon" />
+            </Link>
+          </div>
+          <div className="dashboard-item">
             <img
-              src={isDarkMode ? lightIcon : darkIcon}
-              alt="Dark Mode Toggle"
-              className="dark-toggles"
+              src={signOutIcon}
+              alt="Sign Out"
+              className="sign-out-icon"
+              onClick={logoutUser}
             />
-          </Button>
-          <Link to="/profile" className="profile-button">
-            <img src={profileIcon} alt="Profile" className="profile-icon" />
-          </Link>
-          <img
-            src={signOutIcon}
-            alt="Sign Out"
-            className="sign-out-icon"
-            onClick={logoutUser}
-          />
-          <TaskModal tasks={tasks} uid={uid} />
+          </div>
+          <div className="dashboard-item">
+            <TaskModal tasks={tasks} uid={uid} />
+          </div>
         </div>
       )}
     </header>
