@@ -129,6 +129,7 @@ module.exports = {
       }
     }
   },
+
   removeClass: function (req, res, uid, classId) {
     if (uid && classId) {
       try {
