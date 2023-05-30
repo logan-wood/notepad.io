@@ -147,7 +147,7 @@ module.exports = {
     await ref.update(noteMap);
   },
 
-  addSharedUser: async function (noteId, newUid) {
+  addSharedUser: async function (noteId, newUid, newUsername) {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
     console.log("logging ref:");
@@ -157,8 +157,9 @@ module.exports = {
     console.log("logging note:");
     console.log(note);
     if (note.users[newUid] == null) {
+      note.users[newUid] = newUsername; // Set the UID as the key and the username as the value
+      ref.update(note);
     }
-    ref.update(note);
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);
@@ -196,12 +197,9 @@ module.exports = {
     return finalNotes;
   },
 
-  removeSharedNote: async function ( noteId) {
+  removeSharedNote: async function (noteId) {
     const ref = (
-      await db
-      .ref("/sharedNotes/")
-      .child(noteId)
-      .once("value")
+      await db.ref("/sharedNotes/").child(noteId).once("value")
     ).exists();
     if (!ref) {
       //sharedNote doesnt exist; do nothing

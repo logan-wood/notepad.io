@@ -520,6 +520,14 @@ function Mainpage() {
           uid={user.uid}
         />
       )}
+      {isShared === true && SelectedNote && (
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={handleShareClose}
+          noteId={SelectedNote.id}
+          uid={user.uid}
+        />
+      )}
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
