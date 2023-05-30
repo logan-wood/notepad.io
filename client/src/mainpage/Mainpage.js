@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import SideNav from "./mainpageComponents/SideNav";
 import Note from "./mainpageComponents/Note";
 import dataInData, {
+  addNewSharedNote,
   updateNoteData,
   updateClassData,
   getDatabaseData,
@@ -162,6 +163,13 @@ function Mainpage() {
     }
   };
 
+   const handleNoteShared = () => {
+    // Update the shared note in the data.js file
+      addNewSharedNote(SelectedNote,user.uid);
+      handleDeleteNote();
+
+     
+  }
   // Handle selection update of note content
   //
   const handleUpdateShareNote = (updatedShareNote) => {
@@ -519,6 +527,7 @@ function Mainpage() {
           onClose={handleShareClose}
           noteId={SelectedNote.id}
           classId={SelectedClass.id}
+          addNew={handleNoteShared}
           uid={user.uid}
         />
       )}
