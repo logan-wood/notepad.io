@@ -179,6 +179,8 @@ function Mainpage() {
       newData.sharedNotes[shareNoteIndex].content = updatedShareNote.content;
       //handle update title
       newData.sharedNotes[shareNoteIndex].title = updatedShareNote.title;
+      newData.sharedNotes[shareNoteIndex].users = updatedShareNote.users;
+
       handleDatabaseUpdateClass(SelectedShareNote);
 
       // Return the updated data object

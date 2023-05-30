@@ -12,6 +12,8 @@ const Note = ({
   updateProgress,
   isReset,
 }) => {
+  
+
   //variable for storing previous key
   const [previousKey,setPreviousKey] = useState("");
 
@@ -151,7 +153,7 @@ const Note = ({
       )}
       <br></br>
 
-      {isShareNote && <UserComponent noteData={selectedNote} />}
+      {isShareNote && <UserComponent noteData={selectedNote} handleUpdateNote={updateNote}/>}
       <input
         type="text"
         value={noteTitle}

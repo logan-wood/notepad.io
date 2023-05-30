@@ -206,6 +206,35 @@ module.exports = {
       return ref;
     } else {
       //remove sharedNote
+      //note found
+      //loop to find users
+      const users = await db
+        .ref("/sharedNotes/" + noteId)
+        .child("users")
+        .once("value");
+      if (users.exists()) {
+        //notes array exists
+         users.forEach((user) => {
+          const key = user.key;
+          const value = user.val();
+          //correct note is found.
+            //remove note
+           db
+          .ref("/users/")
+          .child(key)
+          .child("sharedNotes")
+          .child(noteId)
+          .remove();
+        });
+
+        // remove the users array from sharedNotes
+        await db
+          .ref("/sharedNotes/" + noteId)
+          .child("users")
+          .remove();
+      }
+
+      // remove the sharedNote
       await db.ref("/sharedNotes/").child(noteId).remove();
       return ref;
     }
