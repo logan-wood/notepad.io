@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProgressBar.css";
 
 const ProgressGameBar = ({ progress, onButtonClick }) => {
-
   const isComplete = progress == 100;
-
 
   function handleClick() {
     console.log("Button clicked!");

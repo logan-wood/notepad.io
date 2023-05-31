@@ -3,10 +3,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import "./Task.css";
 import { useState, useEffect } from "react";
 
-export default function Task(
-  { key, content, date, isChecked, onCheckboxChange, isFirst, onDeleteChange },
-  uid
-) {
+export default function Task({
+  content,
+  date,
+  isChecked,
+  onCheckboxChange,
+  isFirst,
+  onDeleteChange,
+}) {
   const [isTicked, setIsTicked] = useState(isChecked);
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -19,7 +23,7 @@ export default function Task(
   useEffect(() => {
     setIsTicked(isChecked); // Update the state when `isChecked` prop changes
     console.log(isTicked);
-  }, [isChecked]);
+  }, [onCheckboxChange, isTicked]);
 
   const handleDeleteChange = () => {
     setIsDeleted(true);

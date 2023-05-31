@@ -2,15 +2,23 @@ import React from "react";
 import "./DeleteButton.css";
 import trashcan from "./trashcan.png";
 
-const DeleteButton =  ({ handleDeleteButton, handleDeleteClass, handleDeleteNote, isExpanded, SelectedNote, SelectedClass }) => {
+const DeleteButton = ({
+  handleDeleteButton,
+  handleDeleteClass,
+  handleDeleteNote,
+  handleDeleteSharedNote,
+  isExpanded,
+  SelectedNote,
+  SelectedClass,
+  isShareNote,
+}) => {
   return (
     <>
       {SelectedClass && (
         <div className="deleteButtonDiv">
           <button
             onClick={handleDeleteButton}
-            className="deleteExpandingButton"
-          >
+            className="deleteExpandingButton">
             <img src={trashcan} alt="trashcan" className="trashcan" />
             {isExpanded}
           </button>
@@ -28,7 +36,24 @@ const DeleteButton =  ({ handleDeleteButton, handleDeleteClass, handleDeleteNote
           )}
         </div>
       )}
-      ;
+      {isShareNote && (
+        <div className="deleteButtonDiv">
+          <button
+            onClick={handleDeleteButton}
+            className="deleteExpandingButton">
+            <img src={trashcan} alt="trashcan" className="trashcan" />
+            {isExpanded}
+          </button>
+          {isExpanded && (
+            <>
+              <button onClick={handleDeleteSharedNote} className="deleteButton">
+                Delete Shared Note
+              </button>
+            </>
+          )}
+        </div>
+      )}
+      
     </>
   );
 };

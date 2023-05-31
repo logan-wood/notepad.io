@@ -73,8 +73,8 @@ router.get("/user/:id/retrieveSharedNotes", (req, res) => {
   userController.retrieveSharedNotes(req, res, id);
 });
 router.post("/user/getUserFromEmail", (req, res) => {
-  userController.getUserFromEmail(req, res)
-})
+  userController.getUserFromEmail(req, res);
+});
 
 router.post("/user/:id/addTask", (req, res) => {
   const id = req.params.id;
@@ -97,5 +97,16 @@ router.delete("/user/:id/deleteTask", (req, res) => {
   const taskId = req.query.taskId;
   userController.deleteTask(req, res, id, taskId);
 });
+
+ router.delete("/note/:noteId/removeSharedUser", (req, res) => {
+  const noteId = req.params.noteId;
+  const id = req.query.id;
+  userController.removeSharedUser(req, res, id, noteId);
+});
+
+ router.delete("/note/:noteId/removeSharedNote", (req, res) => {
+   const noteId = req.params.noteId;
+   userController.removeSharedNote(req, res, noteId);
+ });
 
 module.exports = router;

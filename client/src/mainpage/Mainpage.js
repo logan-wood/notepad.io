@@ -3,7 +3,15 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./mainpageComponents/SideNav";
 import Note from "./mainpageComponents/Note";
-import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData, getDatabaseTasks } from "./mainpageComponents/data";
+import dataInData, {
+  addNewSharedNote,
+  updateNoteData,
+  updateClassData,
+  getDatabaseData,
+  getSharedNoteData,
+  updateSharedNoteData,
+  getDatabaseTasks,
+} from "./mainpageComponents/data";
 import trashcan from "./mainpageComponents/trashcan.png";
 import ProgressGameBar from "./mainpageComponents/ProgressGameBar";
 import GameModal from "./mainpageComponents/GameModal";
@@ -132,13 +140,18 @@ function Mainpage() {
         const newData = { ...prevData };
 
         // Find the index of the selected class in the classes array
-        const classIndex = newData.classes.findIndex((cls) => cls.id === SelectedClass.id);
+        const classIndex = newData.classes.findIndex(
+          (cls) => cls.id === SelectedClass.id
+        );
 
         // Find the index of the note to be updated in the notes array of the selected class
-        const noteIndex = newData.classes[classIndex].notes.findIndex((note) => note.id === updatedNote.id);
+        const noteIndex = newData.classes[classIndex].notes.findIndex(
+          (note) => note.id === updatedNote.id
+        );
 
         // Update the content of the note in the notes array of the selected class
-        newData.classes[classIndex].notes[noteIndex].content = updatedNote.content;
+        newData.classes[classIndex].notes[noteIndex].content =
+          updatedNote.content;
         //handle update title
         newData.classes[classIndex].notes[noteIndex].title = updatedNote.title;
         handleDatabaseUpdateClass(SelectedClass);
@@ -151,6 +164,13 @@ function Mainpage() {
     }
   };
 
+   const handleNoteShared = () => {
+    // Update the shared note in the data.js file
+      addNewSharedNote(SelectedNote,user.uid);
+      handleDeleteNote();
+
+     
+  }
   // Handle selection update of note content
   //
   const handleUpdateShareNote = (updatedShareNote) => {
@@ -160,12 +180,16 @@ function Mainpage() {
       const newData = { ...prevData };
 
       // Find the index of the selected sharednote in the Shared Note array
-      const shareNoteIndex = newData.sharedNotes.findIndex((sharedNote) => sharedNote.id === updatedShareNote.id);
+      const shareNoteIndex = newData.sharedNotes.findIndex(
+        (sharedNote) => sharedNote.id === updatedShareNote.id
+      );
 
       // Update the content of the note in the notes array of the selected class
       newData.sharedNotes[shareNoteIndex].content = updatedShareNote.content;
       //handle update title
       newData.sharedNotes[shareNoteIndex].title = updatedShareNote.title;
+      newData.sharedNotes[shareNoteIndex].users = updatedShareNote.users;
+
       handleDatabaseUpdateClass(SelectedShareNote);
 
       // Return the updated data object
@@ -201,7 +225,8 @@ function Mainpage() {
   // handle for updating the
   const handleDatabaseUpdateClass = async (data) => {
     // constant url for testing purposes
-    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/updateClass";
+    const url =
+      process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -230,8 +255,19 @@ function Mainpage() {
   };
 
   // Handle for deleting a note from the database
-  const handleDatabaseDeleteNote = async (data, selectedClassId, selectedNoteId) => {
-    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeNote?classId=" + selectedClassId + "&&noteId=" + selectedNoteId;
+  const handleDatabaseDeleteNote = async (
+    data,
+    selectedClassId,
+    selectedNoteId
+  ) => {
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/user/" +
+      user.uid +
+      "/removeNote?classId=" +
+      selectedClassId +
+      "&&noteId=" +
+      selectedNoteId;
 
     fetch(url, {
       method: "PUT",
@@ -259,9 +295,45 @@ function Mainpage() {
         console.error("There was an error sending the request:", error);
       });
   };
+  // Handle for deleting a shared note from the database
+  const handleDatabaseDeleteSharedNote = async (data) => {
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/note/" +
+      SelectedNote.id +
+      "/removeSharedNote";
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((response) => {
+        console.log(JSON.stringify(data));
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse the response body as JSON
+      })
+      .then((data) => {
+        console.log(data); // Do something with the response data
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
 
   const handleDatabaseDeleteClass = async (data, selectedClassId) => {
-    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/removeClass?classId=" + selectedClassId;
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/user/" +
+      user.uid +
+      "/removeClass?classId=" +
+      selectedClassId;
 
     fetch(url, {
       method: "DELETE",
@@ -341,6 +413,29 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
+  const handleDeleteSharedNote = () => {
+    // callback function that recieves the previous state
+    setData((prevData) => {
+      // Create a copy of the previous data and save to new data
+      const newData = { ...prevData };
+
+      // Find the index of the note to be deleted in the notes array of the shared notes
+      const noteIndex = newData.sharedNotes.findIndex(
+        (note) => note.id === SelectedNote.id
+      );
+      if (noteIndex !== -1) {
+        //remove class from array
+        newData.sharedNotes.splice(noteIndex, 1);
+        // Return the updated data object
+      }
+      handleDatabaseDeleteSharedNote(SelectedNote);
+
+      return newData;
+    });
+
+    SetSelectedNote(null);
+  };
+
   let buffer = 0;
   //passed into Loading component to determine if it is loading or not.
   const [connected, setConnected] = useState(false);
@@ -377,7 +472,6 @@ function Mainpage() {
   useEffect(() => {
     const fetchTasksAndData = async () => {
       await getDatabaseTasks(user.uid);
-      await getDatabaseData(user.uid);
       setData(dataInData);
       console.log("get DB data in mainpage", dataInData.tasks);
     };
@@ -416,6 +510,8 @@ function Mainpage() {
         className="classmenu"
         data={data}
         onShareNote={handleIsShare}
+        updateNote={handleUpdateNote}
+        updateClass={handleUpdateClass}
       />
       {/*Note component*/}
       <Note
@@ -434,30 +530,43 @@ function Mainpage() {
       />
 
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
-      <ShareModal
-        isOpen={isShareOpen}
-        onClose={handleShareClose}
-        noteId={SelectedNote !== null ? SelectedNote.id : null}
-        classId={SelectedClass !== null ? SelectedClass.id : null}
-        uid={user.uid}
-      />
+      {SelectedClass && SelectedNote && (
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={handleShareClose}
+          noteId={SelectedNote.id}
+          classId={SelectedClass.id}
+          addNew={handleNoteShared}
+          uid={user.uid}
+        />
+      )}
+      {isShared === true && SelectedNote && (
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={handleShareClose}
+          noteId={SelectedNote.id}
+          uid={user.uid}
+        />
+      )}
       {/*delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
         handleDeleteClass={handleDeleteClass}
         handleDeleteNote={handleDeleteNote}
+        handleDeleteSharedNote={handleDeleteSharedNote}
         isExpanded={isExpanded}
         SelectedNote={SelectedNote}
         SelectedClass={SelectedClass}
+        isShareNote={isShared}
       />
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (
         <div className="button-div">
-          <Button
+         {/*  <Button
             onClick={handleDatabaseUpdateClass(SelectedClass)}
             className="saveshare-button">
             Save Note
-          </Button>
+          </Button> */}
 
           <Button className="saveshare-button" onClick={handleShareButtonClick}>
             Share

@@ -147,7 +147,7 @@ module.exports = {
     await ref.update(noteMap);
   },
 
-  addSharedUser: async function (noteId, newUid) {
+  addSharedUser: async function (noteId, newUid, newUsername) {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
     console.log("logging ref:");
@@ -213,4 +213,108 @@ module.exports = {
       return finalNotes;
     }
   },
+
+  removeSharedNote: async function (noteId) {
+    const ref = (
+      await db.ref("/sharedNotes/").child(noteId).once("value")
+    ).exists();
+    if (!ref) {
+      //sharedNote doesnt exist; do nothing
+      return ref;
+    } else {
+      //remove sharedNote
+      //note found
+      //loop to find users
+      const users = await db
+        .ref("/sharedNotes/" + noteId)
+        .child("users")
+        .once("value");
+      if (users.exists()) {
+        //notes array exists
+         users.forEach((user) => {
+          const key = user.key;
+          const value = user.val();
+          //correct note is found.
+            //remove note
+           db
+          .ref("/users/")
+          .child(key)
+          .child("sharedNotes")
+          .child(noteId)
+          .remove();
+        });
+
+        // remove the users array from sharedNotes
+        await db
+          .ref("/sharedNotes/" + noteId)
+          .child("users")
+          .remove();
+      }
+
+      // remove the sharedNote
+      await db.ref("/sharedNotes/").child(noteId).remove();
+      return ref;
+    }
+  },
+
+  addTask: async function (uid, task) {
+    const ref = db.ref("/users/" + uid).child("tasks");
+    await ref.update(task);
+  },
+  getTasks: async function (uid) {
+    const ref = db.ref("/users/" + uid + "/tasks");
+    const snapshot = await ref.once("value");
+    return snapshot.val();
+  },
+  saveTasks: async function (uid, tasks) {
+    console.log(tasks);
+    const ref = db.ref("/users/" + uid);
+    await ref.update(tasks);
+  },
+  deleteTask: async function (uid, taskId) {
+    const ref = db.ref("/users/" + uid + "/tasks/").child(taskId);
+    ref.remove();
+    return "Success";
+  },
+
+  //remove User from sharednote
+  removeSharedUser: async function (uid, noteId) {
+    let userFound = null;
+    const ref = (await db.ref("/sharedNotes/" + noteId).once("value")).exists();
+    if (!ref) {
+      //note doesnt exist; do nothing
+      return ref;
+    } else {
+      //note found
+      //loop to find users
+      const users = await db
+        .ref("/sharedNotes/" + noteId)
+        .child("users")
+        .once("value");
+      if (users.exists()) {
+        //notes array exists
+        users.forEach((user) => {
+          const key = user.key;
+          const value = user.val();
+          //correct note is found.
+          if (key == uid) {
+            //remove note
+            userFound = user.val();
+            db.ref("/sharedNotes/" + noteId)
+              .child("users")
+              .child(key)
+              .remove();
+            //remove shared note from user info
+            db.ref("/users/" + uid)
+              .child("sharedNotes")
+              .child(noteId)
+              .remove();
+            return userFound;
+          }
+        });
+      }
+      return userFound;
+    }
+  },
+  //----
 };
