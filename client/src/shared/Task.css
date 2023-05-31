@@ -37,3 +37,10 @@
   transform: scale(1.2);
   cursor: pointer;
 }
+
+.PrivateSwitchBase-input,
+.css-1m9pwf3 {
+  position: absolute !important;
+  left: 100% !important;
+  top: 0 !important;
+}

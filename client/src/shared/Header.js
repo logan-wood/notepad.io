@@ -66,6 +66,9 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
+           <div className="dashboard-item">
+            <TaskModal tasks={tasks} uid={uid} />
+          </div>
           <div className="dashboard-item">
             {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
           </div>
@@ -91,9 +94,7 @@ const Header = ({
               onClick={logoutUser}
             />
           </div>
-          <div className="dashboard-item">
-            <TaskModal tasks={tasks} uid={uid} />
-          </div>
+         
         </div>
       )}
     </header>
