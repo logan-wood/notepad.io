@@ -562,11 +562,11 @@ function Mainpage() {
       {/*Save and Share button component, display only if SelectedNote is not null*/}
       {SelectedNote !== null && (
         <div className="button-div">
-          <Button
+         {/*  <Button
             onClick={handleDatabaseUpdateClass(SelectedClass)}
             className="saveshare-button">
             Save Note
-          </Button>
+          </Button> */}
 
           <Button className="saveshare-button" onClick={handleShareButtonClick}>
             Share

@@ -84,8 +84,8 @@ noteTitleStyle {
 
 .note {
   background: #ffffff;
-  width: (100% - 300px);
-  height: calc(100vh - 90px);
+  max-width: calc(100% - 300px);
+  max-height: calc(100vh - 90px);
   margin-left: 80px;
   padding: 20px;
   transition: all 0.3s ease-in-out;
@@ -95,7 +95,7 @@ noteTitleStyle {
 
 .tox {
   border: none !important;
-  min-height: 100% !important;
+  min-height: % !important;
 }
 
 .tox-tinymce {
@@ -106,7 +106,16 @@ noteTitleStyle {
   /*width: 100%;*/
   margin-left: 320px;
 }
+.button-div{
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top:90px;
+  right:10px;
+  width:200px;
 
+}
 .deleteButton {
   position: relative;
   bottom: 50px;
@@ -222,19 +231,18 @@ noteTitleStyle {
   padding-left: 2px;
 }
 
-.save-button {
+.saveshare-button {
     color: #694b2c !important;
     text-decoration: none !important;
     cursor: pointer !important;
     margin-top: 1.15rem !important;
     font-size: 18px !important;
-    position:absolute;
     right:10px;
     top: 10vh;
     background-color: #f3dfa2 !important;
 }
   
-  .save-button:hover {
+  .saveshare-button:hover {
     text-decoration: underline !important;
     background-color: #efe6dd !important;
 

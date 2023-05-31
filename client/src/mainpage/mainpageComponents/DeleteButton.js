@@ -53,7 +53,7 @@ const DeleteButton = ({
           )}
         </div>
       )}
-      ;
+      
     </>
   );
 };
