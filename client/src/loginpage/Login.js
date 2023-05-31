@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../shared/Header.js";
 import { Button } from "react-bootstrap";
 import "./Login.css";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link, redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -16,9 +16,9 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const signInWithEmail = () => {
-    if (email === '' || password === '') {
-      setError("Please enter an email and password")
-      return
+    if (email === "" || password === "") {
+      setError("Please enter an email and password");
+      return;
     }
 
     fetch(process.env.REACT_APP_API_DOMAIN + "/loginUser", {
@@ -28,34 +28,33 @@ const Login = () => {
       },
       body: JSON.stringify({
         email: email,
-        password: password
+        password: password,
+      }),
+    })
+      .then(async (response) => {
+        // user found
+        if (response.status === 200) {
+          const data = await response.json();
+          return data;
+        } else if (response.status === 404) {
+          console.log(response);
+          setError("No user found");
+        } else if (response.status === 401) {
+          setError("Incorrect password");
+        } else {
+          setError("An error occured. Please try again later");
+        }
       })
-    })
-    .then(async (response) => {
-      // user found
-      if (response.status === 200) {
-        const data = await response.json()
-        return data
-      } else if (response.status === 404){
-        console.log(response)
-        setError("No user found")
-      } else if (response.status === 401) {
-        setError("Incorrect password")
-      } else {
-        setError("An error occured. Please try again later")
-      }
-    })
-    .then((data) => {
-      if (data)
-      {
-        dispatch({ type: 'SET_USER', payload: data })
+      .then((data) => {
+        if (data) {
+          dispatch({ type: "SET_USER", payload: data });
 
-        navigate('/dashboard')
-      }
-    })
-    .catch(error => {
-      console.error(error)
-    })
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -82,7 +81,7 @@ const Login = () => {
             className="input-field"
             type="password"
             placeholder="Password"
-                        value={password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={{
               border: "none",
@@ -117,4 +116,3 @@ const Login = () => {
 };
 
 export default Login;
-
