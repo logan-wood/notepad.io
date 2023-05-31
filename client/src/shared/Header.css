@@ -1,0 +1,213 @@
+.header {
+  padding: 2rem;
+  background-color: #fffbf6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 55px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+.app-title {
+  margin: 0;
+  margin-left: 1px;
+  margin-right: 2rem;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 35px !important;
+  text-decoration: none !important;
+  color: #bb4430;
+}
+
+.app-title.link-class:hover {
+  text-decoration: none !important;
+  color: #bb4430;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.login-header-button {
+  border-top-left-radius: 25px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 25px !important;
+  border-bottom-right-radius: 25px !important;
+  background-color: #bb4430 !important;
+  border-color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 21px !important;
+}
+
+.signup-header-button {
+  border-top-right-radius: 25px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 25px !important;
+  border-bottom-left-radius: 25px !important;
+  background-color: #7EBDC2 !important;
+  border-color: #7EBDC2 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 21px !important;
+}
+
+.login-header-button:hover,
+.login-header-button:focus,
+.signup-header-button:hover,
+.signup-header-button:focus {
+  background-color: #fffbf6 !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.login-header-button:active,
+.signup-header-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #bb4430 !important;
+}
+
+.sign-out-button,
+.settings-button,
+.profile-button {
+  border-top-left-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 18px !important;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.sign-out-button:hover,
+.sign-out-button:focus,
+.settings-button:hover,
+.settings-button:focus,
+.profile-button:hover,
+.profile-button:focus {
+  border-color: #bb4430 !important;
+  color: #bb4430!important;
+}
+
+.sign-out-icon {
+  width: 25px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 50px;
+  vertical-align: middle;
+}
+
+.settings-icon {
+  width: 39px;
+  height: 49px;
+  vertical-align: middle;
+}
+
+.dashboard-buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-buttons-container > * {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+
+.header.dark-mode {
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+.dark-mode-toggle {
+  border-top-left-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background-color: #bb4430 !important;
+  border-color: #bb4430 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 3.5rem !important;
+  padding-right: 3.5rem !important;
+  font-size: 18px !important;
+}
+
+.darkmode-container{
+  display: flex;
+  gap: 5px;
+  align-items: right !important;
+}
+
+.header.dark-mode .logo {
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
+
+
+.search-button{
+  width: 30px;
+  height: 30px;
+  border: none !important; 
+  background-color: transparent !important;
+}
+
+.header.dark-mode .search-button{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+}
+
+.dark-toggles{
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  background-color: transparent !important;
+  border: none; 
+  padding: 0 !important; 
+}
+
+.header.dark-mode .dark-mode-toggle {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+  border: none; 
+  padding: 0; 
+}
+
+.dark-mode-toggle {
+  background-color: transparent !important;
+  border: none !important; 
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.header.dark-mode .logo,
+.header.dark-mode .profile-icon,
+.header.dark-mode .sign-out-icon{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+}

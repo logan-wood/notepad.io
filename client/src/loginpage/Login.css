@@ -1,0 +1,164 @@
+.login-page {
+  background-image: url("./background.png");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  margin-top: -100px;
+  background-color: white;
+  border-radius: 50px;
+  padding: 5rem;
+  width: 90%;
+  max-width: 550px;
+  text-align: center;
+  height: 460px;
+}
+
+.login-title {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 36px;
+  color: #131313;
+  margin-bottom: 2.5rem;
+  margin-top: -1.5rem;
+}
+
+.google-signin-button {
+  border-radius: 10px !important;
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #808080 !important;
+  font-family: "Roboto", sans-serif;
+  padding-left: 8px;
+  padding-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 19px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-signin-button:hover,
+.google-signin-button:focus {
+  background-color: #ffffff !important;
+  border-color: #bb4430 !important;
+  color: #808080 !important;
+}
+
+.google-signin-button:active {
+  background-color: #ffffff !important;
+  border-color: #4285F4 !important;
+  color: #808080 !important;
+}
+
+.login-form {
+  margin-bottom: 1rem;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 25px;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #6c757d;
+}
+
+.or-divider::before {
+  margin-right: 0.5rem;
+}
+
+.or-divider::after {
+  margin-left: 0.5rem;
+}
+
+.or-text {
+  padding: 0 0.5rem;
+  color: #6c757d;
+}
+
+.register-button {
+  color: #6c757d !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  margin-top: 1rem !important;
+  font-size: 18px !important;
+}
+
+.register-button:hover {
+  text-decoration: underline !important;
+  color: #6c757d;
+}
+
+.email-signin-button {
+  margin-top: 2.15rem;
+  margin-left: auto;
+  border-radius: 50px !important;
+  background-color: #f3dfa2 !important;
+  border-color: #f3dfa2 !important;
+  color: #000000 !important;
+  font-family: "Nunito", sans-serif;
+  padding-left: 7rem !important;
+  padding-right: 7rem !important;
+  font-size: 21px !important;
+}
+
+.email-signin-button:hover,
+.email-signin-button:focus {
+  background-color: #ffffff !important;
+  border-color: #bb4430 !important;
+  color: #bb4430 !important;
+}
+
+.email-signin-button:active {
+  background-color: #7ebdc2 !important;
+  border-color: #7ebdc2 !important;
+  color: #ffffff !important;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 5px solid #ccc;
+  font-size: 18px;
+}
+
+.google-logo {
+    width: 18px;
+    height: 18px;
+    margin-right: 24px;
+    vertical-align: middle;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .signin-error {
+    min-height: 4px;
+    margin-top: 2px;
+    margin-bottom: 1px;
+    color: #bb4430;
+  }
