@@ -156,8 +156,21 @@ module.exports = {
     let note = (await ref.once("value")).val();
     console.log("logging note:");
     console.log(note);
-    if (note.users[newUid] == null) {
-      note.users[newUid] = newUsername; // Set the UID as the key and the username as the value
+    if (note && note.users && note.users[newUid] == null) {
+      try {
+        //setting username as value;
+        const usernameRef = await db.ref("/users/" + newUid + "/username");
+        const username = await usernameRef.once("value");
+        note.users[newUid] = username.val();
+      } catch (error) {
+        console.log(
+          "Error retrieving username, seting value as uid instead",
+          error
+        );
+        //set uid if username doesnt exist
+        note.users[newUid] = newUid;
+      }
+
       ref.update(note);
     }
 
@@ -179,22 +192,26 @@ module.exports = {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/");
     let notes = (await ref.once("value")).val();
-    // console.log(notes);
-    Object.keys(notes).forEach((noteKey) => {
-      const note = notes[noteKey];
-      const users = note.users;
+    if (notes != null) {
+      Object.keys(notes).forEach((noteKey) => {
+        const note = notes[noteKey];
+        const users = note.users;
 
-      // Iterate through the inner object using Object.keys()
-      Object.keys(users).forEach((userKey) => {
-        const user = users[userKey];
-        if (user == uid) {
-          finalNotes.push(note);
-          // console.log(note);
-          console.log(finalNotes);
+        if (users) {
+        // Iterate through the inner object using Object.keys()
+          Object.keys(users).forEach((userKey) => {
+            const user = users[userKey];
+            if (user == uid) {
+              finalNotes.push(note);
+              // console.log(note);
+              // console.log(finalNotes);
+            }
+          });
         }
       });
-    });
-    return finalNotes;
+
+      return finalNotes;
+    }
   },
 
   removeSharedNote: async function (noteId) {

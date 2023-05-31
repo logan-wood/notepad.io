@@ -32,6 +32,30 @@ const SideNav = ({
   const [editingClassName, setEditingClassName] = useState(false);
   const [editingNoteTitle, setEditingNoteTitle] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredClasses = data.classes.filter(({ name, notes }) => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return (
+      name.toLowerCase().includes(lowerCaseSearchTerm) ||
+      notes.some(
+        (note) =>
+          note.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+          note.content.toLowerCase().includes(lowerCaseSearchTerm) // Include note content in the search
+      )
+    );
+  });
+
+  const filteredSharedNotes = data.sharedNotes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchTerm.toLowerCase()) // Include note content in the search
+  );
+
   //Handle for creating a new class
   const handleNewClass = () => {
     const newClass = {
@@ -44,6 +68,12 @@ const SideNav = ({
     addNewClass(newClass);
     // calling the onSelectClass function and passing in the new class
     onSelectClass(newClass);
+
+    // Clear the search term
+    setSearchTerm("");
+
+    // Reset the selected note
+    setSelectNote(null);
   };
 
   //Handles selecting a class
@@ -188,123 +218,118 @@ const SideNav = ({
     );
   };
 
+  // Check if a search term has been entered and there are no results
+  const showNoResults = searchTerm !== '' && filteredClasses.length === 0 && filteredSharedNotes.length === 0;
+
   return (
     <div className={`sidenav ${isOpen ? "open" : ""}`}>
       <button onClick={toggleNav} className="navButton">
-        <img src={arrow}></img>
+        <img src={arrow} alt="Toggle Navigation" />
       </button>
       <div>
         <h1>My Classes</h1>
-        <hr></hr>
+        <hr />
         <div className="classDiv">
-          {data.classes.map((classItem) => (
-            <div key={classItem.id}>
-              {isClassEditing &&
-              selectClass &&
-              selectClass.id === classItem.id ? (
-                <input
-                  className="sideNavEditing"
-                  type="text"
-                  value={isClassEditing ? editingClassName : classItem.name}
-                  onChange={(e) => handleClassNameChange(e, classItem.id)}
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") {
-                      handleFinishClassNameChange(classItem.id);
-                    }
-                  }}
-                  onBlur={() => {
-                    setIsClassEditing(false);
-                  }}
-                />
-              ) : (
-                <button
-                  onClick={() => {
-                    handleSelectClass(classItem.id);
-                  }}
-                  onDoubleClick={() => {
-                    handleSelectClass(classItem.id);
-                    setIsClassEditing(true);
-                  }}
-                  className={`classButton ${
-                    isClassButtonActive(classItem.id) ? "active" : ""
-                  }`}
-                  draggable>
-                  {classItem.name}
-                </button>
-              )}
-              {isClassOpen(classItem.id) && (
-                <>
-                  <button
-                    className="newNoteButton"
-                    onClick={() => handleNewNote(classItem.id)}>
-                    + new Note
-                  </button>
-
-                  {classItem.notes && (
-                    <ul>
-                      {classItem.notes.map((note) => (
-                        <li key={note.id}>
-                          {isNoteEditing &&
-                          note.id &&
-                          selectNote &&
-                          selectNote.id === note.id ? (
-                            <input
-                              className="sideNavEditing"
-                              type="text"
-                              value={
-                                isNoteEditing ? editingNoteTitle : note.title
-                              }
-                              onChange={(e) =>
-                                handleNoteTitleChange(e, note.id)
-                              }
-                              onKeyUp={(e) => {
-                                if (e.key === "Enter") {
-                                  handleFinishNoteTitleChange(
-                                    classItem.id,
-                                    note.id
-                                  );
-                                }
-                              }}
-                              onBlur={() => {
-                                handleFinishNoteTitleChange(
-                                  classItem.id,
-                                  note.id
-                                );
-                                setIsNoteEditing(false);
-                              }}
-                            />
-                          ) : (
-                            <button
-                              onClick={() => {
-                                handleSelectNote(note.id);
-                              }}
-                              onDoubleClick={() => {
-                                setIsNoteEditing(true);
-                              }}
-                              className={`noteButton ${
-                                isNoteButtonActive(note.id, classItem.id)
-                                  ? "active"
-                                  : ""
-                              }`}
-                              draggable>
-                              {note.title}
-                            </button>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+          {showNoResults ? (
+            <p>No results found.</p>
+          ) : (
+            filteredClasses.map((classItem) => {
+              const filteredNotes = classItem.notes.filter(
+                (note) =>
+                  note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  note.content.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+              return (
+                <div key={classItem.id}>
+                  {isClassEditing && selectClass && selectClass.id === classItem.id ? (
+                    <input
+                      className="sideNavEditing"
+                      type="text"
+                      value={isClassEditing ? editingClassName : classItem.name}
+                      onChange={(e) => handleClassNameChange(e, classItem.id)}
+                      onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                          handleFinishClassNameChange(classItem.id);
+                        }
+                      }}
+                      onBlur={() => {
+                        setIsClassEditing(false);
+                      }}
+                    />
+                  ) : (
+                    <button
+                      onClick={() => {
+                        handleSelectClass(classItem.id);
+                      }}
+                      onDoubleClick={() => {
+                        handleSelectClass(classItem.id);
+                        setIsClassEditing(true);
+                      }}
+                      className={`classButton ${isClassButtonActive(classItem.id) ? "active" : ""}`}
+                      draggable
+                    >
+                      {classItem.name}
+                    </button>
                   )}
-                </>
-              )}
-            </div>
-          ))}
+                  {isClassOpen(classItem.id) && (
+                    <>
+                      <button className="newNoteButton" onClick={() => handleNewNote(classItem.id)}>
+                        + new Note
+                      </button>
+  
+                      {filteredNotes.length > 0 && (
+                        <ul>
+                          {filteredNotes.map((note) => (
+                            <li key={note.id}>
+                              <div className="noteIndent">
+                                {isNoteEditing && selectNote && selectNote.id === note.id ? (
+                                  <input
+                                    className="sideNavEditing"
+                                    type="text"
+                                    value={isNoteEditing ? editingNoteTitle : note.title}
+                                    onChange={(e) => handleNoteTitleChange(e, note.id)}
+                                    onKeyUp={(e) => {
+                                      if (e.key === "Enter") {
+                                        handleFinishNoteTitleChange(classItem.id, note.id);
+                                      }
+                                    }}
+                                    onBlur={() => {
+                                      handleFinishNoteTitleChange(classItem.id, note.id);
+                                      setIsNoteEditing(false);
+                                    }}
+                                  />
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      handleSelectNote(note.id);
+                                    }}
+                                    onDoubleClick={() => {
+                                      setIsNoteEditing(true);
+                                    }}
+                                    className={`noteButton ${isNoteButtonActive(note.id, classItem.id) ? "active" : ""}`}
+                                    draggable
+                                  >
+                                    {note.title}
+                                  </button>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            })
+          )}
         </div>
         {data.sharedNotes.length > 0 && (
           <>
             <h4>My Shared Notes</h4>
             <div className="sharedNoteDiv">
               <ul>
-                {data.sharedNotes.map((noteShare) => (
+                {filteredSharedNotes.map((noteShare) => (
                   <li key={noteShare.id}>
                     <button
                       className={`noteButton ${
@@ -317,7 +342,8 @@ const SideNav = ({
                         handleSelectShareNote(noteShare.id);
                         setIsClassEditing(true);
                       }}
-                      draggable>
+                      draggable
+                    >
                       {noteShare.title}
                     </button>
                   </li>
@@ -328,12 +354,19 @@ const SideNav = ({
         )}
       </div>
       <div className="sideNavButtonDiv">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="search-bar"
+        />
         <button className="newClassButton" onClick={handleNewClass}>
           + new class
         </button>
       </div>
     </div>
   );
-};
+};  
 
 export default SideNav;
