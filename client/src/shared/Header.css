@@ -104,8 +104,8 @@
 }
 
 .sign-out-icon {
-  width: 35px;
-  height: 40px;
+  width: 25px;
+  height: 30px;
   vertical-align: middle;
 }
 
@@ -123,9 +123,15 @@
 
 .dashboard-buttons-container {
   display: flex;
-  gap: 5px;
   align-items: center;
+  justify-content: space-between;
 }
+
+.dashboard-buttons-container > * {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 
 .header.dark-mode {
   background-color: #1f1f1f;
@@ -158,4 +164,50 @@
   border-bottom-right-radius: 5px !important;
   filter: invert(100%);
   -webkit-filter: invert(100%);
+}
+
+
+.search-button{
+  width: 30px;
+  height: 30px;
+  border: none !important; 
+  background-color: transparent !important;
+}
+
+.header.dark-mode .search-button{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+}
+
+.dark-toggles{
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  background-color: transparent !important;
+  border: none; 
+  padding: 0 !important; 
+}
+
+.header.dark-mode .dark-mode-toggle {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
+  border: none; 
+  padding: 0; 
+}
+
+.dark-mode-toggle {
+  background-color: transparent !important;
+  border: none !important; 
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.header.dark-mode .logo,
+.header.dark-mode .profile-icon,
+.header.dark-mode .sign-out-icon{
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-color: transparent !important;
 }

@@ -27,6 +27,7 @@ function Mainpage() {
   const [SelectedShareNote, SetSelectedShareNote] = useState(null);
   const [isShared, setIsShared] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [error, setError] = useState(null);
 
   //user object
   const user = useSelector((state) => state.user);
@@ -214,6 +215,7 @@ function Mainpage() {
       .then((response) => {
         console.log(JSON.stringify(data));
         if (!response.ok) {
+          setError("An error occured. Please try again later")
           throw new Error("Network response was not ok");
         }
         return response.json(); // Parse the response body as JSON
@@ -222,6 +224,7 @@ function Mainpage() {
         console.log(data); // Do something with the response data
       })
       .catch((error) => {
+        setError("An error occured. Please try again later")
         console.error("There was an error sending the request:", error);
       });
   };
@@ -243,6 +246,7 @@ function Mainpage() {
       .then((response) => {
         console.log(JSON.stringify(data));
         if (!response.ok) {
+          setError("An error occured. Please try again later.");
           throw new Error("Network response was not ok");
         }
         return response.json(); // Parse the response body as JSON
@@ -251,6 +255,7 @@ function Mainpage() {
         console.log(data); // Do something with the response data
       })
       .catch((error) => {
+        setError("An error occured. Please try again later.");
         console.error("There was an error sending the request:", error);
       });
   };
@@ -271,6 +276,7 @@ function Mainpage() {
       .then((response) => {
         console.log(JSON.stringify(data));
         if (!response.ok) {
+          setError("An error occured. Please try again later.");
           throw new Error("Network response was not ok");
         }
         return response.json(); // Parse the response body as JSON
@@ -279,6 +285,7 @@ function Mainpage() {
         console.log(data); // Do something with the response data
       })
       .catch((error) => {
+        setError("An error occured. Please try again later.");
         console.error("There was an error sending the request:", error);
       });
   };
@@ -362,6 +369,7 @@ function Mainpage() {
         }
       })
       .catch((error) => {
+        setError("An error occured. Please try again later.");
         setConnected(buffer++);
       });
   }
@@ -378,6 +386,7 @@ function Mainpage() {
 
   return (
     <div className="mainpage">
+      <div className="error_msg">{error}</div>
       <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
       <Header
