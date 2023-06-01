@@ -89,7 +89,7 @@ module.exports = {
     }
   },
 
-  getUserFromEmail: async function (req, res) {
+  getUserFromEmail: function (req, res) {
     const email = req.body.email;
 
     const userData = database.getUserFromEmail(email);
