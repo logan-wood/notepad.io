@@ -1,5 +1,3 @@
-// http://127.0.0.1:8887/index.html
-
 const canvas  = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -202,6 +200,7 @@ const inside = {
 let outsideBoundaries = false
 let outsideBattleZones = false
 let outsideEntrance = false
+
 // returns whether function was added to movable
 function drawCollisions(collisionMap, boundaries, containsBoundaries) {
     boundaries.forEach(boundary => {
@@ -219,16 +218,15 @@ function drawCollisions(collisionMap, boundaries, containsBoundaries) {
 
 let animationId = null
 let playerStartPosition = { x: 0, y: 0 };
+// let user
+
 
 // animation loop that controls movement of the sprite and map
 function animate() {
-    // infinite loop
+    setTimeout(function() {
+        displayPoints()
+    }, 1000)
     window.requestAnimationFrame(animate)
-
-    // if (inside.initiated || battle.initiated) {
-    //     window.cancelAnimationFrame(animationId);
-    //     return;
-    // }
 
     if(keys.esc.pressed) {
         document.querySelector('#menuDiv').style.display = 'block'

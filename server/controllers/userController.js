@@ -371,7 +371,8 @@ module.exports = {
       database
           .getUserPoints(id)
           .then((points) => {
-            res.send(points);
+            console.log("points: " + points)
+            res.json({points: points});
           })
           .catch((error) => {
             console.error("Error retrieving points from database", error);
@@ -379,5 +380,20 @@ module.exports = {
     } else {
       res.status(400).send("id parameter is missing");
     }
+  },
+
+  setUserPoints: function (req, res, id, points) {
+    if(id) {
+      try {
+        database.setPoints(id, points);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Error setting note as shared: " + error.message);
+      }
+    } else {
+      res.status(400).send("id parameter is missing");
+    }
   }
+
 };

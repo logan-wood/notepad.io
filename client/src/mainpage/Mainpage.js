@@ -3,7 +3,15 @@ import Header from "../shared/Header";
 import React, { useState, useEffect } from "react";
 import SideNav from "./mainpageComponents/SideNav";
 import Note from "./mainpageComponents/Note";
-import dataInData, { updateNoteData, updateClassData, getDatabaseData, getSharedNoteData, updateSharedNoteData, getDatabaseTasks } from "./mainpageComponents/data";
+import dataInData, {
+  updateNoteData,
+  updateClassData,
+  getDatabaseData,
+  getSharedNoteData,
+  updateSharedNoteData,
+  getDatabaseTasks,
+  sendIDToGame
+} from "./mainpageComponents/data";
 import trashcan from "./mainpageComponents/trashcan.png";
 import ProgressGameBar from "./mainpageComponents/ProgressGameBar";
 import GameModal from "./mainpageComponents/GameModal";
@@ -333,6 +341,35 @@ function Mainpage() {
 
     SetSelectedNote(null);
   };
+  // update the points
+  useEffect(() => {
+    const sendIDToGame = async () => {
+      let userUID = user.uid
+      const url = "http://localhost:1234/api/data";
+      console.log(process.env.REACT_APP_API_DOMAIN);
+
+      const id = {userUID}
+      await fetch(url, {
+        method: "post",
+        body: JSON.stringify(id),
+        headers: {
+          "Content-Type": "application/json", // Make sure to set the content type of the request body
+          Accept: "*/*",
+          "Accept-Encoding": "gzip, deflate, br",
+          Connection: "keep-alive",}
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+    }
+    sendIDToGame();
+  })
 
   let buffer = 0;
   //passed into Loading component to determine if it is loading or not.
@@ -354,16 +391,16 @@ function Mainpage() {
         Connection: "keep-alive",
       },
     })
-      .then((data) => {
-        if (data.status == 200) {
-          //if successfully connects then sets the buffer back to 0;
-          buffer = 0;
-          setConnected(buffer);
-        }
-      })
-      .catch((error) => {
-        setConnected(buffer++);
-      });
+    .then((data) => {
+      if (data.status == 200) {
+        //if successfully connects then sets the buffer back to 0;
+        buffer = 0;
+        setConnected(buffer);
+      }
+    })
+    .catch((error) => {
+      setConnected(buffer++);
+    });
   }
 
   useEffect(() => {
@@ -418,6 +455,7 @@ function Mainpage() {
         progress={progress}
         isReset={reset}
         isShareNote={isShared}
+        uid={user.uid}
       />
       <ProgressGameBar
         progress={progress}

@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:1234", "http://localhost:3000"],
 };
 
 router.use(cors(corsOptions));
@@ -101,6 +101,13 @@ router.delete("/user/:id/deleteTask", (req, res) => {
 router.get("/user/:id/points", (req, res) => {
   const id = req.params.id;
   userController.getPoints(req, res, id);
+});
+
+router.post("/user/:id/points", (req, res) => {
+  const id = req.params.id;
+  const points = req.body.points;
+  console.log(points)
+  userController.setUserPoints(req, res, id, points);
 });
 
 module.exports = router;

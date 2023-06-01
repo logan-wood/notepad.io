@@ -11,6 +11,7 @@ const Note = ({
   progress,
   updateProgress,
   isReset,
+  uid,
 }) => {
   //State hooks for className, Note Title, Note Content and Keyup
   const [className, setClassName] = useState(
@@ -91,12 +92,32 @@ const Note = ({
     setKeyUpCounter((prevCount) => prevCount + 1);
   };
 
+    function handleUpdatePoints(points) {
+    const url = process.env.REACT_APP_API_DOMAIN + "/user/" + uid + "/points";
+    const data = {points}
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {"Content-Type": "application/json"},
+    })
+    .then((response) =>{
+      console.log(response.json());
+    })
+    .then((responseData) => {
+      console.log(responseData);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+  }
+
   //Function for calculating progress in progress bar based on number of keypresses
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup", keyUpCounter);
       return (keyUpCounter / 100) * 100;
     } else {
+      handleUpdatePoints(10);
       setKeyUpCounter(0);
 
       return 100;
