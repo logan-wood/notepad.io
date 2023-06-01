@@ -103,6 +103,43 @@ module.exports = {
     return userData;
   },
 
+  updateUserUsername: async function (req, res, id, newUsername) {
+    try {
+
+      // Update the user's username
+      await database.updateUserUsername(id, newUsername);
+
+      // Return success message
+      return res.status(200).json({ message: "Username updated successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+
+  updateUserEmail: async function (req, res, id, newEmail) {
+    try {
+      
+
+      // Check if email is already in use by another user
+      const existingUser = await database.getUserFromEmail(newEmail);
+      if (existingUser && existingUser.uid !== id) {
+        return res
+          .status(400)
+          .json({ error: "Email is already in use by another user" });
+      }
+
+      // Update the user's email
+      await database.updateUserEmail(id, newEmail);
+
+      // Return success message
+      return res.status(200).json({ message: "Email updated successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+
   updateClass: function (req, res, uid) {
     const classToUpdate = req.body;
     if (uid && classToUpdate) {
@@ -415,11 +452,9 @@ module.exports = {
           .send("Error removing User from database: " + error.message);
       }
     } else {
-      
       if (!uid) {
         res.status(400).send("Bad Request: uid parameter is missing.");
       }
-      
     }
   },
 };

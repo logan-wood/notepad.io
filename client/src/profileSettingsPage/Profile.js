@@ -12,28 +12,88 @@ const Profile = ({ user }) => {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
 
+  //database edits
+  const handleUpdateUsername = (id, newUsername) => {
+    const url =
+      "http://localhost:8080/user/" +
+      id +
+      "/updateUsername?username=" +
+      newUsername;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((response) => {
+        console.log(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Username updated successfully:", data);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
+
+  const handleUpdateEmail = (id, newEmail) => {
+    const url =
+      "http://localhost:8080/user/" + id + "/updateEmail?email=" + newEmail;
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    })
+      .then((response) => {
+        console.log(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Email updated successfully:", data);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the request:", error);
+      });
+  };
   //save the edits
   const handleSave = () => {
     //check if email is valid
     if (!validEmail(editEmail)) {
       alert("Please enter a valid email");
       setEditEmail(email);
-      setEditMode(false);
+      setEditUsername(username);
 
+      setEditMode(false);
     } else {
       //close editmode and set new email
       setEmail(editEmail);
+      setUsername(editUsername);
+      handleUpdateEmail(user.uid, editEmail);
+      handleUpdateUsername(user.uid, editUsername);
+
       setEditMode(false);
     }
   };
- const handleCancel = () => {
-  
-     //close editmode and set new email
-      setEditEmail(email);
-      setEditUsername(username);
-     setEditMode(false);
-   
- };
+  const handleCancel = () => {
+    //close editmode and set new email
+    setEditEmail(email);
+    setEditUsername(username);
+    setEditMode(false);
+  };
   //function to check regex of email
   const validEmail = (email) => {
     //regex for valid email

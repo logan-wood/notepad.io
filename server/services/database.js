@@ -56,6 +56,39 @@ module.exports = {
 
     return userData;
   },
+
+  //update users Username.
+  updateUserUsername: async function (uid, newUsername) {
+    const ref = db.ref("/users/" + uid);
+    const snapshot = await ref.once("value");
+
+    if (!snapshot.exists()) {
+      console.error("User with UID " + uid + " does not exist.");
+      return;
+    }
+
+    await ref.update({
+      username: newUsername,
+    });
+
+    return ref;
+  },
+  //update users email.
+  updateUserEmail: async function (uid, newEmail) {
+    const existingUser = await this.getUserFromEmail(newEmail);
+    if (existingUser && existingUser.uid !== uid) {
+      console.error("Email is already in use by another user.");
+      return;
+    }
+
+    const ref = db.ref("/users/" + uid);
+    await ref.update({
+      email: newEmail,
+    });
+
+    return ref;
+  },
+
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
   updateClass: async function (uid, classToUpdate) {
     const ref = db.ref("/users/" + uid).child(classToUpdate.id);
@@ -251,7 +284,7 @@ module.exports = {
   },
   //----
   deleteUser: async function (uid) {
-    const ref = db.ref("/users/"+uid);
+    const ref = db.ref("/users/" + uid);
     ref.remove();
     return "Success";
   },

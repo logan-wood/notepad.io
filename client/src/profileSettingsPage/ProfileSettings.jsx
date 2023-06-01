@@ -7,7 +7,7 @@ import dataInData from "../mainpage/mainpageComponents/data";
 import Settings from "./Settings";
 const ProfileSettings = () => {
    const [activeComponent, setActiveComponent] = useState("profile");
-
+  
    const handleComponentChange = (component) => {
      setActiveComponent(component);
    };
