@@ -89,33 +89,34 @@ module.exports = {
     }
   },
 
-  getUserFromEmail: function (req, res) {
+  getUserFromEmail: async function (req, res) {
     const email = req.body.email;
 
-    const userData = await database.getUserFromEmail(email);
+    try {
+      const userData = await SomeDatabaseQuery(email);
 
-    if (userData != null) {
-      res.status(200).json(userData);
-    } else {
-      res.status(404).send("user not found");
+      if (userData != null) {
+        res.status(200).json(userData);
+      } else {
+        res.status(404).send("user not found");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error; // Rethrow the error to be caught in the calling function
     }
-
-    return userData;
   },
 
   updateUserUsername: async function (req, res, id, newUsername) {
     try {
       // Update the user's username
-       const userData = await database.updateUserUsername(id, newUsername);
+      const userData = await database.updateUserUsername(id, newUsername);
 
       // Return success message
-       return res.status(200).json(userData);
-
+      return res.status(200).json(userData);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });
     }
-    
   },
 
   updateUserEmail: async function (req, res, id, newEmail) {
@@ -239,7 +240,7 @@ module.exports = {
       }
     }
   },
-  
+
   setSharedNote: function (req, res, uid, classId, noteId) {
     if (uid && classId && noteId) {
       try {
