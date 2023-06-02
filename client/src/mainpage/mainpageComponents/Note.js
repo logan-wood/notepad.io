@@ -12,6 +12,8 @@ const Note = ({
   updateProgress,
   isReset,
 }) => {
+  
+
   //variable for storing previous key
   const [previousKey,setPreviousKey] = useState("");
 
@@ -107,7 +109,7 @@ const Note = ({
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup", keyUpCounter);
-      return (keyUpCounter / 100) * 100;
+      return (keyUpCounter / 10) * 100;
     } else {
       setKeyUpCounter(0);
 
@@ -151,7 +153,7 @@ const Note = ({
       )}
       <br></br>
 
-      {isShareNote && <UserComponent noteData={selectedNote} />}
+      {isShareNote && <UserComponent noteData={selectedNote} handleUpdateNote={updateNote}/>}
       <input
         type="text"
         value={noteTitle}

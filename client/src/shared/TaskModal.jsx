@@ -74,6 +74,7 @@ export default function TaskModal(tasks, uid) {
   const handleCheckboxChange = (taskId, isChecked) => {
     newTasks[taskId].ticked = isChecked;
     handleSaveTasks(false);
+    handleUpdateTasks();
   };
 
   const handleDeleteTask = (taskId, isDeleted) => {

@@ -22,19 +22,20 @@ const UserComponent = ({ noteData }) => {
 
   const handleDeleteUser = () => {
      // constant url for testing purposes
-    const url = process.env.REACT_APP_API_DOMAIN + "/note/"+noteData.id+"/removeSharedUser";
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/note/" +
+      noteData.id +
+      "/removeSharedUser/?id="+selectedUser;
     fetch(url, {
-      method: "PUT",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
         Accept: "*/*",
         "Accept-Encoding": "gzip, deflate, br",
         Connection: "keep-alive",
       },
-      body: JSON.stringify({
-        noteId: noteData.id,
-        id: selectedUser,
-      }), // Pass the data you want to send in the request body as a JSON string
+      
     })
       .then((response) => {
         if (response.status === 200) {

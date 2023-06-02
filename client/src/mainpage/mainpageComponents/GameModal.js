@@ -11,7 +11,7 @@ const GameModal = ({ onClose, isOpen }) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       handleExit();
-    },1*10 * 1000); // 3 minutes in milliseconds
+    },3*60 * 1000); // 3 minutes in milliseconds
     return () => clearTimeout(timeoutId);
   }, [isOpen]);
 

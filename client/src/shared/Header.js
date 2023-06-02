@@ -2,19 +2,18 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Header.css";
-import logo from "./notey.png";
+import logo from "./assets/notey.png";
 import { Link, useNavigate } from "react-router-dom";
-import signOutIcon from "./signout_icon.png";
-import settingsIcon from "./settings_icon.png";
-import profileIcon from "./profile_icon.png";
+import signOutIcon from "./assets/signout_icon.png";
+import profileIcon from "./assets/profile_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "./TaskModal.jsx";
-import noteyIcon from "./notey.png";
+import darkIcon from "./assets/dark.png";
+import lightIcon from "./assets/light.png";
 
 const Header = ({
   showButtons, // determines log in / sign up buttons being shown
   pageName, // determines the page to link to from the logo and title
-  showDarkModeButton,
   showDashBoardButtons,
   tasks,
   uid,
@@ -67,24 +66,35 @@ const Header = ({
       )}
       {showDashBoardButtons && (
         <div className="dashboard-buttons-container">
-          <TaskModal tasks={tasks} uid={uid} />
-
-          {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
-          <Button className="dark-mode-toggle" onClick={handleDarkMode}>
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
-          </Button>
-          <Link to="/dashboard" className="settings-button">
-            <img src={noteyIcon} alt="Settings" className="settings-icon" />
-          </Link>
-          <Link to="/profile" className="profile-button">
-            <img src={profileIcon} alt="Profile" className="profile-icon" />
-          </Link>
-          <img
-            src={signOutIcon}
-            alt="Sign Out"
-            className="sign-out-icon"
-            onClick={logoutUser}
-          />
+           <div className="dashboard-item">
+            <TaskModal tasks={tasks} uid={uid} />
+          </div>
+          <div className="dashboard-item">
+            {user ? <p>{user.username}</p> : <p>no user signed in...</p>}
+          </div>
+          <div className="dashboard-item">
+            <Button className="dark-mode-toggle" onClick={handleDarkMode}>
+              <img
+                src={isDarkMode ? lightIcon : darkIcon}
+                alt="Dark Mode Toggle"
+                className="dark-toggles"
+              />
+            </Button>
+          </div>
+          <div className="dashboard-item">
+            <Link to="/profile" className="profile-button">
+              <img src={profileIcon} alt="Profile" className="profile-icon" />
+            </Link>
+          </div>
+          <div className="dashboard-item">
+            <img
+              src={signOutIcon}
+              alt="Sign Out"
+              className="sign-out-icon"
+              onClick={logoutUser}
+            />
+          </div>
+         
         </div>
       )}
     </header>
