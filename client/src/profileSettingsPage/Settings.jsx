@@ -54,7 +54,11 @@ const Settings = ({ user, dispatch }) => {
         return response.json(); // Parse the response body as JSON
       })
       .then((data) => {
-        console.log("TASKS:", id);
+        if (data) {
+          dispatch({ type: "SET_USER", payload: data });
+
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
         console.error("There was an error sending the request:", error);

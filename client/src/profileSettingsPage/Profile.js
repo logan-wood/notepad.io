@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Components/Profile.css";
 import profilePic from "./Components/notelo-profile.png";
-const Profile = ({ user }) => {
+const Profile = ({ user,dispatch }) => {
   //constants
   // state variables for edit mode and edit values
   const [editMode, setEditMode] = useState(false);
@@ -36,7 +36,11 @@ const Profile = ({ user }) => {
         return response.json();
       })
       .then((data) => {
-        console.log("Username updated successfully:", data);
+        if (data) {
+          console.log("data IN SET USER", data)
+          dispatch({ type: "SET_USER", payload: data });
+          console.log("username updated successfully:", data);
+        }
       })
       .catch((error) => {
         console.error("There was an error sending the request:", error);
@@ -63,7 +67,10 @@ const Profile = ({ user }) => {
         return response.json();
       })
       .then((data) => {
-        console.log("Email updated successfully:", data);
+        if (data) {
+          dispatch({ type: "SET_USER", payload: data });
+          console.log("Email updated successfully:", data);
+        }
       })
       .catch((error) => {
         console.error("There was an error sending the request:", error);
@@ -80,7 +87,9 @@ const Profile = ({ user }) => {
       setEditMode(false);
     } else {
       //close editmode and set new email
-      setEmail(editEmail);
+      if(editEmail !== email){
+        setEmail(editEmail);
+      }
       setUsername(editUsername);
       handleUpdateEmail(user.uid, editEmail);
       handleUpdateUsername(user.uid, editUsername);

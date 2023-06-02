@@ -92,7 +92,7 @@ module.exports = {
   getUserFromEmail: async function (req, res) {
     const email = req.body.email;
 
-    const userData = database.getUserFromEmail(email);
+    const userData = await database.getUserFromEmail(email);
 
     if (userData != null) {
       res.status(200).json(userData);
@@ -105,22 +105,21 @@ module.exports = {
 
   updateUserUsername: async function (req, res, id, newUsername) {
     try {
-
       // Update the user's username
-      await database.updateUserUsername(id, newUsername);
+       const userData = await database.updateUserUsername(id, newUsername);
 
       // Return success message
-      return res.status(200).json({ message: "Username updated successfully" });
+       return res.status(200).json(userData);
+
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });
     }
+    
   },
 
   updateUserEmail: async function (req, res, id, newEmail) {
     try {
-      
-
       // Check if email is already in use by another user
       const existingUser = await database.getUserFromEmail(newEmail);
       if (existingUser && existingUser.uid !== id) {
@@ -133,7 +132,7 @@ module.exports = {
       await database.updateUserEmail(id, newEmail);
 
       // Return success message
-      return res.status(200).json({ message: "Email updated successfully" });
+      return res.status(200).json(userData);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Internal server error" });

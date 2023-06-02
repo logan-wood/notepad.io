@@ -41,7 +41,7 @@ const ProfileSettings = () => {
 
         <div className="profile-setting-content">
           {activeComponent === "profile" ? (
-            <Profile user={user} />
+            <Profile user={user} dispatch={dispatch}/>
           ) : (
             <Settings user={user} dispatch={dispatch} />
           )}

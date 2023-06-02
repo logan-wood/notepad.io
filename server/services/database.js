@@ -70,8 +70,12 @@ module.exports = {
     await ref.update({
       username: newUsername,
     });
+    const updatedSnapshot = await ref.once("value");
+    const updatedUser = updatedSnapshot.val();
 
-    return ref;
+    console.log("Updated user:", updatedUser);
+
+    return updatedUser;
   },
   //update users email.
   updateUserEmail: async function (uid, newEmail) {
@@ -85,8 +89,12 @@ module.exports = {
     await ref.update({
       email: newEmail,
     });
+    const updatedSnapshot = await ref.once("value");
+    const updatedUser = updatedSnapshot.val();
 
-    return ref;
+    console.log("Updated user:", updatedUser);
+
+    return updatedUser;
   },
 
   //adds new user if uid doesn't exist, otherwise updates class (overwrites if exists; creates if doesn't exist already).
