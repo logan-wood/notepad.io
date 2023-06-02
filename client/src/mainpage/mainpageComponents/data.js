@@ -21,6 +21,7 @@ export const addNewClass = (newClass) => {
 export const setClassesData = (updatedClasses) => {
   dataInData.classes = updatedClasses;
 };
+
 export const addNewNote = (classID, Note) => {
   const classObj = dataInData.classes.find(
     (classObj) => classObj.id === classID
@@ -31,6 +32,24 @@ export const addNewNote = (classID, Note) => {
   }
 };
 
+export const addNewSharedNote = (Note, owner) => {
+  const sharedNote = { ...Note, owner: owner };
+  dataInData.sharedNotes.push(sharedNote);
+};
+export const addNewSharedUsersToNote = (noteId, sharedUsers) => {
+  // Find the note with the given noteId
+  const note = dataInData.sharedNotes.find((note) => note.id === noteId);
+
+  if (note) {
+    // Add new shared users to the note's users array
+    note.users.push(...sharedUsers);
+  } else {
+    console.error("Note not found");
+  }
+};
+export const addNewSharedNoteUser = (Note) => {
+  dataInData.sharedNotes.push(Note);
+};
 //function that updates the data with changes made to the notes
 export const updateNoteData = (classId, noteId, updatedNote) => {
   const classIndex = dataInData.classes.findIndex((cls) => cls.id === classId);
@@ -96,9 +115,16 @@ export const getDatabaseData = async (userUID) => {
           } else {
             return null;
           }
+          
         })
         .filter((obj) => obj !== null); // filter out the null/undefined values
 
+      const sharedNotes = updatedClasses.flatMap(
+        (classObj) => classObj.sharedNotes
+      );
+      dataInData.classes = updatedClasses;
+      dataInData.sharedNotes = sharedNotes;
+    
       console.log("uisarray", JSON.stringify(updatedClasses));
       dataInData.classes = updatedClasses;
       console.log("called state", dataInData.classes);

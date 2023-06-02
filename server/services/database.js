@@ -188,7 +188,7 @@ module.exports = {
     await ref.update(noteMap);
   },
 
-  addSharedUser: async function (noteId, newUid) {
+  addSharedUser: async function (noteId, newUid, newUsername) {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/" + noteId);
     console.log("logging ref:");
@@ -197,9 +197,23 @@ module.exports = {
     let note = (await ref.once("value")).val();
     console.log("logging note:");
     console.log(note);
-    if (note.users[newUid] == null) {
+    if (note && note.users && note.users[newUid] == null) {
+      try {
+        //setting username as value;
+        const usernameRef = await db.ref("/users/" + newUid + "/username");
+        const username = await usernameRef.once("value");
+        note.users[newUid] = username.val();
+      } catch (error) {
+        console.log(
+          "Error retrieving username, seting value as uid instead",
+          error
+        );
+        //set uid if username doesnt exist
+        note.users[newUid] = newUid;
+      }
+
+      ref.update(note);
     }
-    ref.update(note);
 
     //updates the user under /users database with a reference to the noteId that was shared with them.
     let newUser = await this.getInfo(newUid);
@@ -219,23 +233,71 @@ module.exports = {
     //updates note under /sharedNotes database with newUid.
     const ref = db.ref("/sharedNotes/");
     let notes = (await ref.once("value")).val();
-    // console.log(notes);
-    Object.keys(notes).forEach((noteKey) => {
-      const note = notes[noteKey];
-      const users = note.users;
+    if (notes != null) {
+      Object.keys(notes).forEach((noteKey) => {
+        const note = notes[noteKey];
+        const users = note.users;
 
-      // Iterate through the inner object using Object.keys()
-      Object.keys(users).forEach((userKey) => {
-        const user = users[userKey];
-        if (user == uid) {
-          finalNotes.push(note);
-          // console.log(note);
-          console.log(finalNotes);
+        if (users) {
+        // Iterate through the inner object using Object.keys()
+          Object.keys(users).forEach((userKey) => {
+            const user = users[userKey];
+            if (user == uid) {
+              finalNotes.push(note);
+              // console.log(note);
+              // console.log(finalNotes);
+            }
+          });
         }
       });
-    });
-    return finalNotes;
+
+      return finalNotes;
+    }
   },
+
+  removeSharedNote: async function (noteId) {
+    const ref = (
+      await db.ref("/sharedNotes/").child(noteId).once("value")
+    ).exists();
+    if (!ref) {
+      //sharedNote doesnt exist; do nothing
+      return ref;
+    } else {
+      //remove sharedNote
+      //note found
+      //loop to find users
+      const users = await db
+        .ref("/sharedNotes/" + noteId)
+        .child("users")
+        .once("value");
+      if (users.exists()) {
+        //notes array exists
+         users.forEach((user) => {
+          const key = user.key;
+          const value = user.val();
+          //correct note is found.
+            //remove note
+           db
+          .ref("/users/")
+          .child(key)
+          .child("sharedNotes")
+          .child(noteId)
+          .remove();
+        });
+
+        // remove the users array from sharedNotes
+        await db
+          .ref("/sharedNotes/" + noteId)
+          .child("users")
+          .remove();
+      }
+
+      // remove the sharedNote
+      await db.ref("/sharedNotes/").child(noteId).remove();
+      return ref;
+    }
+  },
+
   addTask: async function (uid, task) {
     const ref = db.ref("/users/" + uid).child("tasks");
     await ref.update(task);
@@ -276,12 +338,17 @@ module.exports = {
           const key = user.key;
           const value = user.val();
           //correct note is found.
-          if (value.uid == uid) {
+          if (key == uid) {
             //remove note
             userFound = user.val();
             db.ref("/sharedNotes/" + noteId)
               .child("users")
               .child(key)
+              .remove();
+            //remove shared note from user info
+            db.ref("/users/" + uid)
+              .child("sharedNotes")
+              .child(noteId)
               .remove();
             return userFound;
           }

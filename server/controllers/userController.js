@@ -220,6 +220,26 @@ module.exports = {
       }
     }
   },
+  removeSharedNote: function (req, res, noteId) {
+    if (noteId) {
+      try {
+        database.removeSharedNote(noteId);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing sharedNote from database: " + error.message);
+      }
+    } else {
+      if (!noteId) {
+        res
+          .status(400)
+          .send("Bad Request: noteid parameter is missing; noteID not found.");
+      }
+    }
+  },
+  
   setSharedNote: function (req, res, uid, classId, noteId) {
     if (uid && classId && noteId) {
       try {
@@ -328,6 +348,61 @@ module.exports = {
     } else {
       if (!uid) {
         res.status(400).send("Bad Request: uid is missing from request.");
+      }
+    }
+  },
+  removeSharedUser: function (req, res, uid, noteId) {
+    if (uid && noteId) {
+      try {
+        database.removeSharedUser(uid, noteId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !noteId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!noteId) {
+        res.status(400).send("Bad Request: noteId parameter is missing.");
+      }
+    }
+  },
+
+  deleteTask: function (req, res, uid, taskId) {
+    if (uid && taskId) {
+      try {
+        database.deleteTask(uid, taskId);
+        res.send(JSON.stringify("Success"));
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .send("Error removing note from database: " + error.message);
+      }
+    } else {
+      if (!uid && !taskId) {
+        res
+          .status(400)
+          .send(
+            "Bad request: uid parameter is missing and task parameter is also missing"
+          );
+      }
+      if (!uid) {
+        res.status(400).send("Bad Request: uid parameter is missing.");
+      }
+      if (!taskId) {
+        res.status(400).send("Bad Request: taskId parameter is missing.");
       }
     }
   },
