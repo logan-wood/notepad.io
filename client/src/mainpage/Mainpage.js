@@ -480,7 +480,7 @@ function Mainpage() {
 
   return (
     <div className="mainpage">
-      {error}
+      <div className="error_msg">{error}</div>
       <Loading buffer={connected} />
       {/* header without log in/sign up buttons, with sign out button */}
       <Header

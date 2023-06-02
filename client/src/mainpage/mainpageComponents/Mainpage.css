@@ -289,4 +289,8 @@ body.dark-mode .note{
   margin-left: 10px; 
 }
 
-
+.error_msg {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
