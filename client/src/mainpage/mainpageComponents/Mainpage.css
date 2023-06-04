@@ -95,13 +95,19 @@ noteTitleStyle {
 
 .tox {
   border: none !important;
-  min-height: % !important;
-}
+  max-height: calc(100vh - 80px);}
 
 .tox-tinymce {
   min-height: 100% !important;
 }
-
+.sharedNoteDiv {
+  background: #fffbf6;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: "Nunito", sans-serif;
+  color: #4f4f4f;
+  margin-top: 20px;
+}
 .sidenav.open + .note {
   /*width: 100%;*/
   margin-left: 320px;
@@ -283,4 +289,8 @@ body.dark-mode .note{
   margin-left: 10px; 
 }
 
-
+.error_msg {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

@@ -24,6 +24,7 @@ export default function Task({
     setIsTicked(isChecked); // Update the state when `isChecked` prop changes
     console.log(isTicked);
   }, [onCheckboxChange, isTicked]);
+  
 
   const handleDeleteChange = () => {
     setIsDeleted(true);

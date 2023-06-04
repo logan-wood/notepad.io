@@ -109,7 +109,7 @@ const Note = ({
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup", keyUpCounter);
-      return (keyUpCounter / 100) * 100;
+      return (keyUpCounter / 10) * 100;
     } else {
       setKeyUpCounter(0);
 

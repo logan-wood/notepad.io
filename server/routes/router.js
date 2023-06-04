@@ -44,7 +44,18 @@ router.put("/user/:id/updateClass", (req, res) => {
   const id = req.params.id;
   userController.updateClass(req, res, id);
 });
-
+// updates and overwrites single user's username
+router.put("/user/:id/updateUsername", (req, res) => {
+  const id = req.params.id;
+  const username = req.query.username;
+  userController.updateUserUsername(req, res, id, username);
+});
+// updates and overwrites single user's username
+router.put("/user/:id/updateEmail", (req, res) => {
+  const id = req.params.id;
+  const email = req.query.email;
+  userController.updateUserEmail(req, res, id, email);
+});
 router.delete("/user/:id/removeClass", (req, res) => {
   const id = req.params.id;
   const classId = req.query.classId;
@@ -104,9 +115,11 @@ router.delete("/user/:id/deleteTask", (req, res) => {
   userController.removeSharedUser(req, res, id, noteId);
 });
 
- router.delete("/note/:noteId/removeSharedNote", (req, res) => {
-   const noteId = req.params.noteId;
-   userController.removeSharedNote(req, res, noteId);
- });
+//router command for deleting user
+router.delete("/user/:id/deleteUserAccount", (req, res) => {
+  const id = req.params.id;
+  userController.deleteUserAccount(req, res, id);
+});
+
 
 module.exports = router;
