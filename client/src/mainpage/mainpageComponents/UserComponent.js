@@ -21,7 +21,32 @@ const UserComponent = ({ noteData }) => {
   };
 
   const handleDeleteUser = () => {
+     // constant url for testing purposes
+    const url =
+      process.env.REACT_APP_API_DOMAIN +
+      "/note/" +
+      noteData.id +
+      "/removeSharedUser/?id="+selectedUser;
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json", // Make sure to set the content type of the request body
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+      
+    })
+      .then((response) => {
+        if (response.status === 200) {
     console.log("Deleting user:", selectedUser);
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  
     setIsOpen(!isOpen);
   };
 
@@ -38,7 +63,7 @@ const UserComponent = ({ noteData }) => {
             buttons.push(
               <div className="users" key={userId}>
                 <button onClick={() => handleUserClick(userId)}>
-                  {userName}
+                  <span title={users[userId]}>{userName}</span>
                 </button>
                 {selectedUser === userId && isOpen && (
                   <button
