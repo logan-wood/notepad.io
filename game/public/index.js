@@ -223,9 +223,7 @@ let playerStartPosition = { x: 0, y: 0 };
 
 // animation loop that controls movement of the sprite and map
 function animate() {
-    setTimeout(function() {
-        displayPoints()
-    }, 1000)
+    displayPoints()
     window.requestAnimationFrame(animate)
 
     if(keys.esc.pressed) {

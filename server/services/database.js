@@ -213,7 +213,7 @@ module.exports = {
       return finalNotes;
     }
   },
-  
+
   getUserPoints: async function(uid){
     const ref = db.ref("users/" + uid + "/points");
     const userPoints = (await ref.once("value")).val();

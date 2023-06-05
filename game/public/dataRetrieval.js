@@ -12,7 +12,6 @@ const getUserID = async () => {
         const response = await fetch('http://localhost:1234/api/userID');
         const data = await response.json();
         const userID = data.userID; // Get the userID from the response
-        removePoints(userID)
         return userID;
     } catch (error) {
         console.log('Error fetching userID:', error);
@@ -26,7 +25,7 @@ function updatePoints(userID) {
         .then(response => response.json())
         .then(data => {
             const pointsDiv = document.getElementById('points');
-            console.log('Points: ' + data.points);
+            // console.log('Points: ' + data.points);
             pointsDiv.innerHTML = 'Points: ' + data.points;
             return data.points;
         })
@@ -35,26 +34,26 @@ function updatePoints(userID) {
         });
 }
 
-function removePoints(userID) {
-    const minusPoints = -10;
-    const data = {points};
-    const url = 'http://localhost:8080/user/' + userID + '/points';
-    fetch(url, {
-        method: "post",
-        body: JSON.stringify(data),
-        headers: {
-        "Content-Type": "application/json", // Make sure to set the content type of the request body
-            Accept: "*/*",
-            "Accept-Encoding": "gzip, deflate, br",
-            Connection: "keep-alive",}
-    })
-    .then((response) => {
-        console.log("response", response);
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-    })
-    .catch((error) => {
-        // console.error("There was an error sending the request:", error);
-    });
-}
+// function removePoints(userID) {
+//     // console.log('removePoints()');
+//     const data = {
+//         message: "subtract"
+//     };
+//
+//     const url = 'http://localhost:8080/user/' + userID + '/points';
+//     console.log(url)
+//     fetch(url, {
+//         method: "post",
+//         body: JSON.stringify(data),
+//         headers: {"Content-Type": "application/json",}
+//     })
+//     .then((response) => {
+//         // console.log("response", response);
+//         if (!response.ok) {
+//             throw new Error("Network response was not ok");
+//         }
+//     })
+//     .catch((error) => {
+//         // console.error("There was an error sending the request:", error);
+//     });
+// }

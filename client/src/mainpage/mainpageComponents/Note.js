@@ -94,7 +94,9 @@ const Note = ({
 
     function handleUpdatePoints(points) {
     const url = process.env.REACT_APP_API_DOMAIN + "/user/" + uid + "/points";
-    const data = {points}
+    const data = {
+      message: "add"
+    }
     fetch(url, {
       method: "POST",
       body: JSON.stringify(data),

@@ -371,7 +371,6 @@ module.exports = {
       database
           .getUserPoints(id)
           .then((points) => {
-            console.log("points: " + points)
             res.json({points: points});
           })
           .catch((error) => {

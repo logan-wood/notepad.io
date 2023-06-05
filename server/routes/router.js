@@ -105,8 +105,14 @@ router.get("/user/:id/points", (req, res) => {
 
 router.post("/user/:id/points", (req, res) => {
   const id = req.params.id;
-  const points = req.body.points;
-  console.log(points)
+  let points
+  const message = req.body.message
+  console.log('router message: ' + message);
+  if(message === "add") {
+    points = 10;
+  } else if (message === "subtract") {
+    points = -10;
+  }
   userController.setUserPoints(req, res, id, points);
 });
 
