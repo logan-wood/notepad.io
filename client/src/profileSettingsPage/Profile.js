@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Components/Profile.css";
 import profilePic from "./Components/notelo-profile.png";
-const Profile = ({ user,dispatch }) => {
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+const Profile = ({ user, dispatch }) => {
   //constants
   // state variables for edit mode and edit values
   const [editMode, setEditMode] = useState(false);
@@ -37,7 +38,7 @@ const Profile = ({ user,dispatch }) => {
       })
       .then((data) => {
         if (data) {
-          console.log("data IN SET USER", data)
+          console.log("data IN SET USER", data);
           dispatch({ type: "SET_USER", payload: data });
           console.log("username updated successfully:", data);
         }
@@ -87,7 +88,7 @@ const Profile = ({ user,dispatch }) => {
       setEditMode(false);
     } else {
       //close editmode and set new email
-      if(editEmail !== email){
+      if (editEmail !== email) {
         setEmail(editEmail);
       }
       setUsername(editUsername);
@@ -115,7 +116,6 @@ const Profile = ({ user,dispatch }) => {
   return (
     <>
       <img src={profilePic} alt="Logo" className="profile-pic" />
-
       <div className="profile-info">
         <span className="userInfoTitle">Profile Information</span>
         <hr></hr>
@@ -136,6 +136,15 @@ const Profile = ({ user,dispatch }) => {
             )}
             <span className="profile-buttons">
               <button onClick={() => setEditMode(true)}>Edit</button>
+              <a href="/dashboard">
+                <button>
+                  Return
+                  <KeyboardReturnIcon
+                    fontSize="large"
+                    className="return profile-buttons"
+                  />
+                </button>
+              </a>
             </span>
           </>
         ) : (
@@ -162,6 +171,15 @@ const Profile = ({ user,dispatch }) => {
             <span className="profile-buttons">
               <button onClick={handleSave}>Save</button>
               <button onClick={handleCancel}>Cancel</button>
+              <a href="/dashboard">
+                <button>
+                  Return
+                  <KeyboardReturnIcon
+                    fontSize="large"
+                    className="return profile-buttons"
+                  />
+                </button>
+              </a>
             </span>
           </>
         )}
