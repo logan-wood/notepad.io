@@ -4,8 +4,8 @@ import Task from "./Task.jsx";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TaskModal(tasks, uid) {
   const today = new Date();
@@ -25,10 +25,11 @@ export default function TaskModal(tasks, uid) {
 
   const [newTasks, setNewTasks] = useState(tasks.tasks);
 
+  //updates tasks when tasks are
   useEffect(() => {
     setNewTasks(tasks.tasks);
   }, [tasks.tasks]);
-
+  // sets tasks when intially rendered
   useEffect(() => {
     if (Object.keys(newTasks).length > 0) {
       if (Object.keys(newTasks)[0].length > 0) {
@@ -49,6 +50,7 @@ export default function TaskModal(tasks, uid) {
     }
   }, [newTasks]);
 
+  //opens modal
   const handleOpen = () => {
     setIsOpen(true);
     setButtonClass("taskOpen taskOpenAnimation");
@@ -56,6 +58,7 @@ export default function TaskModal(tasks, uid) {
     handleUpdateTasks();
   };
 
+  //closes modal
   const handleClose = () => {
     setIsOpen(false);
     setButtonClass("taskClose taskCloseAnimation");
@@ -63,25 +66,30 @@ export default function TaskModal(tasks, uid) {
     handleUpdateTasks();
   };
 
+  //calls the database function
   const handleTaskInputChange = (event) => {
     setNewTask(event.target.value);
   };
 
+  //handles task date change
   const handleTaskDateInputChange = (event) => {
     setNewDate(event.target.value);
   };
 
+  //handles checkboxchange
   const handleCheckboxChange = (taskId, isChecked) => {
     newTasks[taskId].ticked = isChecked;
     handleSaveTasks(false);
     handleUpdateTasks();
   };
 
+  // deletes tasks
   const handleDeleteTask = (taskId, isDeleted) => {
     handleDeleteChange(taskId);
     handleUpdateTasks();
   };
 
+  //saves tasks to the database
   const handleSaveTasks = (update) => {
     fetch("http://localhost:8080/user/" + tasks.uid + "/saveTasks", {
       method: "POST",
@@ -115,6 +123,7 @@ export default function TaskModal(tasks, uid) {
       });
   };
 
+  // Updates tasks in the database
   const handleUpdateTasks = () => {
     fetch("http://localhost:8080/user/" + tasks.uid + "/getTasks", {
       method: "GET",
@@ -134,7 +143,6 @@ export default function TaskModal(tasks, uid) {
       .then((data) => {
         // Handle the response data
         setNewTasks(data);
-        console.log("DATATATA" + JSON.stringify(data));
       })
       .catch((error) => {
         // Handle any errors during the request
@@ -142,6 +150,7 @@ export default function TaskModal(tasks, uid) {
       });
   };
 
+  //handles add task in database
   const handleAddTask = () => {
     fetch("http://localhost:8080/user/" + tasks.uid + "/addTask", {
       method: "POST",
@@ -150,7 +159,7 @@ export default function TaskModal(tasks, uid) {
         // Add any additional headers if required
       },
       body: JSON.stringify({
-        [generateUUID()]: {
+        [uuidv4()]: {
           content: newTask,
           ticked: false,
           date: newDate,
@@ -177,6 +186,7 @@ export default function TaskModal(tasks, uid) {
       });
   };
 
+  //handles delete uin database
   const handleDeleteChange = (id) => {
     const url =
       "http://localhost:8080/user/" +
@@ -208,75 +218,95 @@ export default function TaskModal(tasks, uid) {
       });
   };
 
+  //task form
+  const TaskForm = ({
+    newTask,
+    newDate,
+    handleTaskInputChange,
+    handleTaskDateInputChange,
+    handleAddTask,
+  }) => (
+    <div className="submitTaskContainer">
+      <TextField
+        className="submitTaskText"
+        id="outlined-basic"
+        variant="outlined"
+        label="Task"
+        value={newTask}
+        onChange={handleTaskInputChange}
+      />
+      <TextField
+        className="submitTaskDate"
+        id="outlined-basic"
+        variant="outlined"
+        label="Date"
+        value={newDate}
+        onChange={handleTaskDateInputChange}
+      />
+      <Button
+        className="submitTaskButton"
+        variant="contained"
+        endIcon={<SendIcon />}
+        onClick={handleAddTask}></Button>
+    </div>
+  );
+
+  // Task list component
+  const TaskList = ({
+    newTasks,
+    handleCheckboxChange,
+    handleDeleteTask,
+    uid,
+  }) => (
+    <div className="tasksContainer">
+      {Object.entries(newTasks).map(([taskId, taskData]) => (
+        <Task
+          key={taskId}
+          content={taskData.content}
+          isChecked={taskData.ticked}
+          date={taskData.date}
+          onCheckboxChange={(isChecked) =>
+            handleCheckboxChange(taskId, isChecked)
+          }
+          isFirst={false}
+          uid={uid}
+          onDeleteChange={(isDeleted) => {
+            handleDeleteTask(taskId, isDeleted);
+          }}
+        />
+      ))}
+    </div>
+  );
+
+  // AddTaskButtons component
   const addTaskButtons = (
     <div className={containerClass}>
       <KeyboardArrowUpIcon
         className="closeicon"
         onClick={handleClose}
         fontSize="large"></KeyboardArrowUpIcon>
-      <div className="tasksContainer">
-        {Object.entries(newTasks).map(([taskId, taskData]) => (
-          <Task
-            key={taskId}
-            content={taskData.content}
-            isChecked={taskData.ticked}
-            date={taskData.date}
-            onCheckboxChange={(isChecked) =>
-              handleCheckboxChange(taskId, isChecked)
-            }
-            isFirst={false}
-            uid={uid}
-            onDeleteChange={(isDeleted) => {
-              handleDeleteTask(taskId, isDeleted);
-            }}
-          />
-        ))}
-        Add task:
-        <div className="submitTaskContainer">
-          <TextField
-            className="submitTaskText"
-            id="outlined-basic"
-            variant="outlined"
-            label="Task"
-            value={newTask}
-            onChange={handleTaskInputChange}
-          />
-          <TextField
-            className="submitTaskDate"
-            id="outlined-basic"
-            variant="outlined"
-            label="Date"
-            value={newDate}
-            onChange={handleTaskDateInputChange}
-          />
-          <Button
-            className="submitTaskButton"
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={handleAddTask}></Button>
-        </div>
-      </div>
+      <TaskList
+        newTasks={newTasks}
+        handleCheckboxChange={handleCheckboxChange}
+        handleDeleteTask={handleDeleteTask}
+        uid={uid}
+      />
+      Add task:
+      <TaskForm
+        newTask={newTask}
+        newDate={newDate}
+        handleTaskInputChange={handleTaskInputChange}
+        handleTaskDateInputChange={handleTaskDateInputChange}
+        handleAddTask={handleAddTask}
+      />
     </div>
   );
-  function generateUUID() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0,
-          v = c === "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
-  }
 
   const closedContainer = (
     <div className="closedContainer">
-      
-        <Button className="addATask" onClick={handleOpen}>
-         + Add a task here!
-        </Button>
-      
-      
+      <Button className="addATask" onClick={handleOpen}>
+        + Add a task here!
+      </Button>
     </div>
   );
 
