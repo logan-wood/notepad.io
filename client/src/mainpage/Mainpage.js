@@ -20,8 +20,6 @@ import { Button } from "react-bootstrap";
 import ShareModal from "./mainpageComponents/ShareModal";
 import { useSelector } from "react-redux";
 import Loading from "./mainpageComponents/Loading.jsx";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Tesseract from "tesseract.js";
 
 function Mainpage() {
