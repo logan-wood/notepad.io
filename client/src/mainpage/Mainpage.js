@@ -272,7 +272,7 @@ function Mainpage() {
       selectedNoteId;
 
     fetch(url, {
-      method: "PUT",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
         Accept: "*/*",
@@ -407,6 +407,8 @@ function Mainpage() {
         newData.classes[classIndex].notes.splice(noteIndex, 1);
         // Return the updated data object
       }
+      SelectedClass.noteSize--;
+      handleUpdateClass(SelectedClass);
       handleDatabaseDeleteNote(SelectedNote, SelectedClass.id, SelectedNote.id);
 
       return newData;
