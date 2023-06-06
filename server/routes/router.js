@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:1234", "http://localhost:3000"],
 };
 
 router.use(cors(corsOptions));
@@ -107,6 +107,24 @@ router.delete("/user/:id/deleteTask", (req, res) => {
   const id = req.params.id;
   const taskId = req.query.taskId;
   userController.deleteTask(req, res, id, taskId);
+});
+
+router.get("/user/:id/points", (req, res) => {
+  const id = req.params.id;
+  userController.getPoints(req, res, id);
+});
+
+router.post("/user/:id/points", (req, res) => {
+  const id = req.params.id;
+  let points
+  const message = req.body.message
+  console.log('router message: ' + message);
+  if(message === "add") {
+    points = 10;
+  } else if (message === "subtract") {
+    points = -10;
+  }
+  userController.setUserPoints(req, res, id, points);
 });
 
  router.delete("/note/:noteId/removeSharedUser", (req, res) => {
