@@ -100,7 +100,7 @@
 .profile-button:hover,
 .profile-button:focus {
   border-color: #bb4430 !important;
-  color: #bb4430!important;
+  color: #bb4430 !important;
 }
 
 .sign-out-icon {
@@ -127,7 +127,7 @@
   justify-content: space-between;
 }
 
-.dashboard-buttons-container > * {
+.dashboard-buttons-container>* {
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -151,7 +151,7 @@
   font-size: 18px !important;
 }
 
-.darkmode-container{
+.darkmode-container {
   display: flex;
   gap: 5px;
   align-items: right !important;
@@ -167,46 +167,46 @@
 }
 
 
-.search-button{
+.search-button {
   width: 30px;
   height: 30px;
-  border: none !important; 
+  border: none !important;
   background-color: transparent !important;
 }
 
-.header.dark-mode .search-button{
+.header.dark-mode .search-button {
   filter: invert(100%);
   -webkit-filter: invert(100%);
   background-color: transparent !important;
 }
 
-.dark-toggles{
+.dark-toggles {
   width: 25px;
   height: 25px;
   vertical-align: middle;
   background-color: transparent !important;
-  border: none; 
-  padding: 0 !important; 
+  border: none;
+  padding: 0 !important;
 }
 
 .header.dark-mode .dark-mode-toggle {
   filter: invert(100%);
   -webkit-filter: invert(100%);
   background-color: transparent !important;
-  border: none; 
-  padding: 0; 
+  border: none;
+  padding: 0;
 }
 
 .dark-mode-toggle {
   background-color: transparent !important;
-  border: none !important; 
+  border: none !important;
   padding-left: 8px;
   padding-right: 8px;
 }
 
 .header.dark-mode .logo,
 .header.dark-mode .profile-icon,
-.header.dark-mode .sign-out-icon{
+.header.dark-mode .sign-out-icon {
   filter: invert(100%);
   -webkit-filter: invert(100%);
   background-color: transparent !important;

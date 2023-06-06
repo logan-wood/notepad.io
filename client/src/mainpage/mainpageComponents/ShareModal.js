@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ShareModal.css";
 
-const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
+const ShareModal = ({ onClose, isOpen, noteId, classId, uid ,addNew}) => {
   const [URL, setURL] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [error, setError] = useState("");
@@ -65,6 +65,7 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
         .catch((error) => {
           console.error(error);
         });
+        addNew();
     }
   };
 
@@ -135,10 +136,9 @@ const ShareModal = ({ onClose, isOpen, noteId, classId, uid }) => {
           <button
             class="redButton"
             onClick={() => {
-                  if (classId !== null) {
-
-              setNoteAsShared(uid, classId, noteId);
-                  }
+              if (classId !== null) {
+                setNoteAsShared(uid, classId, noteId);
+              }
               handleAddSharedUser(noteId, userEmail);
             }}>
             Share

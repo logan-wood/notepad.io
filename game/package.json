@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "notepad.io": "file:.."
   }
 }

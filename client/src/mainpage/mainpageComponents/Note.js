@@ -13,6 +13,11 @@ const Note = ({
   isReset,
   uid,
 }) => {
+  
+
+  //variable for storing previous key
+  const [previousKey,setPreviousKey] = useState("");
+
   //State hooks for className, Note Title, Note Content and Keyup
   const [className, setClassName] = useState(
     selectedClass ? selectedClass.name : ""
@@ -84,12 +89,21 @@ const Note = ({
 
   //Handler for when key is pressed
   const handleKeyUp = (event) => {
-    updateProgress((prevProgress) => {
-      const newProgress = calculateProgress();
-      updateProgress(newProgress);
-      return newProgress;
-    });
-    setKeyUpCounter((prevCount) => prevCount + 1);
+    if (event.key === " ") {
+      // Check if the key pressed is a space
+      if(previousKey !== ' ' && previousKey!=="Enter" ){// check that the previous key was not a space
+      updateProgress((prevProgress) => {
+        const newProgress = calculateProgress();
+        updateProgress(newProgress);
+        return newProgress;
+      });
+
+      // Do not increase progress if p  revious was also a
+      setKeyUpCounter((prevCount) => prevCount + 1); // Increment the word count
+    }
+  }
+   setPreviousKey(event.key);
+
   };
 
     function handleUpdatePoints(points) {
@@ -117,7 +131,7 @@ const Note = ({
   const calculateProgress = () => {
     if (progress < 100) {
       console.log("keyup", keyUpCounter);
-      return (keyUpCounter / 100) * 100;
+      return (keyUpCounter / 10) * 100;
     } else {
       handleUpdatePoints(10);
       setKeyUpCounter(0);
@@ -161,10 +175,8 @@ const Note = ({
         />
       )}
       <br></br>
-      
-      {isShareNote && (
-       <UserComponent noteData={selectedNote}/>
-      )}
+
+      {isShareNote && <UserComponent noteData={selectedNote} handleUpdateNote={updateNote}/>}
       <input
         type="text"
         value={noteTitle}
