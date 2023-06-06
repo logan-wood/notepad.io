@@ -1,6 +1,6 @@
 import "./mainpageComponents/Mainpage.css";
 import Header from "../shared/Header";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import SideNav from "./mainpageComponents/SideNav";
 import Note from "./mainpageComponents/Note";
 import dataInData, {
@@ -20,6 +20,7 @@ import { Button } from "react-bootstrap";
 import ShareModal from "./mainpageComponents/ShareModal";
 import { useSelector } from "react-redux";
 import Loading from "./mainpageComponents/Loading.jsx";
+import Tesseract from "tesseract.js";
 
 function Mainpage() {
   //State hooks for isGameOpen, Progress, reset, isNavOPen, data, selected Class, Selected note, and isExpanded
@@ -224,7 +225,10 @@ function Mainpage() {
   const handleDatabaseUpdateClass = async (data) => {
     // constant url for testing purposes
     const url =
-      process.env.REACT_APP_API_DOMAIN + "/user/" + user.uid + "/updateClass";
+      process.env.REACT_APP_API_DOMAIN +
+      "/user/" +
+      user.uid +
+      "/updateClass";
     fetch(url, {
       method: "PUT",
       headers: {
@@ -268,7 +272,7 @@ function Mainpage() {
       selectedNoteId;
 
     fetch(url, {
-      method: "PUT",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json", // Make sure to set the content type of the request body
         Accept: "*/*",
@@ -403,6 +407,8 @@ function Mainpage() {
         newData.classes[classIndex].notes.splice(noteIndex, 1);
         // Return the updated data object
       }
+      SelectedClass.noteSize--;
+      handleUpdateClass(SelectedClass);
       handleDatabaseDeleteNote(SelectedNote, SelectedClass.id, SelectedNote.id);
 
       return newData;
@@ -494,6 +500,57 @@ function Mainpage() {
     };
     sendIDToGame();
   });
+  // State to manage notification
+  const [notification, setNotification] = useState({
+    isVisible: false,
+    message: "",
+  });
+
+  const fileInputRef = useRef(null);
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const {
+          data: { text },
+        } = await Tesseract.recognize(file, "eng", {
+          logger: (m) => console.log(m),
+        });
+        // Add the text to the note content
+        if (text && SelectedNote) {
+          const updatedNote = { ...SelectedNote };
+          updatedNote.content += text;
+          handleUpdateNote(updatedNote);
+          setNotification({
+            isVisible: true,
+            message: "Text added to note content",
+          });
+        } else {
+          setNotification({
+            isVisible: true,
+            message: "No text found in the image or no note selected",
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        setNotification({ isVisible: true, message: "Image upload failed" });
+      } finally {
+        // Reset the file input value
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+      }
+    } else {
+      setNotification({ isVisible: true, message: "No file selected" });
+    }
+  
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setNotification({ isVisible: false, message: "" });
+    }, 3000);
+  };  
+
   let buffer = 0;
   //passed into Loading component to determine if it is loading or not.
   const [connected, setConnected] = useState(false);
@@ -547,18 +604,16 @@ function Mainpage() {
         tasks={dataInData.tasks}
         uid={user.uid}
       />
-
-      {/* viewport so that its responsive*/}
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"></meta>
-
-      {/*style import from google fonts */}
+  
+      {/* viewport so that it's responsive*/}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+      {/* style import from google fonts */}
       <style>
-        @import
-        url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');
+        {`@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Nunito:wght@300&display=swap');`}
       </style>
-      {/*Side Nav component*/}
+  
+      {/* Side Nav component */}
       <SideNav
         isOpen={isNavOpen}
         toggleNav={toggleNav}
@@ -570,7 +625,8 @@ function Mainpage() {
         updateNote={handleUpdateNote}
         updateClass={handleUpdateClass}
       />
-      {/*Note component*/}
+  
+      {/* Note component */}
       <Note
         selectedClass={SelectedClass}
         selectedNote={SelectedNote}
@@ -582,12 +638,11 @@ function Mainpage() {
         isShareNote={isShared}
         uid={user.uid}
       />
-      <ProgressGameBar
-        progress={progress}
-        onButtonClick={handleGameButtonClick}
-      />
-
+  
+      <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
+  
       <GameModal isOpen={isGameOpen} onClose={handleGameClose} />
+  
       {SelectedClass && SelectedNote && (
         <ShareModal
           isOpen={isShareOpen}
@@ -598,6 +653,7 @@ function Mainpage() {
           uid={user.uid}
         />
       )}
+  
       {isShared === true && SelectedNote && (
         <ShareModal
           isOpen={isShareOpen}
@@ -606,7 +662,8 @@ function Mainpage() {
           uid={user.uid}
         />
       )}
-      {/*delete button component */}
+  
+      {/* delete button component */}
       <DeleteButton
         handleDeleteButton={handleDeleteButton}
         handleDeleteClass={handleDeleteClass}
@@ -617,7 +674,7 @@ function Mainpage() {
         SelectedClass={SelectedClass}
         isShareNote={isShared}
       />
-      {/*Save and Share button component, display only if SelectedNote is not null*/}
+  
       {SelectedNote !== null && (
         <div className="button-div">
           {/*  <Button
@@ -625,14 +682,30 @@ function Mainpage() {
             className="saveshare-button">
             Save Note
           </Button> */}
-
           <Button className="saveshare-button" onClick={handleShareButtonClick}>
             Share
           </Button>
+  
+          {/* Image to Text button */}
+          <Button className="image-to-text-button" onClick={() => fileInputRef.current.click()}>
+            Image to Text
+          </Button>
         </div>
       )}
+  
+      <div className="notification">
+        {notification.isVisible && notification.message}
+      </div>
+  
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleFileUpload}
+      />
     </div>
-  );
+  );  
 }
 
 export default Mainpage;
