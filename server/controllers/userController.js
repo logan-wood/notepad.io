@@ -166,6 +166,7 @@ module.exports = {
       }
     }
   },
+
   removeClass: function (req, res, uid, classId) {
     if (uid && classId) {
       try {
@@ -512,6 +513,36 @@ module.exports = {
       if (!taskId) {
         res.status(400).send("Bad Request: taskId parameter is missing.");
       }
+    }
+  },
+
+  //get points function
+  getPoints: function (req, res, id) {
+    if (id) {
+      database
+        .getUserPoints(id)
+        .then((points) => {
+          res.json({ points: points });
+        })
+        .catch((error) => {
+          console.error("Error retrieving points from database", error);
+        });
+    } else {
+      res.status(400).send("id parameter is missing");
+    }
+  },
+
+  setUserPoints: function (req, res, id, points) {
+    if (id) {
+      try {
+        database.setPoints(id, points);
+        res.status(200).send("Request successfully sent!");
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Error setting note as shared: " + error.message);
+      }
+    } else {
+      res.status(400).send("id parameter is missing");
     }
   },
 

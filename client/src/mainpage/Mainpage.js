@@ -414,6 +414,36 @@ function Mainpage() {
 
     SetSelectedNote(null);
   };
+  // update the points
+  useEffect(() => {
+    const sendIDToGame = async () => {
+      let userUID = user.uid;
+      const url = "http://localhost:1234/api/data";
+      console.log(process.env.REACT_APP_API_DOMAIN);
+
+      const id = { userUID };
+      await fetch(url, {
+        method: "post",
+        body: JSON.stringify(id),
+        headers: {
+          "Content-Type": "application/json", // Make sure to set the content type of the request body
+          Accept: "*/*",
+          "Accept-Encoding": "gzip, deflate, br",
+          Connection: "keep-alive",
+        },
+      })
+        .then((response) => {
+          console.log("response", response);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+        })
+        .catch((error) => {
+          console.error("There was an error sending the request:", error);
+        });
+    };
+    sendIDToGame();
+  });
 
   const handleDeleteSharedNote = () => {
     // callback function that recieves the previous state
@@ -438,6 +468,36 @@ function Mainpage() {
     SetSelectedNote(null);
   };
 
+  // update the points
+  useEffect(() => {
+    const sendIDToGame = async () => {
+      let userUID = user.uid;
+      const url = "http://localhost:1234/api/data";
+      console.log(process.env.REACT_APP_API_DOMAIN);
+
+      const id = { userUID };
+      await fetch(url, {
+        method: "post",
+        body: JSON.stringify(id),
+        headers: {
+          "Content-Type": "application/json", // Make sure to set the content type of the request body
+          Accept: "*/*",
+          "Accept-Encoding": "gzip, deflate, br",
+          Connection: "keep-alive",
+        },
+      })
+        .then((response) => {
+          console.log("response", response);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+        })
+        .catch((error) => {
+          console.error("There was an error sending the request:", error);
+        });
+    };
+    sendIDToGame();
+  });
   // State to manage notification
   const [notification, setNotification] = useState({
     isVisible: false,
@@ -517,7 +577,6 @@ function Mainpage() {
         }
       })
       .catch((error) => {
-        setError("An error occured. Please try again later.");
         setConnected(buffer++);
       });
   }
@@ -575,6 +634,7 @@ function Mainpage() {
         progress={progress}
         isReset={reset}
         isShareNote={isShared}
+        uid={user.uid}
       />
   
       <ProgressGameBar progress={progress} onButtonClick={handleGameButtonClick} />
@@ -615,7 +675,6 @@ function Mainpage() {
   
       {SelectedNote !== null && (
         <div className="button-div">
-          {/* Share button */}
           {/*  <Button
             onClick={handleDatabaseUpdateClass(SelectedClass)}
             className="saveshare-button">

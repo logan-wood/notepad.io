@@ -66,7 +66,6 @@ class Sprite {
             this.frames.elapsed++
         }
 
-        console.log(this.frames.hold)
         if(this.frames.elapsed % this.frames.hold === 0) {
             if(this.frames.val < this.frames.max - 1) this.frames.val++
             else this.frames.val = 0
@@ -133,7 +132,6 @@ class Monster extends Sprite {
                 const fireballImage = new Image()
                 fireballImage.src = './gameAssets/fireball.png'
                 const fireball = new Sprite({
-
                     position: {
                         x: this.position.x,
                         y: this.position.y
@@ -223,7 +221,7 @@ class Boundary {
     }
 
     draw() {
-        c.fillStyle = 'rgba(255, 0, 0, 1)'
+        c.fillStyle = 'rgba(255, 0, 0, 0)'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }

@@ -16,6 +16,7 @@ const Settings = ({ user, dispatch }) => {
   //state variables for the correct username and emaikl
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
+  const [points, setPoints] = useState(user.points);
 
   const handleDelete = () => {
     //check if editUsername is same as user username
@@ -83,8 +84,7 @@ const Settings = ({ user, dispatch }) => {
             {user && (
               <>
                 <span className="userInfoItems">
-                  <span className="userInfoTitle">Total Points:</span> //put
-                  points here
+                  <span className="userInfoTitle">Total Points:</span> {user.points}
                 </span>
                 <span className="userInfoItems">
                   <span className="userInfoTitle">Email:</span> {email}
@@ -106,7 +106,7 @@ const Settings = ({ user, dispatch }) => {
             your account? Enter your Email to confirm.
             <span className="userInfoItems">
               <span className="userInfoTitle  non-highlightable">Email:</span>
-            <span className="non-highlightable" >{user.email}</span>
+              <span className="non-highlightable">{user.email}</span>
             </span>
             <span className="userInfoItems">
               <span className="userInfoTitle">Confirm Email:</span>

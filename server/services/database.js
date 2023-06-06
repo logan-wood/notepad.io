@@ -363,4 +363,23 @@ module.exports = {
     ref.remove();
     return "Success";
   },
-};
+
+  getUserPoints: async function(uid){
+    const ref = db.ref("users/" + uid + "/points");
+    const userPoints = (await ref.once("value")).val();
+    return userPoints;
+  },
+  setPoints: async function(uid, points){
+    const ref = db.ref("users/" + uid + "/points");
+    let userPoints = (await ref.once("value")).val();
+
+    if (userPoints === null) {
+      userPoints = 0;
+    }
+
+    userPoints += points;
+    console.log("points: " + points);
+
+    ref.set(userPoints);
+  },
+}
