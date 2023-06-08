@@ -1,5 +1,3 @@
-// http://127.0.0.1:8887/index.html
-
 const canvas  = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -30,8 +28,8 @@ const offset = {
 const minX = offset.x;
 
 const minY = offset.y;
-// set collisions onto map
 
+// set collisions onto map
 const boundaries = []
 collisionMap.forEach((row, i) => {
     row.forEach((symbol, j)  => {
@@ -179,8 +177,7 @@ const keys ={
 }
 
 // movable objects
-let movables = [background, ...boundaries, foreground, npc, ...battleZones, ...entrances]
-// movables.push(background)
+let movables = [background, foreground, npc]
 
 // collision bounds set
 function rectangularCollision({rectangle1, rectangle2}) {
@@ -196,67 +193,80 @@ const battle = {
     initiated: false
 }
 
-let coolDown = false
+const inside = {
+    initiated: false
+}
 
-// animation loop that controls movement of the sprite and map
-function animate() {
-    // infinite loop
-    const animationId = window.requestAnimationFrame(animate)
+let outsideBoundaries = false
+let outsideBattleZones = false
+let outsideEntrance = false
 
-    if(keys.esc.pressed) {
-        console.log(keys.esc.pressed)
-        const menu = document.querySelector('#menuDiv').style.display = 'block'
-    } else if(!keys.esc.pressed) {
-        const menu = document.querySelector('#menuDiv').style.display = 'none'
-    }
-
-    // draw map and character here cause of infinite loop
-    background.draw()
+// returns whether function was added to movable
+function drawCollisions(collisionMap, boundaries, containsBoundaries) {
     boundaries.forEach(boundary => {
         boundary.draw()
     })
-    battleZones.forEach(battleZone => {
-        battleZone.draw()
-    })
-    // draw entrance collision
-    entrances.forEach(entranceCollision => {
-        entranceCollision.draw()
-    })
 
-    npc.draw()
+    if(!containsBoundaries) {
+        movables.push(...boundaries)
+
+        containsBoundaries = true
+        return containsBoundaries
+    }
+    return containsBoundaries
+}
+
+let animationId = null
+let playerStartPosition = { x: 0, y: 0 };
+// let user
+
+
+// animation loop that controls movement of the sprite and map
+function animate() {
+    displayPoints()
+    window.requestAnimationFrame(animate)
+
+    if(keys.esc.pressed) {
+        document.querySelector('#menuDiv').style.display = 'block'
+    } else if(!keys.esc.pressed) {
+        document.querySelector('#menuDiv').style.display = 'none'
+    }
+
+    // draw map and character here cause of infinite loop
+    background.draw();
+
+    outsideBoundaries = drawCollisions(collisionMap, boundaries, outsideBoundaries);
+    outsideBattleZones = drawCollisions(battleFoxMap, battleZones, outsideBattleZones);
+    outsideEntrance = drawCollisions(entranceMap, entrances, outsideEntrance);
+
+    npc.draw();
 
     //draw player
-    player.draw()
+    player.draw();
 
     //draw foreground objects
-    foreground.draw()
+    foreground.draw();
 
     // check how many points they have
 
 
-    let moving = true
-    player.animate = false
+    let moving = true;
+    player.animate = false;
 
-    if(battle.initiated) return
+    if(inside.initiated) return;
+    if(battle.initiated) return;
 
     // activate battle
     if((keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed)) {
         for (let i = 0; i < entrances.length; i++) {
-            const entranceCollisions = entrances[i]
+            const entranceCollisions = entrances[i];
 
-            if (coolDown) {
-                console.log("Cooldown active");
-                continue; // Skip collision check
-            }
-
-            if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})) {
-                coolDown = true
-                setTimeout(() => {
-                    coolDown = false;
-                }, 5000);
+            if (rectangularCollision({rectangle1: player, rectangle2: entranceCollisions})
+                && keys.w.pressed) {
 
                 window.cancelAnimationFrame(animationId)
 
+                inside.initiated = true
                 gsap.to('#insideMap', {
                     opacity: 1,
                     yoyo: true,
@@ -264,9 +274,12 @@ function animate() {
                         gsap.to('#insideMap', {
                             opacity: 0,
                             onComplete() {
-                                initInsideHouse()
-                            }
+                                insideHouse();
+                                playerStartPosition = { x: player.position.x, y: player.position.y };
 
+
+                                inside.initiated = true
+                            }
                         })
                     }
                 })
@@ -276,7 +289,6 @@ function animate() {
         for (let i = 0; i < battleZones.length; i++) {
             const battleZone = battleZones[i]
             if (rectangularCollision({ rectangle1: player, rectangle2: battleZone}) && Math.random() < 0.01) {
-                console.log("activate battle")
 
                 // deactivate current animation loop
                 window.cancelAnimationFrame(animationId)
@@ -307,16 +319,15 @@ function animate() {
             }
         }
     }
-    movement(moving, boundaries)
+    movement(moving, boundaries, !inside.initiated)
 }
-// animate()
+animate()
 
 addEventListener('click', () => {
     // console.log('clicked')
 })
 
-function movement(moving, boundaries) {
-    console.log("moving")
+function movement(moving, boundaries, notInside) {
     // handles sprite movement
     if(keys.w.pressed && lastKey === 'w') {
         player.animate = true
@@ -332,10 +343,14 @@ function movement(moving, boundaries) {
         }
 
         // checks whether camera has reached border of map
-        if (movables[0].position.y <= 0)  {
-
+        if (movables[0].position.y <= 0 && notInside)  {
             // moves the background, barriers and foreground if player is moving
             if (moving)
+                movables.forEach((movable) => {
+                    movable.position.y += 3
+                })
+        } else if(!notInside){
+            if(moving)
                 movables.forEach((movable) => {
                     movable.position.y += 3
                 })
@@ -357,7 +372,12 @@ function movement(moving, boundaries) {
             }
         }
 
-        if (movables[0].position.x <= 0)  {
+        if (movables[0].position.x <= 0 && notInside)  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.x += 3
+                })
+        } else if(!notInside){
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.x += 3
@@ -365,7 +385,6 @@ function movement(moving, boundaries) {
         } else {
             if(moving) player.position.x -= 3
         }
-
     } else if (keys.s.pressed && lastKey === 's') {
         player.animate = true
         player.image = player.sprites.down
@@ -379,7 +398,12 @@ function movement(moving, boundaries) {
             }
         }
 
-        if (movables[0].position.y >= -1700)  {
+        if (movables[0].position.y >= -1700 && notInside)  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.y -= 3
+                })
+        } else if(!notInside){
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.y -= 3
@@ -400,7 +424,12 @@ function movement(moving, boundaries) {
             }
         }
 
-        if (movables[0].position.x > (minX + minX) + 50 )  {
+        if (movables[0].position.x > (minX + minX) + 50 && notInside)  {
+            if(moving)
+                movables.forEach((movable) => {
+                    movable.position.x -= 3
+                })
+        } else if(!notInside){
             if(moving)
                 movables.forEach((movable) => {
                     movable.position.x -= 3
@@ -433,10 +462,8 @@ window.addEventListener('keydown', (e) => {
         case 'Escape':
             if(keys.esc.pressed) {
                 keys.esc.pressed = false
-                console.log('keys true')
             } else if (!keys.esc.pressed) {
                 keys.esc.pressed = true
-                console.log('keys false')
             }
             lastKey = 'esc'
             break

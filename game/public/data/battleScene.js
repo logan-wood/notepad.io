@@ -12,22 +12,43 @@ const battleBackground = new Sprite({
 })
 
 let earthBook
-let fireBook
+let chosenOne
 let renderedSprites
 let battleAnimationId
 let queue = []
 
-function initBattle() {
-    document.querySelector('#userInterface').style.display = 'block'
-    document.querySelector('#dialogueBox').style.display = 'none'
-    document.querySelector('#enemyHealthBar').style.width = '100%'
-    document.querySelector('#playerHealthBar').style.width = '100%'
-    document.querySelector('#attacksBox').replaceChildren()
+function randomSprites() {
+    const random = Math.floor(Math.random() * 5) + 1;
+    console.log(random)
+    if(random === 1) {
+        return new Monster(monsters.FireBook);
+    } else if (random === 2) {
+        return new Monster(monsters.WindBook);
+    } else if (random === 3) {
+        return new Monster(monsters.HealBook);
+    } else if (random === 4) {
+        return new Monster(monsters.WaterBook);
+    } else if (random === 5) {
+        return new Monster(monsters.ThunderBook);
+    }
+}
 
+function initBattle() {
+    document.querySelector('#userInterface').style.display = 'block';
+    document.querySelector('#dialogueBox').style.display = 'none';
+    document.querySelector('#enemyHealthBar').style.width = '100%';
+    document.querySelector('#playerHealthBar').style.width = '100%';
+    document.querySelector('#attacksBox').replaceChildren();
+    document.querySelector('#points').style.display = 'none';
 
     earthBook = new Monster(monsters.EarthBook)
-    fireBook = new Monster(monsters.FireBook)
-    renderedSprites = [fireBook, earthBook]
+
+    console.log(chosenOne)
+    chosenOne = randomSprites()
+    const changeName = document.getElementById('enemyName');
+    console.log(chosenOne.name);
+    changeName.innerText = chosenOne.name;
+    renderedSprites = [chosenOne, earthBook]
     queue = []
 
     earthBook.attacks.forEach((attack) => {
@@ -42,13 +63,13 @@ function initBattle() {
             const selectedAttack = attacks[e.currentTarget.innerHTML]
             earthBook.attack({
                 attack: selectedAttack,
-                recipient: fireBook,
+                recipient: chosenOne,
                 renderedSprites
             })
 
-            if(fireBook.health <= 0) {
+            if(chosenOne.health <= 0) {
                 queue.push(() => {
-                    fireBook.faint()
+                    chosenOne.faint()
                 })
                 queue.push(() => {
                     // fade back to black
@@ -56,7 +77,7 @@ function initBattle() {
                         opacity: 1,
                         onComplete: () => {
                             cancelAnimationFrame(battleAnimationId)
-                            animate()
+                            // animate()
                             document.querySelector('#userInterface').style.display = 'none'
 
                             gsap.to('#overlappingDiv', {
@@ -70,9 +91,9 @@ function initBattle() {
             }
 
             // firebook or earthbook attacks right here
-            const randomAttack = fireBook.attacks[Math.floor(Math.random() * fireBook.attacks.length)]
+            const randomAttack = chosenOne.attacks[Math.floor(Math.random() * chosenOne.attacks.length)]
             queue.push(() => {
-                fireBook.attack({
+                chosenOne.attack({
                     attack: randomAttack,
                     recipient: earthBook,
                     renderedSprites
@@ -88,7 +109,7 @@ function initBattle() {
                             opacity: 1,
                             onComplete: () => {
                                 cancelAnimationFrame(battleAnimationId)
-                                animate()
+                                // animate()
                                 document.querySelector('#userInterface').style.display = 'none'
 
                                 gsap.to('#overlappingDiv', {
@@ -118,10 +139,11 @@ function animateBattle() {
     console.log("entered battle mode")
 
     renderedSprites.forEach((sprite) => {
+        console.log(sprite)
         sprite.draw()
     })
 }
-animate()
+// animate()
 
 document.querySelector('#dialogueBox').addEventListener('click', (e) => {
     if(queue.length > 0) {
